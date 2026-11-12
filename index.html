@@ -363,10 +363,12 @@ onAuthStateChanged(auth,async user=>{
   document.getElementById("userPhoto").src=user.photoURL||"https://www.gravatar.com/avatar/?d=mp";
   show("dashboard");
  }catch(e){
+  console.error("DASHBOARD ERROR:",e);
   show("login");
-  document.getElementById("message").textContent="Profile error: "+e.message;
- }
-});
+  document.getElementById("message").textContent=
+    "Dashboard Error: "+(e.code||"Unknown")+" - "+e.message;
+  alert("Dashboard Error: "+(e.code||"Unknown")+" - "+e.message);
+}
 
 async function fileToGenerativePart(file){
  const base64=await new Promise((resolve,reject)=>{
