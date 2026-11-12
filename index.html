@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10152f">
+<title>MONIKA AI - Teacher Assistant</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ font-family:Arial,sans-serif;
+ background:#0b1024;color:#fff;
+ min-height:100vh;
+}
+button{cursor:pointer;font-weight:bold}
+.app{max-width:520px;margin:auto;padding:20px}
+header{text-align:center;padding:35px 10px 25px}
+.logo{
+ width:90px;height:90px;border-radius:27px;
+ margin:0 auto 18px;
+ display:grid;place-items:center;font-size:38px;
+ background:linear-gradient(135deg,#536dfe,#a34cff);
+ box-shadow:0 0 35px #7655ff77;
+ animation:float 3s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-9px)}}
+h1{font-size:29px;letter-spacing:3px}
+.sub{color:#aeb8e9;margin-top:9px}
+.small{font-size:13px;color:#aab5d8;line-height:1.6}
+.card{
+ background:#171e3b;border:1px solid #303b65;
+ border-radius:22px;padding:23px;margin-top:20px;
+}
+.primary,.secondary,.google{
+ width:100%;padding:16px;border:0;
+ border-radius:13px;font-size:15px;margin-top:17px;
+}
+.primary{
+ color:white;background:linear-gradient(100deg,#536dfe,#a34cff);
+}
+.secondary{background:#303958;color:white}
+.google{
+ background:white;color:#222;
+ display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.google img{width:22px}
+button:active{transform:scale(.97)}
+.section{display:none}
+.tile{
+ background:#20294b;border-radius:16px;
+ padding:19px;margin-top:13px;
+}
+.tile h3{margin-bottom:8px}
+.profile{
+ display:flex;align-items:center;gap:13px;
+ margin-bottom:20px;
+}
+.profile img{
+ width:55px;height:55px;border-radius:50%;
+ object-fit:cover;
+}
+#message{font-size:13px;color:#ffaaaa;margin-top:14px}
+.bottom{
+ display:flex;justify-content:space-around;
+ gap:5px;margin-top:20px;padding:15px 5px;
+ background:#171e3b;border-radius:15px;
+}
+.bottom button{
+ background:transparent;color:#c4cafa;
+ border:0;font-size:12px;padding:8px 3px;
+}
+input,select{
+ width:100%;padding:13px;border-radius:10px;
+ background:#222c4d;color:white;
+ border:1px solid #53618d;margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- INTRO -->
+<section id="intro" class="section">
+<header>
+ <div class="logo">✦</div>
+ <h1>MONIKA AI</h1>
+ <p class="sub">TEACHER ASSISTANT</p>
+ <p class="small" style="margin-top:14px">
+ Smart Checking. Smarter Teaching.
+ </p>
+</header>
+<div class="card">
+ <h2>Welcome to MONIKA AI</h2>
+ <p class="small" style="margin-top:12px">
+ Your personal AI teaching companion.
+ </p>
+ <button class="primary" id="startBtn">Get Started →</button>
+</div>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="section">
+<header>
+ <div class="logo">✦</div>
+ <h1>MONIKA AI</h1>
+ <p class="sub">Sign in to continue</p>
+</header>
+<div class="card">
+ <h2>Welcome, Teacher!</h2>
+ <p class="small" style="margin-top:10px">
+ Continue securely using your Google account.
+ </p>
+ <button class="google" id="googleBtn">
+ <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+ Continue with Google
+ </button>
+ <p id="message"></p>
+</div>
+</section>
+
+<!-- LOADING -->
+<section id="loading" class="section">
+<header>
+ <div class="logo">✦</div>
+ <h2>Preparing your dashboard...</h2>
+ <p class="small">Please wait</p>
+</header>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section">
+<header>
+ <div class="logo">✦</div>
+ <h1>MONIKA AI</h1>
+ <p class="sub">TEACHER DASHBOARD</p>
+</header>
+
+<div class="card">
+ <div class="profile">
+  <img id="userPhoto" alt="Profile photo">
+  <div>
+   <h2 id="userName">Teacher</h2>
+   <p class="small" id="userEmail"></p>
+  </div>
+ </div>
+
+ <h2>Welcome Back! 👋</h2>
+ <p class="small">What would you like to do today?</p>
+
+ <div class="tile">
+  <h3>📸 AI Copy Checker</h3>
+  <p class="small">Check student answer sheets using AI.</p>
+  <button class="primary" onclick="openModule('checker')">Check a Copy</button>
+ </div>
+
+ <div class="tile">
+  <h3>📄 Upload PDF</h3>
+  <p class="small">Select a multi-page answer sheet PDF.</p>
+  <button class="primary" onclick="document.getElementById('pdfFile').click()">Upload PDF</button>
+  <input type="file" id="pdfFile" accept="application/pdf" hidden>
+  <p id="pdfName" class="small"></p>
+ </div>
+
+ <div class="tile">
+  <h3>👨‍🎓 Student Records</h3>
+  <p class="small">Manage your student information.</p>
+  <button class="primary" onclick="openModule('students')">Open Students</button>
+ </div>
+
+ <div class="tile">
+  <h3>📊 My Results</h3>
+  <p class="small">View student marks and results.</p>
+  <button class="primary" onclick="openModule('results')">View Results</button>
+ </div>
+
+ <button class="secondary" id="logoutBtn">Sign Out</button>
+</div>
+
+<nav class="bottom">
+ <button onclick="show('dashboard')">🏠<br>Home</button>
+ <button onclick="openModule('checker')">📷<br>Checking</button>
+ <button onclick="openModule('students')">👨‍🎓<br>Students</button>
+ <button onclick="openModule('profile')">👤<br>Profile</button>
+</nav>
+</section>
+
+<!-- MODULE PLACEHOLDER -->
+<section id="module" class="section">
+<header>
+ <div class="logo">✦</div>
+ <h1 id="moduleTitle">MONIKA AI</h1>
+ <p class="sub">TEACHER ASSISTANT</p>
+</header>
+<div class="card">
+ <div id="moduleContent"></div>
+ <button class="secondary" onclick="show('dashboard')">← Back to Dashboard</button>
+</div>
+</section>
+
+</div>
+
+<script type="module">
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+
+import {
+ getAuth,GoogleAuthProvider,signInWithRedirect,
+ getRedirectResult,onAuthStateChanged,signOut
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+import {
+ getFirestore,doc,getDoc,setDoc,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDrmV7BF2QvEVigZHpYoUma-DAwIolgIwE",
+ authDomain:"monika-ai-7480c.firebaseapp.com",
+ projectId:"monika-ai-7480c",
+ storageBucket:"monika-ai-7480c.firebasestorage.app",
+ messagingSenderId:"797305993723",
+ appId:"1:797305993723:web:3964fd771d355ab9b5735e"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const provider=new GoogleAuthProvider();
+
+window.show=function(id){
+ document.querySelectorAll(".section").forEach(s=>{
+  s.style.display="none";
+ });
+ document.getElementById(id).style.display="block";
+};
+
+document.getElementById("startBtn").onclick=()=>{
+ show("login");
+};
+
+document.getElementById("googleBtn").onclick=async()=>{
+ try{
+  document.getElementById("message").textContent=
+  "Connecting to Google...";
+  await signInWithRedirect(auth,provider);
+ }catch(e){
+  document.getElementById("message").textContent=e.message;
+ }
+};
+
+document.getElementById("logoutBtn").onclick=async()=>{
+ try{await signOut(auth);}
+ catch(e){alert(e.message);}
+};
+
+getRedirectResult(auth).catch(e=>{
+ document.getElementById("message").textContent=e.message;
+});
+
+onAuthStateChanged(auth,async user=>{
+ if(!user){
+  show("intro");
+  return;
+ }
+
+ show("loading");
+
+ try{
+  const ref=doc(db,"users",user.uid);
+  const snap=await getDoc(ref);
+
+  const data={
+   uid:user.uid,
+   name:user.displayName||"Teacher",
+   email:user.email||"",
+   photoURL:user.photoURL||"",
+   updatedAt:serverTimestamp()
+  };
+
+  if(!snap.exists())data.createdAt=serverTimestamp();
+
+  await setDoc(ref,data,{merge:true});
+
+  document.getElementById("userName").textContent=
+  user.displayName||"Teacher";
+  document.getElementById("userEmail").textContent=
+  user.email||"";
+  document.getElementById("userPhoto").src=
+  user.photoURL||"https://www.gravatar.com/avatar/?d=mp";
+
+  show("dashboard");
+
+ }catch(e){
+  show("login");
+  document.getElementById("message").textContent=
+  "Profile error: "+e.message;
+ }
+});
+
+document.getElementById("pdfFile").onchange=e=>{
+ const file=e.target.files[0];
+ document.getElementById("pdfName").textContent=
+ file?"Selected: "+file.name:"";
+};
+
+window.openModule=function(name){
+ const titles={
+  checker:"AI COPY CHECKER",
+  students:"STUDENT RECORDS",
+  results:"MY RESULTS",
+  profile:"MY PROFILE"
+ };
+
+ document.getElementById("moduleTitle").textContent=
+ titles[name]||"MONIKA AI";
+
+ const content=document.getElementById("moduleContent");
+
+ if(name==="checker"){
+  content.innerHTML=`
+   <h2>AI Copy Checker</h2>
+   <p class="small">Choose how you want to upload your answer sheet.</p>
+   <button class="primary" onclick="document.getElementById('cameraInput').click()">📸 Camera</button>
+   <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+   <button class="primary" onclick="document.getElementById('photoInput').click()">🖼 Gallery Photos</button>
+   <input id="photoInput" type="file" accept="image/*" multiple hidden>
+   <button class="primary" onclick="document.getElementById('pdfInput').click()">📄 PDF Upload</button>
+   <input id="pdfInput" type="file" accept="application/pdf" hidden>
+   <p class="small" id="uploadStatus"></p>
+  `;
+  ["cameraInput","photoInput","pdfInput"].forEach(id=>{
+   content.querySelector("#"+id).onchange=e=>{
+    const files=e.target.files;
+    document.getElementById("uploadStatus").textContent=
+    files.length?files.length+" file(s) selected. AI checking engine will be added in Phase 3.":"";
+   };
+  });
+ }else if(name==="students"){
+  content.innerHTML=`
+   <h2>Student Records</h2>
+   <p class="small">Student management module will be added next.</p>
+  `;
+ }else if(name==="results"){
+  content.innerHTML=`
+   <h2>My Results</h2>
+   <p class="small">Result generator module will be added next.</p>
+  `;
+ }else{
+  content.innerHTML=`
+   <h2>My Profile</h2>
+   <p class="small">Your Google account is connected.</p>
+  `;
+ }
+ show("module");
+};
+</script>
+</body>
+</html>
