@@ -9,167 +9,78 @@
 
 <style>
 :root{
- --bg:#080d20;
- --blue:#5578ff;
- --purple:#a052ff;
- --cyan:#45d9ff;
- --text:#f5f7ff;
- --muted:#aebbe0;
- --border:rgba(148,168,255,.2);
+--bg:#080d20;--blue:#5578ff;--purple:#a052ff;
+--text:#f5f7ff;--muted:#aebbe0;
+--border:rgba(148,168,255,.2)
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
- font-family:Inter,Arial,sans-serif;
- background:var(--bg);
- color:var(--text);
- min-height:100vh;
- overflow-x:hidden;
+font-family:Inter,Arial,sans-serif;background:var(--bg);
+color:var(--text);min-height:100vh;overflow-x:hidden
 }
 body:before,body:after{
- content:"";
- position:fixed;
- width:350px;height:350px;
- border-radius:50%;
- filter:blur(100px);
- opacity:.3;
- pointer-events:none;
- z-index:-1;
- animation:orb 12s ease-in-out infinite alternate;
+content:"";position:fixed;width:350px;height:350px;
+border-radius:50%;filter:blur(100px);opacity:.3;
+pointer-events:none;z-index:-1;
+animation:orb 12s ease-in-out infinite alternate
 }
 body:before{background:#4c50ff;top:-130px;left:-140px}
-body:after{background:#a33cff;bottom:-130px;right:-130px;animation-delay:-5s}
-@keyframes orb{
- 0%{transform:translate(0,0) scale(1)}
- 100%{transform:translate(100px,100px) scale(1.3)}
-}
-.app{max-width:560px;margin:auto;padding:18px 16px 35px}
-header{text-align:center;padding:32px 10px 22px}
+body:after{background:#a33cff;bottom:-130px;right:-130px}
+@keyframes orb{to{transform:translate(100px,100px) scale(1.3)}}
+@keyframes float{50%{transform:translateY(-9px)}}
+@keyframes enter{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.app{max-width:650px;margin:auto;padding:18px 16px 35px}
+header{text-align:center;padding:25px 10px 18px}
 .logo{
- width:98px;height:98px;border-radius:30px;
- margin:0 auto 22px;display:grid;place-items:center;
- font-size:45px;color:white;
- background:linear-gradient(145deg,#7892ff,#6651f3,#a23fff);
- border:1px solid #ffffff55;
- box-shadow:0 10px 0 #292c83,0 20px 35px #5365ff55,inset 0 3px 10px #ffffff55;
- animation:float 4s ease-in-out infinite;
- position:relative;
+width:90px;height:90px;border-radius:27px;margin:0 auto 18px;
+display:grid;place-items:center;font-size:42px;color:white;
+background:linear-gradient(145deg,#7892ff,#6651f3,#a23fff);
+border:1px solid #ffffff55;
+box-shadow:0 9px 0 #292c83,0 18px 30px #5365ff55;
+animation:float 4s ease-in-out infinite
 }
-.logo:after{
- content:"";position:absolute;inset:8px;
- border:1px solid #ffffff40;border-radius:22px
-}
-@keyframes float{
- 0%,100%{transform:translateY(0) rotate(-3deg)}
- 50%{transform:translateY(-12px) rotate(3deg)}
-}
-h1{
- font-size:30px;letter-spacing:4px;font-weight:900;
- background:linear-gradient(90deg,#fff,#9bc5ff,#d6a6ff);
- -webkit-background-clip:text;background-clip:text;color:transparent
-}
-h2{font-size:22px;font-weight:800}
-h3{font-size:17px}
-.sub{color:#b6c3ff;margin-top:10px;font-size:13px;letter-spacing:2px;font-weight:700}
-.small{font-size:13px;color:var(--muted);line-height:1.8}
-.section{display:none;animation:enter .55s ease}
-@keyframes enter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:29px;letter-spacing:4px;font-weight:900;
+background:linear-gradient(90deg,#fff,#9bc5ff,#d6a6ff);
+-webkit-background-clip:text;color:transparent}
+h2{font-size:21px}h3{font-size:17px}
+.sub{color:#b6c3ff;margin-top:9px;font-size:12px;letter-spacing:2px}
+.small{font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px}
+.section{display:none;animation:enter .4s ease}
 .card{
- background:linear-gradient(145deg,rgba(30,42,85,.9),rgba(15,23,50,.9));
- border:1px solid var(--border);border-radius:25px;
- padding:23px;margin-top:18px;
- box-shadow:0 18px 45px #0005,inset 0 1px 0 #ffffff18;
- backdrop-filter:blur(18px);position:relative;overflow:hidden
+background:linear-gradient(145deg,rgba(30,42,85,.92),rgba(15,23,50,.94));
+border:1px solid var(--border);border-radius:23px;
+padding:21px;margin-top:16px;box-shadow:0 18px 45px #0005;
+backdrop-filter:blur(18px)
 }
-.card:before{
- content:"";position:absolute;top:0;left:12%;width:76%;height:1px;
- background:linear-gradient(90deg,transparent,#91aaff,transparent)
-}
-button{cursor:pointer;font-weight:800;transition:.25s}
+button{cursor:pointer;font-weight:800;transition:.22s}
 .primary,.secondary,.google{
- width:100%;min-height:52px;padding:15px;
- border:0;border-radius:15px;font-size:15px;margin-top:15px
+width:100%;min-height:48px;padding:13px;
+border:0;border-radius:14px;font-size:14px;margin-top:13px
 }
-.primary{
- color:white;background:linear-gradient(110deg,#526fff,#864dff 55%,#b34dff);
- box-shadow:0 6px 0 #39349d,0 12px 25px #5b5bff44,inset 0 1px 0 #ffffff55;
- position:relative;overflow:hidden
-}
-.primary:after{
- content:"";position:absolute;top:-50%;left:-100%;width:55%;height:200%;
- transform:rotate(25deg);background:#ffffff35;transition:.6s
-}
-.primary:hover:after{left:150%}
-.secondary{
- color:#e5eaff;background:linear-gradient(135deg,#303f70,#202c50);
- border:1px solid var(--border);box-shadow:0 5px 0 #151e3b
-}
-.google{
- background:linear-gradient(145deg,#fff,#e9edff);color:#222b45;
- box-shadow:0 6px 0 #b5bfdc;display:flex;align-items:center;justify-content:center;gap:12px
-}
-.google img{width:23px}
-button:active{transform:translateY(4px) scale(.985)}
-button:disabled{opacity:.6;cursor:wait}
-.tile{
- background:linear-gradient(145deg,rgba(43,58,112,.9),rgba(25,34,69,.95));
- border:1px solid var(--border);border-radius:19px;
- padding:19px;margin-top:16px;
- box-shadow:0 9px 22px #0004;transition:.3s
-}
-.tile:hover{transform:translateY(-5px);border-color:#829aff;box-shadow:0 17px 32px #5265ff22}
-.tile h3{margin-bottom:9px}
-.profile{
- display:flex;align-items:center;gap:14px;margin-bottom:24px;
- padding:12px;background:#ffffff09;border:1px solid var(--border);border-radius:17px
-}
-.profile img{
- width:58px;height:58px;border-radius:18px;object-fit:cover;
- border:2px solid #8196ff;box-shadow:0 0 18px #647aff55
-}
-#userName{font-size:18px}
+.primary{color:white;background:linear-gradient(110deg,#526fff,#864dff,#b34dff);box-shadow:0 5px 0 #39349d}
+.secondary{color:#e5eaff;background:linear-gradient(135deg,#303f70,#202c50);border:1px solid var(--border)}
+.google{background:white;color:#222b45;display:flex;align-items:center;justify-content:center;gap:12px}
+.google img{width:22px}
+button:active{transform:translateY(3px)}
+button:disabled{opacity:.55;cursor:wait}
+.tile{background:linear-gradient(145deg,#2b3a70,#192245);border:1px solid var(--border);border-radius:18px;padding:17px;margin-top:14px;box-shadow:0 9px 22px #0004}
+.profile{display:flex;align-items:center;gap:13px;margin-bottom:21px;padding:11px;background:#ffffff09;border:1px solid var(--border);border-radius:16px}
+.profile img{width:54px;height:54px;border-radius:16px;object-fit:cover;border:2px solid #8196ff}
 #userEmail{font-size:11px;word-break:break-all}
-.bottom{
- display:flex;justify-content:space-around;align-items:center;gap:4px;
- margin-top:22px;padding:12px 5px;
- background:rgba(22,31,65,.9);border:1px solid var(--border);
- border-radius:19px;box-shadow:0 10px 30px #0004;backdrop-filter:blur(15px)
-}
-.bottom button{
- flex:1;background:transparent;color:#bdcaff;border:0;
- border-radius:12px;font-size:12px;line-height:1.8;padding:9px 2px
-}
-.bottom button:hover{background:#697fff22;color:white;transform:translateY(-3px)}
-input,select,textarea{
- width:100%;padding:14px;border-radius:13px;
- background:#091027;color:white;border:1px solid #3c4d80;
- margin-top:10px;font-size:14px;outline:none
-}
-input:focus,textarea:focus,select:focus{
- border-color:#8498ff;box-shadow:0 0 0 3px #677eff29
-}
-input::placeholder,textarea::placeholder{color:#8290b8}
-input[type=file]{padding:12px;font-size:12px}
-label{display:block;margin-top:17px;font-size:13px;color:#d5ddff;font-weight:700}
-textarea{min-height:110px;resize:vertical;line-height:1.6}
-.result{
- white-space:pre-wrap;overflow-wrap:anywhere;
- background:#070d1f;border:1px solid #5266a3;border-radius:15px;
- padding:16px;margin-top:15px;font-size:14px;line-height:1.8;color:#e4eaff
-}
-.status{margin-top:13px;font-size:13px;color:#a9c8ff;line-height:1.7}
-#message{font-size:13px;color:#ffaaaa;margin-top:14px;word-break:break-word}
-#loading header{padding-top:100px}
-#loading .logo{animation:float 2s infinite}
-@media(max-width:380px){
- .app{padding:13px}
- .card{padding:18px}
- h1{font-size:26px}
- .logo{width:88px;height:88px}
- .bottom button{font-size:11px}
-}
-@media(prefers-reduced-motion:reduce){
- *,*:before,*:after{animation:none!important;transition:none!important}
-}
+.bottom{display:flex;justify-content:space-around;gap:4px;margin-top:20px;padding:10px 4px;background:#161f41;border:1px solid var(--border);border-radius:18px;position:sticky;bottom:8px}
+.bottom button{flex:1;background:transparent;color:#bdcaff;border:0;border-radius:11px;font-size:11px;padding:8px 2px}
+input,select,textarea{width:100%;padding:13px;border-radius:12px;background:#091027;color:white;border:1px solid #3c4d80;margin-top:8px;font-size:14px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#8498ff;box-shadow:0 0 0 3px #677eff29}
+label{display:block;margin-top:15px;font-size:12px;color:#d5ddff;font-weight:700}
+textarea{min-height:95px;resize:vertical;line-height:1.6}
+.result{white-space:pre-wrap;overflow-wrap:anywhere;background:#070d1f;border:1px solid #5266a3;border-radius:14px;padding:15px;margin-top:14px;font-size:13px;line-height:1.8;color:#e4eaff}
+.status{margin-top:11px;font-size:12px;color:#a9c8ff;line-height:1.65}
+.hint{padding:11px;border-radius:12px;background:#f0b84b12;border:1px solid #f0b84b44;color:#f8d99b;font-size:12px;line-height:1.6;margin-top:12px}
+.item{padding:13px;margin-top:10px;border:1px solid var(--border);border-radius:13px;background:#ffffff08}
+.item-actions{display:flex;gap:7px;margin-top:8px}
+.item-actions button{flex:1;padding:9px;border-radius:10px;border:1px solid var(--border);background:#26345f;color:white}
+.hidden{display:none!important}
+@media(max-width:390px){.app{padding:12px}.card{padding:17px}h1{font-size:25px}}
 </style>
 </head>
 
@@ -181,11 +92,11 @@ textarea{min-height:110px;resize:vertical;line-height:1.6}
 <div class="logo">✦</div>
 <h1>MONIKA AI</h1>
 <p class="sub">TEACHER ASSISTANT</p>
-<p class="small" style="margin-top:14px">Smart Checking. Smarter Teaching.</p>
+<p class="small">Smart Checking. Smarter Teaching.</p>
 </header>
 <div class="card">
 <h2>Welcome to MONIKA AI</h2>
-<p class="small" style="margin-top:12px">Your personal AI teaching companion.</p>
+<p class="small">Your personal AI teaching companion.</p>
 <button class="primary" id="startBtn">Get Started →</button>
 </div>
 </section>
@@ -198,12 +109,12 @@ textarea{min-height:110px;resize:vertical;line-height:1.6}
 </header>
 <div class="card">
 <h2>Welcome, Teacher!</h2>
-<p class="small" style="margin-top:10px">Continue securely using your Google account.</p>
+<p class="small">Continue securely using your Google account.</p>
 <button class="google" id="googleBtn">
 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
 Continue with Google
 </button>
-<p id="message"></p>
+<p id="message" class="status"></p>
 </div>
 </section>
 
@@ -223,7 +134,7 @@ Continue with Google
 </header>
 <div class="card">
 <div class="profile">
-<img id="userPhoto" alt="Profile photo">
+<img id="userPhoto" alt="Profile">
 <div>
 <h2 id="userName">Teacher</h2>
 <p class="small" id="userEmail"></p>
@@ -234,19 +145,28 @@ Continue with Google
 
 <div class="tile">
 <h3>📸 AI Copy Checker</h3>
-<p class="small">Check student answer sheets using AI.</p>
+<p class="small">Upload student answer sheets.</p>
 <button class="primary" onclick="openModule('checker')">Check a Copy</button>
 </div>
+
 <div class="tile">
 <h3>👨‍🎓 Student Records</h3>
-<p class="small">Manage your student information.</p>
+<p class="small">Manage student information.</p>
 <button class="primary" onclick="openModule('students')">Open Students</button>
 </div>
+
 <div class="tile">
 <h3>📊 My Results</h3>
-<p class="small">View student marks and results.</p>
+<p class="small">View saved checking reports.</p>
 <button class="primary" onclick="openModule('results')">View Results</button>
 </div>
+
+<div class="tile">
+<h3>👤 My Profile</h3>
+<p class="small">Create and edit your profile.</p>
+<button class="primary" onclick="openModule('profile')">Edit Profile</button>
+</div>
+
 <button class="secondary" id="logoutBtn">Sign Out</button>
 </div>
 <nav class="bottom">
@@ -267,49 +187,50 @@ Continue with Google
 <div id="moduleContent"></div>
 <button class="secondary" onclick="show('dashboard')">← Back to Dashboard</button>
 </div>
+<nav class="bottom">
+<button onclick="show('dashboard')">🏠<br>Home</button>
+<button onclick="openModule('checker')">📷<br>Checking</button>
+<button onclick="openModule('students')">👨‍🎓<br>Students</button>
+<button onclick="openModule('profile')">👤<br>Profile</button>
+</nav>
 </section>
 
 </div>
 
 <script type="module">
+
 import {initializeApp}
 from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 
 import {
- initializeAppCheck,ReCaptchaEnterpriseProvider
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app-check.js";
-
-import {
- getAuth,GoogleAuthProvider,signInWithRedirect,
- getRedirectResult,onAuthStateChanged,signOut
+getAuth,GoogleAuthProvider,signInWithPopup,
+onAuthStateChanged,signOut
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
 import {
- getFirestore,doc,getDoc,setDoc,serverTimestamp
+getFirestore,doc,getDoc,setDoc,
+collection,addDoc,getDocs,deleteDoc,
+serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import {
- getAI,getGenerativeModel,GoogleAIBackend
+getAI,getGenerativeModel,GoogleAIBackend
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-ai.js";
 
+/* FIREBASE CONFIGURATION */
+
 const firebaseConfig={
- apiKey:"AIzaSyAd-QsaZHQblgQw8Nc7QnhwF47RJ6ezP2I",
- authDomain:"monika-ai-7480c.firebaseapp.com",
- projectId:"monika-ai-7480c",
- storageBucket:"monika-ai-7480c.firebasestorage.app",
- messagingSenderId:"797305993723",
- appId:"1:797305993723:web:3964fd771d355ab9b5735e"
+apiKey:"AIzaSyDrmV7BF2VqEVigZHpYoUma-DAwIolgIwE",
+authDomain:"monika-ai-7480.firebaseapp.com",
+projectId:"monika-ai-7480",
+storageBucket:"monika-ai-7480.firebasestorage.app",
+messagingSenderId:"797305993723",
+appId:"1:797305993723:web:3964fd771d355ab9b5735e"
 };
 
+/* INITIALIZATION */
+
 const app=initializeApp(firebaseConfig);
-
-const appCheck=initializeAppCheck(app,{
- provider:new ReCaptchaEnterpriseProvider(
-  "6LcX5BwuAAAAACMY-sKJft5wL_NcQ8QrWWGvXP8c"
- ),
- isTokenAutoRefreshEnabled:true
-});
-
 const auth=getAuth(app);
 const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
@@ -317,129 +238,313 @@ const provider=new GoogleAuthProvider();
 const ai=getAI(app,{backend:new GoogleAIBackend()});
 const model=getGenerativeModel(ai,{model:"gemini-3.8-flash"});
 
+let currentUser=null;
+let profileData={};
+let editingStudentId=null;
+
+const $=id=>document.getElementById(id);
+
 window.show=function(id){
- document.querySelectorAll(".section").forEach(s=>s.style.display="none");
- document.getElementById(id).style.display="block";
+document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+$(id).style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
 };
 
-document.getElementById("startBtn").onclick=()=>show("login");
+$("startBtn").onclick=()=>show("login");
 
-document.getElementById("googleBtn").onclick=async()=>{
- try{
-  document.getElementById("message").textContent="Connecting to Google...";
-  await signInWithRedirect(auth,provider);
- }catch(e){
-  document.getElementById("message").textContent=e.message;
- }
+/* GOOGLE LOGIN */
+
+$("googleBtn").onclick=async()=>{
+$("message").textContent="Connecting to Google...";
+$("googleBtn").disabled=true;
+
+try{
+await signInWithPopup(auth,provider);
+}catch(e){
+console.error(e);
+$("message").textContent=
+"Login error: "+e.message+
+" | Check popup permission and Firebase authorized domains.";
+}finally{
+$("googleBtn").disabled=false;
+}
 };
 
-document.getElementById("logoutBtn").onclick=async()=>{
- try{await signOut(auth)}
- catch(e){alert(e.message)}
+$("logoutBtn").onclick=async()=>{
+try{await signOut(auth);}
+catch(e){alert(e.message);}
 };
 
-getRedirectResult(auth).catch(e=>{
- document.getElementById("message").textContent=e.message;
-});
+/* USER DATABASE REFERENCES */
+
+function userDoc(){
+return doc(db,"users",currentUser.uid);
+}
+
+function userCollection(name){
+return collection(db,"users",currentUser.uid,name);
+}
+
+/* AUTH STATE */
 
 onAuthStateChanged(auth,async user=>{
- if(!user){show("intro");return}
- show("loading");
- try{
-  const ref=doc(db,"users",user.uid);
-  const snap=await getDoc(ref);
-  const data={
-   uid:user.uid,
-   name:user.displayName||"Teacher",
-   email:user.email||"",
-   photoURL:user.photoURL||"",
-   updatedAt:serverTimestamp()
-  };
-  if(!snap.exists())data.createdAt=serverTimestamp();
-  await setDoc(ref,data,{merge:true});
+currentUser=user;
 
-  document.getElementById("userName").textContent=user.displayName||"Teacher";
-  document.getElementById("userEmail").textContent=user.email||"";
-  document.getElementById("userPhoto").src=user.photoURL||"https://www.gravatar.com/avatar/?d=mp";
-  show("dashboard");
- }catch(e){
-  console.error("DASHBOARD ERROR:",e);
-  show("login");
-  document.getElementById("message").textContent=
-    "Dashboard Error: "+(e.code||"Unknown")+" - "+e.message;
-  alert("Dashboard Error: "+(e.code||"Unknown")+" - "+e.message);
+if(!user){
+show("intro");
+return;
 }
 
-async function fileToGenerativePart(file){
- const base64=await new Promise((resolve,reject)=>{
-  const reader=new FileReader();
-  reader.onload=()=>resolve(reader.result.split(",")[1]);
-  reader.onerror=()=>reject(new Error("File could not be read"));
-  reader.readAsDataURL(file);
- });
- return {inlineData:{data:base64,mimeType:file.type}};
+show("loading");
+
+try{
+const ref=userDoc();
+const snap=await getDoc(ref);
+
+if(!snap.exists()){
+await setDoc(ref,{
+uid:user.uid,
+name:user.displayName||"Teacher",
+email:user.email||"",
+photoURL:user.photoURL||"",
+createdAt:serverTimestamp()
+});
 }
+
+await loadProfile();
+updateHeader();
+show("dashboard");
+
+}catch(e){
+console.error(e);
+show("login");
+$("message").textContent="Database error: "+e.message;
+}
+});
+
+/* PROFILE DATA */
+
+async function loadProfile(){
+const snap=await getDoc(userDoc());
+profileData=snap.exists()?snap.data():{};
+}
+
+function updateHeader(){
+$("userName").textContent=
+profileData.teacherName||currentUser.displayName||"Teacher";
+
+$("userEmail").textContent=currentUser.email||"";
+
+$("userPhoto").src=
+profileData.photoData||
+profileData.photoURL||
+currentUser.photoURL||
+"https://www.gravatar.com/avatar/?d=mp";
+}
+
+function esc(s=""){
+return String(s).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+/* MODULE NAVIGATION */
+
+window.openModule=function(name){
+
+const titles={
+checker:"AI COPY CHECKER",
+students:"STUDENT RECORDS",
+results:"MY RESULTS",
+profile:"MY PROFILE"
+};
+
+$("moduleTitle").textContent=titles[name]||"MONIKA AI";
+
+const content=$("moduleContent");
+
+if(name==="checker")renderChecker(content);
+if(name==="students")renderStudents(content);
+if(name==="results")renderResults(content);
+if(name==="profile")renderProfile(content);
+
+show("module");
+};
+
+/* COPY CHECKER */
+
+function renderChecker(root){
+root.innerHTML=`
+<h2>🤖 AI Copy Checker</h2>
+<p class="small">Upload only the student's answer sheet. No question paper or answer key required.</p>
+
+<label>Student Name</label>
+<input id="studentName" placeholder="Enter student name">
+
+<label>Class</label>
+<input id="className" placeholder="Example: Class 8">
+
+<label>Subject</label>
+<input id="subjectName" placeholder="Example: Science">
+
+<label>Maximum Marks</label>
+<input id="totalMarks" type="number" min="1" placeholder="Example: 50">
+
+<label>Additional Teacher Instructions</label>
+<textarea id="teacherInstructions" placeholder="Optional instructions..."></textarea>
+
+<label>Upload Student Answer Sheet</label>
+<input id="answerFiles" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
+
+<p class="small">Maximum 10 files. Each file up to 5 MB. Total up to 10 MB.</p>
+
+<div class="hint">
+AI will try to identify visible questions and answers. If the question is not visible, marks may be uncertain. The report is provisional and must be reviewed by the teacher.
+</div>
+
+<button class="primary" id="checkBtn">🤖 Check Uploaded Copy</button>
+<p class="status" id="checkStatus"></p>
+<div class="result" id="aiResult">Your checking report will appear here.</div>
+
+<button class="secondary" id="copyResult">Copy Report</button>
+<button class="secondary" id="printResult">Print Report</button>
+`;
+
+$("checkBtn").onclick=checkAnswerSheet;
+
+$("copyResult").onclick=async()=>{
+const t=$("aiResult").textContent;
+if(!t||t==="Your checking report will appear here.")
+return alert("No report available.");
+
+try{
+await navigator.clipboard.writeText(t);
+alert("Report copied!");
+}catch(e){
+fallbackCopy(t);
+}
+};
+
+$("printResult").onclick=()=>{
+printReport($("aiResult").textContent);
+};
+}
+
+/* FILE CONVERSION */
+
+async function fileToPart(file){
+const base64=await new Promise((resolve,reject)=>{
+const reader=new FileReader();
+reader.onload=()=>resolve(reader.result.split(",")[1]);
+reader.onerror=()=>reject(new Error("File could not be read"));
+reader.readAsDataURL(file);
+});
+
+return {
+type:"inlineData",
+inlineData:{
+data:base64,
+mimeType:file.type
+}
+};
+}
+
+/* AI COPY CHECKING */
 
 async function checkAnswerSheet(){
- const files=document.getElementById("answerFiles").files;
- const student=document.getElementById("studentName").value.trim();
- const className=document.getElementById("className").value.trim();
- const subject=document.getElementById("subjectName").value.trim();
- const total=Number(document.getElementById("totalMarks").value);
- const answerKey=document.getElementById("answerKey").value.trim();
- const extra=document.getElementById("teacherInstructions").value.trim();
- const status=document.getElementById("checkStatus");
- const resultBox=document.getElementById("aiResult");
- const button=document.getElementById("checkBtn");
 
- if(!files.length){status.textContent="Please select answer sheet photos or PDF.";return}
- if(!className||!subject||!total||total<=0){status.textContent="Please enter class, subject and valid total marks.";return}
- if(!answerKey){status.textContent="Please enter the question paper or answer key before checking.";return}
- if(files.length>10){status.textContent="Please upload a maximum of 10 files.";return}
+const files=$("answerFiles").files;
+const student=$("studentName").value.trim();
+const className=$("className").value.trim();
+const subject=$("subjectName").value.trim();
+const total=Number($("totalMarks").value);
+const extra=$("teacherInstructions").value.trim();
 
- for(const file of files){
-  if(!file.type.startsWith("image/")&&file.type!=="application/pdf"){
-   status.textContent="Only images and PDF files are supported.";return;
-  }
-  if(file.size>10*1024*1024){
-   status.textContent="Each file must be smaller than 10 MB.";return;
-  }
- }
+const status=$("checkStatus");
+const resultBox=$("aiResult");
+const button=$("checkBtn");
 
- button.disabled=true;
- button.textContent="Checking...";
- status.textContent="Preparing files for Gemini AI...";
- resultBox.textContent="";
+if(!files.length){
+status.textContent="Please upload answer sheet.";
+return;
+}
 
- try{
-  const fileParts=await Promise.all(Array.from(files).map(fileToGenerativePart));
+if(!className||!subject||!total||total<=0){
+status.textContent="Enter class, subject and maximum marks.";
+return;
+}
 
-  const prompt=`
-You are MONIKA AI, an assistant for teachers.
-Evaluate the student's answer sheet carefully.
+if(files.length>10){
+status.textContent="Maximum 10 files allowed.";
+return;
+}
 
-STUDENT DETAILS:
-Student name: ${student||"Not provided"}
+let totalBytes=0;
+
+for(const file of files){
+if(!["image/jpeg","image/png","image/webp","application/pdf"].includes(file.type)){
+status.textContent="Use JPG, PNG, WEBP or PDF.";
+return;
+}
+
+if(file.size>5*1024*1024){
+status.textContent=file.name+" exceeds 5 MB.";
+return;
+}
+
+totalBytes+=file.size;
+}
+
+if(totalBytes>10*1024*1024){
+status.textContent="Combined file size exceeds 10 MB.";
+return;
+}
+
+button.disabled=true;
+button.textContent="Checking...";
+status.textContent="Preparing uploaded files...";
+resultBox.textContent="";
+
+try{
+
+const parts=await Promise.all(
+Array.from(files).map(fileToPart)
+);
+
+const prompt=`
+You are MONIKA AI, a careful school copy evaluator.
+
+IMPORTANT:
+Only a student's answer sheet has been uploaded.
+No question paper and no answer key are provided.
+
+Student: ${student||"Not provided"}
 Class: ${className}
 Subject: ${subject}
 Maximum marks: ${total}
 
-QUESTION PAPER / ANSWER KEY:
-${answerKey}
-
-ADDITIONAL INSTRUCTIONS:
+Teacher instructions:
 ${extra||"None"}
 
-RULES:
-1. Read every uploaded answer carefully.
-2. Award marks according to the answer key.
-3. Give partial marks where appropriate.
-4. Do not invent unreadable answers.
-5. Never exceed maximum marks.
-6. Mention unclear handwriting for teacher review.
-7. Explain the reason for marks.
+TASK:
+1. Read every uploaded page carefully.
+2. Identify visible question numbers and answers.
+3. Only infer questions when the answer clearly provides enough context.
+4. Never invent missing questions or an answer key.
+5. Give question-wise marks only when justified.
+6. Give partial marks where appropriate.
+7. Explain incorrect answers.
+8. Suggest corrections.
+9. Mention unreadable handwriting.
+10. Do not exceed maximum marks.
+11. Calculate percentage accurately.
+12. Clearly flag uncertain marks for teacher review.
+13. If the question is missing, say that exact marking is not possible.
+14. Mark the report as PROVISIONAL.
+15. Do not claim certainty when evidence is insufficient.
 
-RETURN:
+OUTPUT:
 
 MONIKA AI - COPY CHECK REPORT
 
@@ -449,106 +554,497 @@ Subject:
 Maximum Marks:
 Marks Obtained:
 Percentage:
+Assessment Status:
 
-QUESTION-WISE EVALUATION:
-Question number
-Marks awarded
-Maximum marks
-Reason
-Correction or improvement
+QUESTION WISE EVALUATION:
+Question Number:
+Answer Identified:
+Marks Awarded:
+Reason:
+Correct Answer / Improvement:
 
 STRENGTHS:
 AREAS TO IMPROVE:
+UNREADABLE CONTENT:
 TEACHER REVIEW REQUIRED:
 FINAL REMARKS:
 
-Be accurate and fair.
+Be fair, accurate and transparent.
 `;
-  status.textContent="Gemini AI is checking the answer sheet...";
-  const response=await model.generateContent([prompt,...fileParts]);
-  const output=response.response.text();
-  if(!output)throw new Error("AI returned an empty response.");
-  resultBox.textContent=output;
-  status.textContent="Checking complete. Please review the marks before finalizing.";
- }catch(error){
-  console.error(error);
-  status.textContent="Error: "+error.message;
- }finally{
-  button.disabled=false;
-  button.textContent="🤖 Check Answer Sheet";
- }
+
+status.textContent="Gemini AI is checking the uploaded copy...";
+
+const response=await model.generateContent([
+{text:prompt},
+...parts
+]);
+
+const output=response.response.text();
+
+if(!output){
+throw new Error("AI returned an empty response.");
 }
 
-window.openModule=function(name){
- const titles={
-  checker:"AI COPY CHECKER",
-  students:"STUDENT RECORDS",
-  results:"MY RESULTS",
-  profile:"MY PROFILE"
- };
- document.getElementById("moduleTitle").textContent=titles[name]||"MONIKA AI";
- const content=document.getElementById("moduleContent");
+resultBox.textContent=output;
+status.textContent="Checking complete. Please review the marks.";
 
- if(name==="checker"){
-  content.innerHTML=`
-   <h2>🤖 AI Copy Checker</h2>
-   <p class="small">Upload a student's answer sheet for AI evaluation.</p>
+try{
+await addDoc(userCollection("results"),{
+studentName:student||"Not provided",
+className,
+subject,
+totalMarks:total,
+report:output,
+createdAt:serverTimestamp(),
+createdAtLocal:new Date().toISOString()
+});
 
-   <label>Student Name</label>
-   <input id="studentName" placeholder="Enter student name">
+status.textContent+=" Report saved in My Results.";
 
-   <label>Class</label>
-   <input id="className" placeholder="Example: Class 8">
+}catch(saveError){
+status.textContent+=" Saving failed: "+saveError.message;
+}
 
-   <label>Subject</label>
-   <input id="subjectName" placeholder="Example: Science">
+}catch(error){
+console.error(error);
+status.textContent="Error: "+error.message;
+}finally{
+button.disabled=false;
+button.textContent="🤖 Check Uploaded Copy";
+}
+}
 
-   <label>Total Marks</label>
-   <input id="totalMarks" type="number" min="1" placeholder="Example: 50">
+/* STUDENT RECORDS */
 
-   <label>Question Paper / Answer Key / Marking Scheme</label>
-   <textarea id="answerKey" placeholder="Paste questions and correct answers here..."></textarea>
+function renderStudents(root){
+editingStudentId=null;
 
-   <label>Additional Instructions</label>
-   <textarea id="teacherInstructions" placeholder="Optional instructions..."></textarea>
+root.innerHTML=`
+<h2>👨‍🎓 Student Records</h2>
+<p class="small">Add and manage your student details.</p>
 
-   <label>Upload Answer Sheet (Photos or PDF)</label>
-   <input id="answerFiles" type="file" accept="image/*,application/pdf" multiple>
+<label>Student Name *</label>
+<input id="sName" placeholder="Student full name">
 
-   <p class="small" style="margin-top:8px">Maximum 10 files. Each file up to 10 MB.</p>
-   <button class="primary" id="checkBtn">🤖 Check Answer Sheet</button>
-   <p class="status" id="checkStatus"></p>
-   <div class="result" id="aiResult">Your AI report will appear here.</div>
-   <button class="secondary" id="copyResult">Copy Report</button>
-  `;
+<label>Class *</label>
+<input id="sClass" placeholder="Example: Class 8">
 
-  document.getElementById("checkBtn").onclick=checkAnswerSheet;
-  document.getElementById("copyResult").onclick=async()=>{
-   try{
-    await navigator.clipboard.writeText(document.getElementById("aiResult").textContent);
-    alert("Report copied.");
-   }catch(e){alert("Copy not supported in this browser.")}
-  };
+<label>Roll Number</label>
+<input id="sRoll" placeholder="Roll number">
 
- }else if(name==="students"){
-  content.innerHTML=`
-   <h2>👨‍🎓 Student Records</h2>
-   <p class="small">Student management module will be added in the next phase.</p>
-  `;
- }else if(name==="results"){
-  content.innerHTML=`
-   <h2>📊 My Results</h2>
-   <p class="small">Result generator module will be added in the next phase.</p>
-  `;
- }else{
-  content.innerHTML=`
-   <h2>👤 My Profile</h2>
-   <p class="small">Your Google account is connected.</p>
-   <p class="small" style="margin-top:10px">${auth.currentUser?.email||""}</p>
-  `;
- }
- show("module");
+<label>Mobile Number</label>
+<input id="sMobile" type="tel" placeholder="Mobile number">
+
+<button class="primary" id="saveStudentBtn">Save Student</button>
+<button class="secondary" id="cancelEditBtn">Cancel Edit</button>
+<p class="status" id="studentStatus"></p>
+
+<h3 style="margin-top:22px">Saved Students</h3>
+<div id="studentList">Loading students...</div>
+`;
+
+$("saveStudentBtn").onclick=saveStudent;
+$("cancelEditBtn").onclick=()=>{
+editingStudentId=null;
+$("sName").value="";
+$("sClass").value="";
+$("sRoll").value="";
+$("sMobile").value="";
+$("studentStatus").textContent="Edit cancelled.";
+$("saveStudentBtn").textContent="Save Student";
 };
+
+loadStudents();
+}
+
+async function saveStudent(){
+
+const name=$("sName").value.trim();
+const className=$("sClass").value.trim();
+const roll=$("sRoll").value.trim();
+const mobile=$("sMobile").value.trim();
+const status=$("studentStatus");
+const btn=$("saveStudentBtn");
+
+if(!name||!className){
+status.textContent="Student name and class are required.";
+return;
+}
+
+btn.disabled=true;
+status.textContent="Saving student...";
+
+try{
+
+const data={
+name,className,roll,mobile,
+updatedAt:serverTimestamp()
+};
+
+if(editingStudentId){
+const ref=doc(db,"users",currentUser.uid,"students",editingStudentId);
+await setDoc(ref,data,{merge:true});
+status.textContent="Student updated successfully.";
+}else{
+await addDoc(userCollection("students"),{
+...data,
+createdAt:serverTimestamp()
+});
+status.textContent="Student added successfully.";
+}
+
+editingStudentId=null;
+$("sName").value="";
+$("sClass").value="";
+$("sRoll").value="";
+$("sMobile").value="";
+btn.textContent="Save Student";
+
+await loadStudents();
+
+}catch(e){
+status.textContent="Error: "+e.message;
+}finally{
+btn.disabled=false;
+}
+}
+
+async function loadStudents(){
+
+const list=$("studentList");
+list.textContent="Loading students...";
+
+try{
+const snap=await getDocs(userCollection("students"));
+
+if(snap.empty){
+list.innerHTML='<p class="small">No students added yet.</p>';
+return;
+}
+
+list.innerHTML="";
+
+snap.forEach(d=>{
+const s=d.data();
+const item=document.createElement("div");
+item.className="item";
+
+const title=document.createElement("h3");
+title.textContent=s.name||"Unnamed Student";
+
+const info=document.createElement("p");
+info.className="small";
+info.textContent=
+"Class: "+(s.className||"-")+
+" | Roll: "+(s.roll||"-")+
+" | Mobile: "+(s.mobile||"-");
+
+const actions=document.createElement("div");
+actions.className="item-actions";
+
+const edit=document.createElement("button");
+edit.textContent="Edit";
+edit.onclick=()=>{
+editingStudentId=d.id;
+$("sName").value=s.name||"";
+$("sClass").value=s.className||"";
+$("sRoll").value=s.roll||"";
+$("sMobile").value=s.mobile||"";
+$("saveStudentBtn").textContent="Update Student";
+$("studentStatus").textContent="Editing "+(s.name||"student");
+window.scrollTo({top:0,behavior:"smooth"});
+};
+
+const del=document.createElement("button");
+del.textContent="Delete";
+del.onclick=async()=>{
+if(!confirm("Delete this student?"))return;
+try{
+await deleteDoc(doc(db,"users",currentUser.uid,"students",d.id));
+await loadStudents();
+}catch(e){alert(e.message);}
+};
+
+actions.append(edit,del);
+item.append(title,info,actions);
+list.append(item);
+});
+
+}catch(e){
+list.textContent="Error loading students: "+e.message;
+}
+}
+
+/* RESULTS MODULE */
+
+async function renderResults(root){
+
+root.innerHTML=`
+<h2>📊 My Results</h2>
+<p class="small">Your saved AI copy checking reports.</p>
+<div id="resultsList">Loading results...</div>
+`;
+
+const list=$("resultsList");
+
+try{
+
+const snap=await getDocs(userCollection("results"));
+
+if(snap.empty){
+list.innerHTML='<p class="small">No checking reports saved yet.</p>';
+return;
+}
+
+const records=[];
+snap.forEach(d=>records.push({id:d.id,...d.data()}));
+
+records.sort((a,b)=>
+(b.createdAtLocal||"").localeCompare(a.createdAtLocal||"")
+);
+
+list.innerHTML="";
+
+records.forEach(r=>{
+
+const item=document.createElement("div");
+item.className="item";
+
+const title=document.createElement("h3");
+title.textContent=r.studentName||"Student";
+
+const info=document.createElement("p");
+info.className="small";
+info.textContent=
+(r.className||"")+
+" | "+(r.subject||"")+
+" | Maximum Marks: "+(r.totalMarks||"-");
+
+const actions=document.createElement("div");
+actions.className="item-actions";
+
+const view=document.createElement("button");
+view.textContent="View Report";
+view.onclick=()=>{
+const report=document.createElement("div");
+report.className="result";
+report.textContent=r.report||"No report found.";
+item.append(report);
+view.disabled=true;
+view.textContent="Report Opened";
+};
+
+const del=document.createElement("button");
+del.textContent="Delete";
+del.onclick=async()=>{
+if(!confirm("Delete this report permanently?"))return;
+try{
+await deleteDoc(doc(db,"users",currentUser.uid,"results",r.id));
+await renderResults(root);
+}catch(e){alert(e.message);}
+};
+
+actions.append(view,del);
+item.append(title,info,actions);
+list.append(item);
+
+});
+
+}catch(e){
+list.textContent="Error loading results: "+e.message;
+}
+}
+
+/* TEACHER PROFILE */
+
+function renderProfile(root){
+
+const p=profileData||{};
+
+root.innerHTML=`
+<h2>👤 My Teacher Profile</h2>
+
+<label>Profile Photo</label>
+<input id="profilePhotoFile" type="file" accept="image/*">
+
+<img id="profilePreview"
+src="${esc(p.photoData||p.photoURL||currentUser.photoURL||"https://www.gravatar.com/avatar/?d=mp")}"
+style="width:85px;height:85px;object-fit:cover;border-radius:20px;margin-top:12px">
+
+<label>Teacher Name *</label>
+<input id="teacherName" value="${esc(p.teacherName||currentUser.displayName||"")}">
+
+<label>School Name</label>
+<input id="schoolName" value="${esc(p.schoolName||"")}">
+
+<label>Subject</label>
+<input id="teacherSubject" value="${esc(p.teacherSubject||"")}">
+
+<label>Qualification</label>
+<input id="qualification" value="${esc(p.qualification||"")}">
+
+<label>Mobile Number</label>
+<input id="mobile" type="tel" value="${esc(p.mobile||"")}">
+
+<label>About Me</label>
+<textarea id="aboutTeacher">${esc(p.aboutTeacher||"")}</textarea>
+
+<label>Google Email</label>
+<input value="${esc(currentUser.email||"")}" disabled>
+
+<button class="primary" id="saveProfileBtn">Save My Profile</button>
+<p class="status" id="profileStatus"></p>
+`;
+
+$("profilePhotoFile").onchange=async()=>{
+const f=$("profilePhotoFile").files[0];
+if(!f)return;
+
+if(!f.type.startsWith("image/"))
+return alert("Select an image.");
+
+if(f.size>5*1024*1024)
+return alert("Photo must be under 5 MB.");
+
+try{
+$("profilePreview").src=await compressImage(f);
+}catch(e){alert(e.message);}
+};
+
+$("saveProfileBtn").onclick=saveProfile;
+}
+
+function compressImage(file){
+
+return new Promise((resolve,reject)=>{
+
+const reader=new FileReader();
+reader.onerror=()=>reject(new Error("Photo read failed"));
+
+reader.onload=()=>{
+const img=new Image();
+
+img.onload=()=>{
+const canvas=document.createElement("canvas");
+const scale=Math.min(1,320/Math.max(img.width,img.height));
+
+canvas.width=Math.round(img.width*scale);
+canvas.height=Math.round(img.height*scale);
+
+canvas.getContext("2d").drawImage(
+img,0,0,canvas.width,canvas.height
+);
+
+resolve(canvas.toDataURL("image/jpeg",0.65));
+};
+
+img.onerror=()=>reject(new Error("Invalid image"));
+img.src=reader.result;
+};
+
+reader.readAsDataURL(file);
+});
+}
+
+async function saveProfile(){
+
+const btn=$("saveProfileBtn");
+const status=$("profileStatus");
+const name=$("teacherName").value.trim();
+
+if(!name){
+status.textContent="Teacher name is required.";
+return;
+}
+
+btn.disabled=true;
+status.textContent="Saving profile...";
+
+try{
+
+let photoData=profileData.photoData||"";
+const file=$("profilePhotoFile").files[0];
+
+if(file)photoData=await compressImage(file);
+
+const data={
+teacherName:name,
+schoolName:$("schoolName").value.trim(),
+teacherSubject:$("teacherSubject").value.trim(),
+qualification:$("qualification").value.trim(),
+mobile:$("mobile").value.trim(),
+aboutTeacher:$("aboutTeacher").value.trim(),
+updatedAt:serverTimestamp()
+};
+
+if(photoData)data.photoData=photoData;
+
+await setDoc(userDoc(),data,{merge:true});
+
+await loadProfile();
+updateHeader();
+
+status.textContent="Profile saved successfully!";
+
+}catch(e){
+status.textContent="Error: "+e.message;
+}finally{
+btn.disabled=false;
+}
+}
+
+/* COPY AND PRINT HELPERS */
+
+function fallbackCopy(text){
+const area=document.createElement("textarea");
+area.value=text;
+document.body.append(area);
+area.select();
+
+try{
+document.execCommand("copy");
+alert("Report copied!");
+}catch(e){
+alert("Copy failed. Please select and copy manually.");
+}
+
+area.remove();
+}
+
+function printReport(text){
+
+if(!text||text==="Your checking report will appear here.")
+return alert("No report available.");
+
+const win=window.open("","_blank");
+
+if(!win){
+alert("Allow popups to print the report.");
+return;
+}
+
+win.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<title>MONIKA AI Copy Report</title>
+<style>
+body{font-family:Arial;padding:30px;color:#111}
+h2{margin-bottom:20px}
+pre{white-space:pre-wrap;line-height:1.7;font-size:14px}
+</style>
+</head>
+<body>
+<h2>MONIKA AI - COPY CHECK REPORT</h2>
+<pre>${esc(text)}</pre>
+</body>
+</html>
+`);
+
+win.document.close();
+win.focus();
+win.print();
+}
 
 </script>
 </body>
