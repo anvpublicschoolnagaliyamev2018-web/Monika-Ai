@@ -598,7 +598,11 @@ const response = await fetch(
 const result = await response.json();
 
 if (!response.ok) {
-  throw new Error(result.error || "AI request failed.");
+  throw new Error(
+    [result.error, result.details]
+      .filter(Boolean)
+      .join(" — ") || "AI request failed."
+  );
 }
 
 const output = result.answer;
