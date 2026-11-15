@@ -266,7 +266,7 @@ const $=id=>document.getElementById(id);
 
 window.show=function(id){
 document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-$(id).style.display="block";
+$(id).style.display=(id==="intro"?"flex":"block");
 window.scrollTo({top:0,behavior:"smooth"});
 };
 
