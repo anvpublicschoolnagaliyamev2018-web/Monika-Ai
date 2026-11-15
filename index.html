@@ -98,6 +98,7 @@ button:disabled{opacity:.55;cursor:wait}
 .bottom button{flex:1;background:transparent;color:#bdcaff;border:0;border-radius:11px;font-size:11px;padding:8px 2px}
 input,select,textarea{width:100%;padding:13px;border-radius:12px;background:#091027;color:white;border:1px solid #3c4d80;margin-top:8px;font-size:14px;outline:none}
 input:focus,textarea:focus,select:focus{border-color:#8498ff;box-shadow:0 0 0 3px #677eff29}
+select option{background:#091027;color:#fff}
 label{display:block;margin-top:15px;font-size:12px;color:#d5ddff;font-weight:700}
 textarea{min-height:95px;resize:vertical;line-height:1.6}
 .result{white-space:pre-wrap;overflow-wrap:anywhere;background:#070d1f;border:1px solid #5266a3;border-radius:14px;padding:15px;margin-top:14px;font-size:13px;line-height:1.8;color:#e4eaff}
@@ -130,13 +131,27 @@ textarea{min-height:95px;resize:vertical;line-height:1.6}
 <p class="sub">SIGN IN TO CONTINUE</p>
 </header>
 <div class="card">
-<h2>Welcome, Teacher!</h2>
-<p class="small">Continue securely using your Google account.</p>
-<button class="google" id="googleBtn">
-<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+<h2>Create Your Profile</h2>
+<p class="small">Complete your basic details before signing in.</p>
+<label for="regName">Full Name *</label>
+<input id="regName" autocomplete="name" placeholder="Enter your full name" maxlength="70" required>
+<label for="regMobile">Mobile Number *</label>
+<input id="regMobile" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" maxlength="10" required>
+<label for="regOrg">School / Organization *</label>
+<input id="regOrg" autocomplete="organization" placeholder="Enter school or organization" maxlength="100" required>
+<label for="regRole">Your Role *</label>
+<select id="regRole" required>
+<option value="">Select your role</option>
+<option value="Teacher">Teacher</option>
+<option value="Student">Student</option>
+<option value="Other">Other</option>
+</select>
+<p class="small" id="googleEmailPreview">Your Google email will be linked after verification.</p>
+<button class="google" id="googleBtn" type="button">
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
 Continue with Google
 </button>
-<p id="message" class="status" aria-live="polite"></p>
+<p id="message" class="status" aria-live="polite">All fields marked * are required.</p>
 <button class="primary" id="enterDashboardBtn" type="button">ENTER DASHBOARD&nbsp; →</button>
 </div>
 </section>
@@ -294,24 +309,61 @@ setTimeout(()=>loginScreen.classList.remove("soft-enter"),750);
 },680);
 },3800);
 
+function getRegistrationDetails(){
+return {
+fullName:$("regName").value.trim(),
+mobile:$("regMobile").value.replace(/\\D/g,""),
+organization:$("regOrg").value.trim(),
+role:$("regRole").value
+};
+}
+
+function validateRegistration(showMessage=true){
+const d=getRegistrationDetails();
+let error="";
+if(d.fullName.length<2)error="Please enter your full name.";
+else if(!/^[6-9]\\d{9}$/.test(d.mobile))error="Enter a valid 10-digit Indian mobile number.";
+else if(d.organization.length<2)error="Please enter your school or organization.";
+else if(!["Teacher","Student","Other"].includes(d.role))error="Please select your role.";
+if(showMessage&&error)$("message").textContent=error;
+return !error;
+}
+
+function fillRegistrationForm(data={}){
+$("regName").value=data.fullName||data.teacherName||data.name||currentUser?.displayName||"";
+$("regMobile").value=data.mobile||"";
+$("regOrg").value=data.organization||data.schoolName||"";
+$("regRole").value=data.role||"";
+}
+
 function updateLoginState(){
 const enter=$("enterDashboardBtn");
 const google=$("googleBtn");
+const complete=!!(profileData&&profileData.profileComplete);
 if(currentUser){
 google.disabled=true;
 google.innerHTML='<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Google Account Connected';
-enter.style.display="block";
-$("message").textContent="Signed in as "+(currentUser.email||currentUser.displayName||"Google user")+". Press Enter to open your dashboard.";
+$("googleEmailPreview").textContent="Verified Google email: "+(currentUser.email||"");
+enter.style.display=complete?"block":"none";
+$("message").textContent=complete
+?"Profile verified. Press Enter to open your dashboard."
+:"Complete all required details to finish your profile. Dashboard access is locked.";
 }else{
-google.disabled=false;
+google.disabled=!validateRegistration(false);
 google.innerHTML='<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Continue with Google';
 enter.style.display="none";
+$("googleEmailPreview").textContent="Your Google email will be linked after verification.";
 }
 }
 
+["regName","regMobile","regOrg","regRole"].forEach(id=>{
+$(id).addEventListener("input",()=>{if(!currentUser)updateLoginState();});
+$(id).addEventListener("change",()=>{if(!currentUser)updateLoginState();});
+});
+
 $("enterDashboardBtn").onclick=()=>{
-if(!currentUser){
-$("message").textContent="Please sign in with Google first.";
+if(!currentUser||!profileData.profileComplete){
+$("message").textContent="Complete your profile and Google verification first.";
 return;
 }
 show("dashboard");
@@ -320,20 +372,47 @@ show("dashboard");
 /* GOOGLE LOGIN */
 
 $("googleBtn").onclick=async()=>{
+if(!validateRegistration(true))return;
+const details=getRegistrationDetails();
 $("message").textContent="Connecting to Google...";
 $("googleBtn").disabled=true;
-
 try{
-await signInWithPopup(auth,provider);
+const credential=await signInWithPopup(auth,provider);
+currentUser=credential.user;
+const ref=userDoc();
+const snap=await getDoc(ref);
+const existing=snap.exists()?snap.data():{};
+if(existing.profileComplete===true){
+profileData=existing;
+fillRegistrationForm(existing);
+}else{
+const profile={
+uid:currentUser.uid,
+name:details.fullName,
+fullName:details.fullName,
+teacherName:details.fullName,
+mobile:details.mobile,
+organization:details.organization,
+schoolName:details.organization,
+role:details.role,
+email:currentUser.email||"",
+photoURL:currentUser.photoURL||"",
+profileComplete:true,
+updatedAt:serverTimestamp()
+};
+if(!existing.createdAt)profile.createdAt=serverTimestamp();
+await setDoc(ref,profile,{merge:true});
+profileData={...existing,...profile};
+}
+await loadProfile();
+updateHeader();
 updateLoginState();
-$("message").textContent="Google login successful. Ab dashboard kholne ke liye Enter button dabayein.";
+$("message").textContent="Google login successful. Your profile is saved. Press Enter to open the dashboard.";
 }catch(e){
 console.error(e);
-$("message").textContent=
-"Login error: "+e.message+
-" | Check popup permission and Firebase authorized domains.";
+$("message").textContent="Login/profile save error: "+e.message+". Please try again.";
 }finally{
-$("googleBtn").disabled=false;
+$("googleBtn").disabled=!!currentUser;
 }
 };
 
@@ -359,34 +438,27 @@ currentUser=user;
 authResolved=true;
 
 if(!user){
+profileData={};
 updateLoginState();
 if(introFinished)show("login");
 return;
 }
 
 try{
-const ref=userDoc();
-const snap=await getDoc(ref);
-
-if(!snap.exists()){
-await setDoc(ref,{
-uid:user.uid,
-name:user.displayName||"Teacher",
-email:user.email||"",
-photoURL:user.photoURL||"",
-createdAt:serverTimestamp()
-});
-}
-
 await loadProfile();
+if(profileData.profileComplete===true){
+fillRegistrationForm(profileData);
+}else{
+fillRegistrationForm({});
+}
 updateHeader();
 updateLoginState();
 if(introFinished)show("login");
-
 }catch(e){
 console.error(e);
+profileData={};
 if(introFinished)show("login");
-$("message").textContent="Database error: "+e.message;
+$("message").textContent="Profile verification error: "+e.message;
 }
 });
 
@@ -399,7 +471,7 @@ profileData=snap.exists()?snap.data():{};
 
 function updateHeader(){
 $("userName").textContent=
-profileData.teacherName||currentUser.displayName||"Teacher";
+profileData.fullName||profileData.teacherName||currentUser.displayName||"Teacher";
 
 $("userEmail").textContent=currentUser.email||"";
 
