@@ -44,7 +44,7 @@ body:after{background:#a33cff;bottom:-130px;right:-130px}
 .intro-start{width:min(260px,78vw);margin-top:24px;position:relative;overflow:hidden}
 .intro-start:after{content:"";position:absolute;top:-60%;left:-35%;width:25%;height:220%;background:#ffffff55;transform:rotate(25deg);animation:buttonShine 3.5s ease-in-out infinite}
 .intro-foot{position:absolute;bottom:24px;color:#7182b4;font-size:10px;letter-spacing:.2em}
-@keyframes introFloat{50%{transform:translateY(-10px) scale(1.015);box-shadow:0 0 75px #168cff35,inset 0 0 40px #8b5cff18}}
+@keyframes introFloat{50%{transform:translateY(-10px) scale(1.015)}}
 @keyframes buttonShine{0%,65%{left:-40%}100%{left:130%}}
 #intro.is-leaving{animation:introSlideOut .82s cubic-bezier(.7,0,.2,1) forwards}
 @keyframes introSlideOut{0%{transform:translateX(0);filter:none;opacity:1}35%{transform:translateX(-3%);filter:contrast(1.5) saturate(1.8)}45%{transform:translateX(2%);clip-path:inset(8% 0 12% 0)}60%{transform:translateX(-8%);opacity:.9}100%{transform:translateX(-110%);opacity:0;filter:blur(5px)}}
