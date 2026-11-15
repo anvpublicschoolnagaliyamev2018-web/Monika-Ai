@@ -1,17 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI — Interwoven M</title>
-<desc id="desc">A minimal angular interwoven M monogram inspired by two continuous geometric ribbons, cyan fading through blue to violet, on a transparent canvas.</desc>
+<title id="title">MONIKA AI — Double M monogram</title>
+<desc id="desc">Two clean, interlocking geometric M ribbons in a cyan, blue and violet gradient. Transparent background with a subtle 3D-style breakdown and reassembly animation.</desc>
 <defs>
- <linearGradient id="ribbon" x1="65" y1="200" x2="335" y2="200" gradientUnits="userSpaceOnUse"><stop stop-color="#08D8E8"/><stop offset=".48" stop-color="#448DDB"/><stop offset="1" stop-color="#9638D9"/></linearGradient>
- <filter id="glow" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="mm-gradient" x1="48" y1="90" x2="350" y2="310" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#62E8E5"/>
+    <stop offset=".48" stop-color="#668BFF"/>
+    <stop offset="1" stop-color="#B17AFF"/>
+  </linearGradient>
+  <filter id="soft-glow" x="-35%" y="-35%" width="170%" height="170%">
+    <feGaussianBlur stdDeviation="5" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
 </defs>
-<g fill="none" stroke="url(#ribbon)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
- <path d="M54 300 L112 105 L180 105 L250 300 L320 105 L388 105 L346 300 L278 300 L208 105 L138 300 Z"/>
- <path d="M112 105 L180 105 L208 205 L236 105 L304 105" opacity=".92"/>
+<g class="monika-mark" fill="none" stroke="url(#mm-gradient)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)">
+  <g class="m-left">
+    <path d="M58 300 V112 L128 232 L198 112 V300"/>
+  </g>
+  <g class="m-right">
+    <path d="M202 300 V112 L272 232 L342 112 V300"/>
+  </g>
+  <path class="center-link" d="M198 112 L202 112 M198 300 L202 300" stroke-width="11" opacity=".9"/>
 </g>
 <style>
-g{transform-origin:200px 200px;animation:calmGlow 3.6s ease-in-out infinite}
-@keyframes calmGlow{0%,100%{opacity:.92;transform:scale(1)}50%{opacity:1;transform:scale(1.012)}}
-@media(prefers-reduced-motion:reduce){g{animation:none}}
+  .monika-mark{transform-box:fill-box;transform-origin:center;animation:mark-turn 9s ease-in-out infinite}
+  .m-left,.m-right{transform-box:fill-box;transform-origin:center;animation:break-left 6.8s cubic-bezier(.65,0,.25,1) infinite}
+  .m-right{animation-name:break-right}
+  .center-link{animation:link-fade 6.8s ease-in-out infinite}
+  @keyframes mark-turn{
+    0%,16%,84%,100%{transform:perspective(700px) rotateY(0deg) scale(1)}
+    38%,62%{transform:perspective(700px) rotateY(16deg) scale(1.025)}
+    50%{transform:perspective(700px) rotateY(0deg) scale(1.04)}
+  }
+  @keyframes break-left{
+    0%,24%,78%,100%{transform:translate(0,0) rotate(0deg);opacity:1}
+    38%,62%{transform:translate(-25px,-13px) rotate(-9deg);opacity:.88}
+    50%{transform:translate(-34px,-19px) rotate(-14deg);opacity:.78}
+  }
+  @keyframes break-right{
+    0%,24%,78%,100%{transform:translate(0,0) rotate(0deg);opacity:1}
+    38%,62%{transform:translate(25px,13px) rotate(9deg);opacity:.88}
+    50%{transform:translate(34px,19px) rotate(14deg);opacity:.78}
+  }
+  @keyframes link-fade{0%,24%,78%,100%{opacity:.9}38%,62%{opacity:.18}50%{opacity:0}}
+  @media(prefers-reduced-motion:reduce){
+    .monika-mark,.m-left,.m-right,.center-link{animation:none}
+  }
 </style>
 </svg>
