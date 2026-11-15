@@ -312,7 +312,7 @@ setTimeout(()=>loginScreen.classList.remove("soft-enter"),750);
 function getRegistrationDetails(){
 return {
 fullName:$("regName").value.trim(),
-mobile:$("regMobile").value.replace(/\\D/g,""),
+mobile:$("regMobile").value.replace(/\D/g,""),
 organization:$("regOrg").value.trim(),
 role:$("regRole").value
 };
@@ -322,7 +322,7 @@ function validateRegistration(showMessage=true){
 const d=getRegistrationDetails();
 let error="";
 if(d.fullName.length<2)error="Please enter your full name.";
-else if(!/^[6-9]\\d{9}$/.test(d.mobile))error="Enter a valid 10-digit Indian mobile number.";
+else if(!/^[6-9]\d{9}$/.test(d.mobile))error="Enter a valid 10-digit Indian mobile number.";
 else if(d.organization.length<2)error="Please enter your school or organization.";
 else if(!["Teacher","Student","Other"].includes(d.role))error="Please select your role.";
 if(showMessage&&error)$("message").textContent=error;
