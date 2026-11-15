@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 150" role="img" aria-labelledby="title desc">
+  <title id="title">MONIKA AI</title>
+  <desc id="desc">Abstract violet and cyan M symbol with MONIKA AI wordmark.</desc>
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B58CFF"/>
+      <stop offset=".48" stop-color="#8757F5"/>
+      <stop offset="1" stop-color="#27D9E8"/>
+    </linearGradient>
+    <linearGradient id="ai" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9B67FF"/>
+      <stop offset="1" stop-color="#28D9E8"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(8 8)" filter="url(#glow)">
+    <path d="M18 112 31 34Q34 16 48 30L91 73 134 30Q148 16 151 34L164 112"
+      fill="none" stroke="url(#mark)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 112Q69 123 115 81Q147 55 167 20" fill="none" stroke="#9B67FF" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M151 20 167 20 167 36" fill="none" stroke="#25D9E8" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="167" cy="20" r="5" fill="#25D9E8"/>
+    <path d="M76 119v-14m16 14V98m16 21v-14" stroke="#25D9E8" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="76" cy="103" r="3.5" fill="#25D9E8"/><circle cx="92" cy="94" r="3.5" fill="#25D9E8"/><circle cx="108" cy="103" r="3.5" fill="#25D9E8"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-weight="750" letter-spacing="1.5">
+    <text x="205" y="83" font-size="57" fill="#F7F7FC">MONIKA</text>
+    <text x="485" y="83" font-size="57" fill="url(#ai)">AI</text>
+  </g>
+  <text x="208" y="116" font-family="Inter, Arial, sans-serif" font-size="13" letter-spacing="5.2" fill="#C8C7DA">INTELLIGENCE WITH IDENTITY</text>
+</svg>
