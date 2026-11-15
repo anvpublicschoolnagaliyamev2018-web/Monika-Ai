@@ -341,13 +341,15 @@ const enter=$("enterDashboardBtn");
 const google=$("googleBtn");
 const complete=!!(profileData&&profileData.profileComplete);
 if(currentUser){
-google.disabled=true;
-google.innerHTML='<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Google Account Connected';
+google.disabled=complete||!validateRegistration(false);
+google.innerHTML=complete
+?'<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Google Account Connected'
+:'SAVE PROFILE & CONTINUE';
 $("googleEmailPreview").textContent="Verified Google email: "+(currentUser.email||"");
 enter.style.display=complete?"block":"none";
 $("message").textContent=complete
 ?"Profile verified. Press Enter to open your dashboard."
-:"Complete all required details to finish your profile. Dashboard access is locked.";
+:"Google account connected. Complete your details, then tap SAVE PROFILE & CONTINUE.";
 }else{
 google.disabled=!validateRegistration(false);
 google.innerHTML='<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Continue with Google';
@@ -357,8 +359,8 @@ $("googleEmailPreview").textContent="Your Google email will be linked after veri
 }
 
 ["regName","regMobile","regOrg","regRole"].forEach(id=>{
-$(id).addEventListener("input",()=>{if(!currentUser)updateLoginState();});
-$(id).addEventListener("change",()=>{if(!currentUser)updateLoginState();});
+$(id).addEventListener("input",updateLoginState);
+$(id).addEventListener("change",updateLoginState);
 });
 
 $("enterDashboardBtn").onclick=()=>{
@@ -374,11 +376,13 @@ show("dashboard");
 $("googleBtn").onclick=async()=>{
 if(!validateRegistration(true))return;
 const details=getRegistrationDetails();
-$("message").textContent="Connecting to Google...";
+$("message").textContent=currentUser?"Saving your profile...":"Connecting to Google...";
 $("googleBtn").disabled=true;
 try{
+if(!currentUser){
 const credential=await signInWithPopup(auth,provider);
 currentUser=credential.user;
+}
 const ref=userDoc();
 const snap=await getDoc(ref);
 const existing=snap.exists()?snap.data():{};
@@ -407,12 +411,12 @@ profileData={...existing,...profile};
 await loadProfile();
 updateHeader();
 updateLoginState();
-$("message").textContent="Google login successful. Your profile is saved. Press Enter to open the dashboard.";
+$("message").textContent="Your profile is saved. Press Enter to open the dashboard.";
 }catch(e){
 console.error(e);
-$("message").textContent="Login/profile save error: "+e.message+". Please try again.";
+$("message").textContent="Login/profile save error: "+e.message+". Check Firestore Rules and try again.";
 }finally{
-$("googleBtn").disabled=!!currentUser;
+updateLoginState();
 }
 };
 
