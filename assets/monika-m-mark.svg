@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+<title id="title">MONIKA AI — M monogram</title>
+<desc id="desc">A clean, instantly recognizable capital M made from one bold continuous gradient ribbon, on a fully transparent canvas.</desc>
+<defs>
+ <linearGradient id="mGradient" x1="70" y1="70" x2="330" y2="330" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#C9A6FF"/>
+  <stop offset=".48" stop-color="#7865FF"/>
+  <stop offset="1" stop-color="#54E5F0"/>
+ </linearGradient>
+ <filter id="mGlow" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="8" result="blur"/>
+  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+ </filter>
+</defs>
+<path class="m-mark" d="M76 302V98L200 222L324 98V302"
+ fill="none" stroke="url(#mGradient)" stroke-width="36"
+ stroke-linecap="round" stroke-linejoin="round" filter="url(#mGlow)"/>
+<path d="M76 98L200 222L324 98" fill="none" stroke="#FFFFFF" stroke-opacity=".42" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<style>
+.m-mark{stroke-dasharray:780;stroke-dashoffset:0;animation:mDraw 3.8s cubic-bezier(.55,0,.25,1) infinite alternate;filter:url(#mGlow)}
+@keyframes mDraw{0%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:.86}}
+@media(prefers-reduced-motion:reduce){.m-mark{animation:none}}
+</style>
+</svg>
