@@ -1,19 +1,65 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI — Single Crossing M</title>
-<desc id="desc">One bold capital M with a central crossing stroke, cyan-to-violet gradient, transparent background.</desc>
+<title id="title">MONIKA AI — 3D Crossing M</title>
+<desc id="desc">A single unmistakable capital M, built from four connected strokes with a dimensional cyan, blue and violet finish.</desc>
 <defs>
- <linearGradient id="m-gradient" x1="60" y1="80" x2="340" y2="320" gradientUnits="userSpaceOnUse"><stop stop-color="#70E5E4"/><stop offset=".52" stop-color="#638EFF"/><stop offset="1" stop-color="#A875F5"/></linearGradient>
- <filter id="depth" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset dy="7" result="offset"/><feComponentTransfer in="offset" result="shadow"><feFuncA type="linear" slope=".28"/></feComponentTransfer><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="front" x1="65" y1="65" x2="335" y2="335" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#8AF2EA"/><stop offset=".48" stop-color="#69B8FF"/><stop offset="1" stop-color="#A66BFF"/>
+  </linearGradient>
+  <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#FFFFFF" stop-opacity=".8"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".12"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="softShadow" x="-35%" y="-35%" width="170%" height="190%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur"/>
+    <feOffset in="blur" dx="0" dy="12" result="offset"/>
+    <feColorMatrix in="offset" type="matrix" values="0 0 0 0 .05 0 0 0 0 .08 0 0 0 0 .28 0 0 0 .65 0" result="shadow"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
 </defs>
-<g class="single-m" fill="none" stroke="url(#m-gradient)" stroke-width="25" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth)">
- <path d="M76 312 V88 L324 312 V88"/>
- <path class="cross-stroke" d="M76 88 L324 312" stroke-width="23" stroke="#8CCBFF"/>
+
+<!-- Extruded rear edge gives the monogram real visual depth. -->
+<g class="logo-turn" filter="url(#softShadow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <g class="m-pieces">
+    <g class="piece piece-a">
+      <path class="depth" d="M80 305 V90"/>
+      <path class="face" d="M80 305 V90"/>
+      <path class="glint" d="M76 292 V103"/>
+    </g>
+    <g class="piece piece-b">
+      <path class="depth" d="M80 90 L200 225"/>
+      <path class="face" d="M80 90 L200 225"/>
+      <path class="glint" d="M88 100 L194 219"/>
+    </g>
+    <g class="piece piece-c">
+      <path class="depth" d="M200 225 L320 90"/>
+      <path class="face" d="M200 225 L320 90"/>
+      <path class="glint" d="M207 216 L312 98"/>
+    </g>
+    <g class="piece piece-d">
+      <path class="depth" d="M320 90 V305"/>
+      <path class="face" d="M320 90 V305"/>
+      <path class="glint" d="M324 103 V292"/>
+    </g>
+  </g>
 </g>
 <style>
-.single-m{transform-box:fill-box;transform-origin:center;animation:turn 7s ease-in-out infinite}
-.cross-stroke{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 7s ease-in-out infinite}
-@keyframes turn{0%,18%,82%,100%{transform:perspective(700px) rotateY(0) scale(1)}38%,62%{transform:perspective(700px) rotateY(12deg) scale(1.025)}50%{transform:perspective(700px) rotateY(0) scale(1.04)}}
-@keyframes draw{0%,20%,80%,100%{stroke-dashoffset:420;opacity:.35}38%,62%{stroke-dashoffset:0;opacity:1}50%{stroke-dashoffset:0;opacity:1}}
-@media(prefers-reduced-motion:reduce){.single-m,.cross-stroke{animation:none;stroke-dashoffset:0}}
+  .depth{stroke:#263B91;stroke-width:39;opacity:.95;transform:translateY(9px)}
+  .face{stroke:url(#front);stroke-width:32}
+  .glint{stroke:url(#shine);stroke-width:5;opacity:.72}
+  .piece{transform-box:fill-box;transform-origin:center;stroke-dasharray:1;stroke-dashoffset:0}
+  .piece-a{animation:buildA 8s cubic-bezier(.2,.8,.2,1) infinite}
+  .piece-b{animation:buildB 8s cubic-bezier(.2,.8,.2,1) infinite}
+  .piece-c{animation:buildC 8s cubic-bezier(.2,.8,.2,1) infinite}
+  .piece-d{animation:buildD 8s cubic-bezier(.2,.8,.2,1) infinite}
+  .logo-turn{transform-box:fill-box;transform-origin:center;animation:spin3d 8s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes spin3d{
+    0%,16%{transform:perspective(900px) rotateY(0deg) rotateX(0deg)}
+    48%{transform:perspective(900px) rotateY(180deg) rotateX(8deg)}
+    72%,100%{transform:perspective(900px) rotateY(360deg) rotateX(0deg)}
+  }
+  @keyframes buildA{0%,8%{opacity:0;transform:translate(-42px,-22px) scale(.82)}18%,72%{opacity:1;transform:translate(0,0) scale(1)}82%,91%{opacity:0;transform:translate(-42px,-22px) scale(.82)}100%{opacity:0;transform:translate(-42px,-22px) scale(.82)}}
+  @keyframes buildB{0%,12%{opacity:0;transform:translate(-24px,30px) scale(.82)}22%,72%{opacity:1;transform:translate(0,0) scale(1)}82%,91%{opacity:0;transform:translate(-24px,30px) scale(.82)}100%{opacity:0;transform:translate(-24px,30px) scale(.82)}}
+  @keyframes buildC{0%,16%{opacity:0;transform:translate(24px,30px) scale(.82)}26%,72%{opacity:1;transform:translate(0,0) scale(1)}82%,91%{opacity:0;transform:translate(24px,30px) scale(.82)}100%{opacity:0;transform:translate(24px,30px) scale(.82)}}
+  @keyframes buildD{0%,20%{opacity:0;transform:translate(42px,-22px) scale(.82)}30%,72%{opacity:1;transform:translate(0,0) scale(1)}82%,91%{opacity:0;transform:translate(42px,-22px) scale(.82)}100%{opacity:0;transform:translate(42px,-22px) scale(.82)}}
+  @media(prefers-reduced-motion:reduce){.logo-turn,.piece{animation:none!important;opacity:1!important;transform:none!important}}
 </style>
 </svg>
