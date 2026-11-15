@@ -1,49 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI — Double M monogram</title>
-<desc id="desc">Two clean, interlocking geometric M ribbons in a cyan, blue and violet gradient. Transparent background with a subtle 3D-style breakdown and reassembly animation.</desc>
+<title id="title">MONIKA AI — Double M</title>
+<desc id="desc">A bold, connected double-M monogram with a clean cyan-to-violet gradient on a transparent background.</desc>
 <defs>
-  <linearGradient id="mm-gradient" x1="48" y1="90" x2="350" y2="310" gradientUnits="userSpaceOnUse">
-    <stop offset="0" stop-color="#62E8E5"/>
-    <stop offset=".48" stop-color="#668BFF"/>
-    <stop offset="1" stop-color="#B17AFF"/>
+  <linearGradient id="face" x1="50" y1="90" x2="350" y2="310" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#68E8E5"/>
+    <stop offset=".5" stop-color="#6D91FF"/>
+    <stop offset="1" stop-color="#B477F5"/>
   </linearGradient>
-  <filter id="soft-glow" x="-35%" y="-35%" width="170%" height="170%">
-    <feGaussianBlur stdDeviation="5" result="blur"/>
-    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
+  <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+    <stop stop-color="#263A82" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#111A45" stop-opacity=".15"/>
+  </linearGradient>
 </defs>
-<g class="monika-mark" fill="none" stroke="url(#mm-gradient)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)">
-  <g class="m-left">
-    <path d="M58 300 V112 L128 232 L198 112 V300"/>
+<g class="double-m">
+  <g class="left-m">
+    <path class="depth" d="M54 302 V112 L128 230 L202 112 V302" transform="translate(0 9)"/>
+    <path class="face-line" d="M54 302 V112 L128 230 L202 112 V302"/>
   </g>
-  <g class="m-right">
-    <path d="M202 300 V112 L272 232 L342 112 V300"/>
+  <g class="right-m">
+    <path class="depth" d="M198 302 V112 L272 230 L346 112 V302" transform="translate(0 9)"/>
+    <path class="face-line" d="M198 302 V112 L272 230 L346 112 V302"/>
   </g>
-  <path class="center-link" d="M198 112 L202 112 M198 300 L202 300" stroke-width="11" opacity=".9"/>
 </g>
 <style>
-  .monika-mark{transform-box:fill-box;transform-origin:center;animation:mark-turn 9s ease-in-out infinite}
-  .m-left,.m-right{transform-box:fill-box;transform-origin:center;animation:break-left 6.8s cubic-bezier(.65,0,.25,1) infinite}
-  .m-right{animation-name:break-right}
-  .center-link{animation:link-fade 6.8s ease-in-out infinite}
-  @keyframes mark-turn{
-    0%,16%,84%,100%{transform:perspective(700px) rotateY(0deg) scale(1)}
-    38%,62%{transform:perspective(700px) rotateY(16deg) scale(1.025)}
-    50%{transform:perspective(700px) rotateY(0deg) scale(1.04)}
+  .face-line,.depth{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .depth{stroke:url(#edge);stroke-width:31}
+  .face-line{stroke:url(#face);stroke-width:27}
+  .double-m{transform-box:fill-box;transform-origin:center;animation:turn 8s ease-in-out infinite}
+  .left-m,.right-m{transform-box:fill-box;transform-origin:center;animation:separate 7s cubic-bezier(.65,0,.25,1) infinite}
+  .right-m{animation-name:separate-right}
+  @keyframes turn{
+    0%,18%,82%,100%{transform:perspective(800px) rotateY(0) scale(1)}
+    40%,60%{transform:perspective(800px) rotateY(10deg) scale(1.025)}
+    50%{transform:perspective(800px) rotateY(0) scale(1.04)}
   }
-  @keyframes break-left{
-    0%,24%,78%,100%{transform:translate(0,0) rotate(0deg);opacity:1}
-    38%,62%{transform:translate(-25px,-13px) rotate(-9deg);opacity:.88}
-    50%{transform:translate(-34px,-19px) rotate(-14deg);opacity:.78}
+  @keyframes separate{
+    0%,25%,78%,100%{transform:translate(0,0) rotate(0)}
+    40%,60%{transform:translate(-13px,-8px) rotate(-4deg)}
+    50%{transform:translate(-21px,-12px) rotate(-7deg)}
   }
-  @keyframes break-right{
-    0%,24%,78%,100%{transform:translate(0,0) rotate(0deg);opacity:1}
-    38%,62%{transform:translate(25px,13px) rotate(9deg);opacity:.88}
-    50%{transform:translate(34px,19px) rotate(14deg);opacity:.78}
+  @keyframes separate-right{
+    0%,25%,78%,100%{transform:translate(0,0) rotate(0)}
+    40%,60%{transform:translate(13px,8px) rotate(4deg)}
+    50%{transform:translate(21px,12px) rotate(7deg)}
   }
-  @keyframes link-fade{0%,24%,78%,100%{opacity:.9}38%,62%{opacity:.18}50%{opacity:0}}
-  @media(prefers-reduced-motion:reduce){
-    .monika-mark,.m-left,.m-right,.center-link{animation:none}
-  }
+  @media(prefers-reduced-motion:reduce){.double-m,.left-m,.right-m{animation:none}}
 </style>
 </svg>
