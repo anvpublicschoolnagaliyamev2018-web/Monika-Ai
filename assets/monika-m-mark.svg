@@ -1,116 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI — M with AI monogram</title>
-<desc id="desc">A single angular capital M enclosing the letters A and I, finished in luminous cyan, blue and violet 3D bevels, with a 360 degree rotation and a breakdown and reassembly animation.</desc>
+<title id="title">MONIKA AI angular neon 3D monogram</title>
+<desc id="desc">A bold angular M containing a clear A and I, with layered neon bevels, deep extrusion, 360 degree rotation and separated assembly animation.</desc>
 <defs>
- <linearGradient id="face" x1="55" y1="55" x2="350" y2="350" gradientUnits="userSpaceOnUse">
-  <stop stop-color="#54F5E8"/><stop offset=".28" stop-color="#48C9FF"/><stop offset=".58" stop-color="#687CFF"/><stop offset=".82" stop-color="#A34EFF"/><stop offset="1" stop-color="#D58BFF"/>
- </linearGradient>
- <linearGradient id="faceA" x1="125" y1="155" x2="275" y2="320" gradientUnits="userSpaceOnUse">
-  <stop stop-color="#A4FFFF"/><stop offset=".5" stop-color="#5CBFFF"/><stop offset="1" stop-color="#9B67FF"/>
- </linearGradient>
- <linearGradient id="bevel" x1="0" y1="0" x2="1" y2="1">
-  <stop stop-color="#D7FFFF"/><stop offset=".35" stop-color="#557BEF"/><stop offset="1" stop-color="#42206F"/>
- </linearGradient>
- <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
-  <stop stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".42" stop-color="#FFFFFF" stop-opacity=".25"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
- </linearGradient>
- <filter id="depth" x="-40%" y="-40%" width="180%" height="190%">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
-  <feOffset in="blur" dx="0" dy="11" result="offset"/>
-  <feColorMatrix in="offset" type="matrix" values="0 0 0 0 .015 0 0 0 0 .025 0 0 0 0 .16 0 0 0 .85 0" result="shadow"/>
-  <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
- </filter>
- <filter id="neon" x="-80%" y="-80%" width="260%" height="260%">
-  <feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
- </filter>
+ <linearGradient id="m" x1="55" y1="60" x2="350" y2="330" gradientUnits="userSpaceOnUse"><stop stop-color="#4CF5E7"/><stop offset=".28" stop-color="#35C8FF"/><stop offset=".58" stop-color="#687AFF"/><stop offset=".82" stop-color="#A44FFF"/><stop offset="1" stop-color="#D17BFF"/></linearGradient>
+ <linearGradient id="a" x1="135" y1="150" x2="260" y2="315" gradientUnits="userSpaceOnUse"><stop stop-color="#B6FFFF"/><stop offset=".5" stop-color="#61CFFF"/><stop offset="1" stop-color="#8D70FF"/></linearGradient>
+ <linearGradient id="i" x1="280" y1="165" x2="315" y2="310" gradientUnits="userSpaceOnUse"><stop stop-color="#5CF5E4"/><stop offset=".55" stop-color="#54BFFF"/><stop offset="1" stop-color="#A86BFF"/></linearGradient>
+ <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFF"/><stop offset="1" stop-color="#FFF" stop-opacity="0"/></linearGradient>
+ <filter id="depth" x="-40%" y="-40%" width="180%" height="190%"><feGaussianBlur in="SourceAlpha" stdDeviation="8" result="b"/><feOffset dy="13" result="o"/><feColorMatrix in="o" type="matrix" values="0 0 0 0 .01 0 0 0 0 .02 0 0 0 0 .2 0 0 0 .9 0" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-
-<!-- Soft technical orbit accents, kept inside the transparent artwork. -->
-<g class="orbit" fill="none" stroke="#8AE8FF" opacity=".55">
- <path d="M52 112 A164 164 0 0 1 348 112" stroke-width="1.5" stroke-dasharray="3 10"/>
- <path d="M52 288 A164 164 0 0 0 348 288" stroke-width="1.5" stroke-dasharray="3 10"/>
- <circle cx="52" cy="112" r="4" fill="#70E7E8" stroke="none"/>
- <circle cx="348" cy="288" r="4" fill="#B18BFF" stroke="none"/>
+<g class="orbit" fill="none" stroke="#72DFFF" opacity=".4"><path d="M42 116 A168 168 0 0 1 358 116 M42 284 A168 168 0 0 0 358 284" stroke-width="1.5" stroke-dasharray="2 10"/><circle cx="42" cy="116" r="4" fill="#42E9E4" stroke="none"/><circle cx="358" cy="284" r="4" fill="#B477FF" stroke="none"/></g>
+<g class="spin" filter="url(#depth)">
+ <g class="piece m-piece" fill="none" stroke-linejoin="bevel" stroke-linecap="butt">
+  <path d="M66 320 V67 L200 205 L334 67 V320" stroke="#24266F" stroke-width="40" transform="translate(0 11)"/>
+  <path d="M66 320 V67 L200 205 L334 67 V320" stroke="url(#m)" stroke-width="29"/>
+  <path d="M61 306 V80 L200 222 L339 80 V306" stroke="url(#shine)" stroke-width="4" opacity=".8"/>
+  <path d="M80 303 V104 M200 218 L319 96 M319 303 V104" stroke="#E5FFFF" stroke-width="2" opacity=".48"/>
+ </g>
+ <g class="piece a-piece" fill="none" stroke-linejoin="bevel" stroke-linecap="butt" filter="url(#glow)">
+  <path d="M125 299 L190 158 L255 299" stroke="#25266F" stroke-width="26" transform="translate(0 8)"/>
+  <path d="M125 299 L190 158 L255 299" stroke="url(#a)" stroke-width="17"/>
+  <path d="M139 287 L190 178 L241 287" stroke="#E9FFFF" stroke-width="3" opacity=".8"/>
+  <path d="M151 252 H229" stroke="#25266F" stroke-width="18" transform="translate(0 7)"/>
+  <path d="M151 252 H229" stroke="url(#a)" stroke-width="11"/>
+  <path d="M154 248 H226" stroke="#FFF" stroke-width="2.5"/>
+ </g>
+ <g class="piece i-piece" fill="none" stroke-linecap="butt" filter="url(#glow)">
+  <path d="M296 213 V300" stroke="#25266F" stroke-width="25" transform="translate(0 8)"/>
+  <path d="M296 213 V300" stroke="url(#i)" stroke-width="16"/>
+  <path d="M292 220 V291" stroke="#FFF" stroke-width="2.5" opacity=".85"/>
+  <circle cx="296" cy="174" r="18" fill="#25266F" stroke="none" transform="translate(0 8)"/>
+  <circle cx="296" cy="174" r="14" fill="url(#i)" stroke="#C8FFFF" stroke-width="3"/>
+  <circle cx="292" cy="169" r="4" fill="#FFF" opacity=".8"/>
+ </g>
+ <path class="connector" d="M181 203 L200 222 L219 203" fill="none" stroke="#E9FFFF" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
 </g>
-
-<g class="emblem-rotation" filter="url(#depth)">
- <!-- Main M: one continuous, unmistakable capital letter. -->
- <g class="piece piece-m">
-  <path class="m-shadow" d="M70 316 V78 L200 211 L330 78 V316"/>
-  <path class="m-face" d="M70 316 V78 L200 211 L330 78 V316"/>
-  <path class="m-highlight" d="M65 292 V89 L200 225 L335 89 V292"/>
- </g>
-
- <!-- A sits inside the M, with a clear crossbar. -->
- <g class="piece piece-a" filter="url(#neon)">
-  <path class="inner-shadow" d="M116 291 L183 160 L250 291"/>
-  <path class="inner-face" d="M116 291 L183 160 L250 291"/>
-  <path class="inner-highlight" d="M128 282 L183 177 L238 282"/>
-  <path class="a-bar" d="M145 244 H221"/>
- </g>
-
- <!-- I is integrated on the right interior, not outside the M. -->
- <g class="piece piece-i" filter="url(#neon)">
-  <path class="i-shadow" d="M282 222 V291"/>
-  <path class="i-face" d="M282 222 V291"/>
-  <path class="i-highlight" d="M278 229 V284"/>
-  <circle class="i-dot-shadow" cx="282" cy="185" r="13"/>
-  <circle class="i-dot" cx="282" cy="181" r="11"/>
- </g>
-
- <!-- Small luminous join makes the A feel interwoven into the M. -->
- <g class="join" filter="url(#neon)">
-  <path d="M184 204 L200 220 L216 204" fill="none" stroke="#E7FFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
- </g>
-</g>
-
 <style>
- .m-shadow{fill:none;stroke:#263078;stroke-width:39;stroke-linecap:square;stroke-linejoin:bevel;transform:translateY(10px)}
- .m-face{fill:none;stroke:url(#face);stroke-width:28;stroke-linecap:square;stroke-linejoin:bevel}
- .m-highlight{fill:none;stroke:url(#shine);stroke-width:4;opacity:.8}
- .inner-shadow{fill:none;stroke:#302D83;stroke-width:22;stroke-linecap:butt;stroke-linejoin:bevel;transform:translateY(7px)}
- .inner-face{fill:none;stroke:url(#faceA);stroke-width:15;stroke-linecap:butt;stroke-linejoin:bevel}
- .inner-highlight{fill:none;stroke:#E7FFFF;stroke-width:2.5;opacity:.75}
- .a-bar{fill:none;stroke:#77F1EF;stroke-width:10;stroke-linecap:butt}
- .i-shadow{fill:none;stroke:#342A83;stroke-width:19;transform:translateY(7px)}
- .i-face{fill:none;stroke:url(#face);stroke-width:13}
- .i-highlight{fill:none;stroke:#E8FFFF;stroke-width:2.5;opacity:.8}
- .i-dot-shadow{fill:#302B83;transform:translateY(6px)}
- .i-dot{fill:url(#face);stroke:#C8FFFF;stroke-width:2}
- .piece{transform-box:fill-box;transform-origin:center}
- .emblem-rotation{transform-box:fill-box;transform-origin:center;animation:rotate360 10s cubic-bezier(.45,0,.55,1) infinite}
- .piece-m{animation:breakM 10s ease-in-out infinite}
- .piece-a{animation:breakA 10s ease-in-out infinite}
- .piece-i{animation:breakI 10s ease-in-out infinite}
- .join{animation:joinPulse 10s ease-in-out infinite}
- .orbit{transform-origin:200px 200px;animation:orbitGlow 10s ease-in-out infinite}
- @keyframes rotate360{
-  0%,18%{transform:perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)}
-  48%{transform:perspective(1000px) rotateY(180deg) rotateX(8deg) scale(1.035)}
-  72%,100%{transform:perspective(1000px) rotateY(360deg) rotateX(0deg) scale(1)}
- }
- @keyframes breakM{
-  0%,7%{opacity:0;transform:translateY(-24px) scale(.92)}
-  17%,72%{opacity:1;transform:translateY(0) scale(1)}
-  83%,92%{opacity:0;transform:translateY(-24px) scale(.92)}
-  100%{opacity:0;transform:translateY(-24px) scale(.92)}
- }
- @keyframes breakA{
-  0%,13%{opacity:0;transform:translate(-24px,28px) rotate(-8deg) scale(.82)}
-  24%,72%{opacity:1;transform:none}
-  83%,92%{opacity:0;transform:translate(-24px,28px) rotate(-8deg) scale(.82)}
-  100%{opacity:0;transform:translate(-24px,28px) rotate(-8deg) scale(.82)}
- }
- @keyframes breakI{
-  0%,19%{opacity:0;transform:translate(28px,24px) rotate(8deg) scale(.8)}
-  30%,72%{opacity:1;transform:none}
-  83%,92%{opacity:0;transform:translate(28px,24px) rotate(8deg) scale(.8)}
-  100%{opacity:0;transform:translate(28px,24px) rotate(8deg) scale(.8)}
- }
- @keyframes joinPulse{0%,27%,70%,100%{opacity:1}45%{opacity:.45}84%,92%{opacity:0}}
- @keyframes orbitGlow{0%,100%{opacity:.22}45%,65%{opacity:.72}}
- @media(prefers-reduced-motion:reduce){
-  .emblem-rotation,.piece,.join,.orbit{animation:none!important;opacity:1!important;transform:none!important}
- }
-</style>
-</svg>
+.spin{transform-box:fill-box;transform-origin:center;animation:turn 9s cubic-bezier(.45,0,.55,1) infinite}
+.piece{transform-box:fill-box;transform-origin:center}
+.m-piece{animation:bm 9s ease-in-out infinite}.a-piece{animation:ba 9s ease-in-out infinite}.i-piece{animation:bi 9s ease-in-out infinite}
+.connector{animation:co 9s ease-in-out infinite}.orbit{animation:or 9s ease-in-out infinite;transform-origin:200px 200px}
+@keyframes turn{0%,18%{transform:perspective(1100px) rotateY(0) rotateX(0) scale(1)}48%{transform:perspective(1100px) rotateY(180deg) rotateX(9deg) scale(1.04)}72%,100%{transform:perspective(1100px) rotateY(360deg) rotateX(0) scale(1)}}
+@keyframes bm{0%,7%{opacity:0;transform:translateY(-30px) scale(.9)}18%,72%{opacity:1;transform:none}83%,92%,100%{opacity:0;transform:translateY(-30px) scale(.9)}}
+@keyframes ba{0%,13%{opacity:0;transform:translate(-24px,32px) rotate(-9deg) scale(.82)}24%,72%{opacity:1;transform:none}83%,92%,100%{opacity:0;transform:translate(-24px,32px) rotate(-9deg) scale(.82)}}
+@keyframes bi{0%,19%{opacity:0;transform:translate(28px,24px) rotate(8deg) scale(.82)}30%,72%{opacity:1;transform:none}83%,92%,100%{opacity:0;transform:translate(28px,24px) rotate(8deg) scale(.82)}}
+@keyframes co{0%,26%,72%,100%{opacity:1}45%{opacity:.4}84%,92%{opacity:0}}
+@keyframes or{0%,100%{opacity:.2}45%,65%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){.spin,.piece,.connector,.orbit{animation:none!important;opacity:1!important;transform:none!important}}
+</style></svg>
