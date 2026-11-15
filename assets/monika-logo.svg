@@ -1,25 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI animated 3D M emblem</title><desc id="desc">Metallic violet and cyan M rotates, separates into floating pieces, and assembles again.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">MONIKA AI — Prism Orbit emblem</title>
+<desc id="desc">A unique luminous interlocking orbital M mark in violet, electric blue and cyan, with separated animated ribbon segments. The canvas is fully transparent.</desc>
 <defs>
-<linearGradient id="front" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F4E9FF"/><stop offset=".22" stop-color="#B88BFF"/><stop offset=".58" stop-color="#7545E8"/><stop offset="1" stop-color="#28DCEB"/></linearGradient>
-<linearGradient id="side" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#34206F"/><stop offset=".55" stop-color="#5B35B5"/><stop offset="1" stop-color="#087F99"/></linearGradient>
-<filter id="glow" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <linearGradient id="ribbon" x1="70" y1="80" x2="430" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#F4DFFF"/><stop offset=".22" stop-color="#B78BFF"/><stop offset=".52" stop-color="#7554FF"/><stop offset=".78" stop-color="#398DFF"/><stop offset="1" stop-color="#69F2ED"/></linearGradient>
+ <linearGradient id="edge" x1="90" y1="120" x2="420" y2="400" gradientUnits="userSpaceOnUse"><stop stop-color="#5A31B8"/><stop offset=".55" stop-color="#283FAD"/><stop offset="1" stop-color="#087E9B"/></linearGradient>
+ <linearGradient id="core" x1="205" y1="180" x2="320" y2="320" gradientUnits="userSpaceOnUse"><stop stop-color="#F7E9FF"/><stop offset=".5" stop-color="#9A70FF"/><stop offset="1" stop-color="#54E9EF"/></linearGradient>
+ <filter id="aura" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
 </defs>
-<ellipse cx="90" cy="145" rx="49" ry="10" fill="#6D55FF" opacity=".24"/>
-<g class="spin" transform-origin="90px 88px">
-<g class="piece left"><path d="M35 122 46 46Q48 32 60 43L87 69 77 85 61 70 52 124Z" fill="url(#side)" transform="translate(0 7)"/><path d="M35 122 46 46Q48 32 60 43L87 69 77 85 61 70 52 124Z" fill="url(#front)" stroke="#E5D5FF" stroke-width="1.4" stroke-linejoin="round" filter="url(#glow)"/></g>
-<g class="piece middle"><path d="M70 84 88 66 108 85 96 101 88 93 81 101Z" fill="url(#side)" transform="translate(0 7)"/><path d="M70 84 88 66 108 85 96 101 88 93 81 101Z" fill="url(#front)" stroke="#E5D5FF" stroke-width="1.4" stroke-linejoin="round" filter="url(#glow)"/></g>
-<g class="piece right"><path d="m93 69 27-26q12-11 14 3l11 76h-18l-8-54-16 17Z" fill="url(#side)" transform="translate(0 7)"/><path d="m93 69 27-26q12-11 14 3l11 76h-18l-8-54-16 17Z" fill="url(#front)" stroke="#D4F9FF" stroke-width="1.4" stroke-linejoin="round" filter="url(#glow)"/></g>
-<path d="M45 133Q90 149 139 130" fill="none" stroke="#27D9E8" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<!-- Independent glow particles; no background plate or bounding box -->
+<g fill="#77EFFF" filter="url(#aura)">
+ <circle cx="92" cy="164" r="6"><animate attributeName="opacity" values=".25;1;.25" dur="2.4s" repeatCount="indefinite"/></circle>
+ <circle cx="421" cy="139" r="5"><animate attributeName="opacity" values="1;.2;1" dur="2.1s" repeatCount="indefinite"/></circle>
+ <circle cx="390" cy="391" r="4"><animate attributeName="opacity" values=".2;.9;.2" dur="1.8s" repeatCount="indefinite"/></circle>
 </g>
-<g fill="#8EEFFF" filter="url(#glow)"><circle cx="27" cy="62" r="2.8"><animate attributeName="opacity" values=".2;1;.2" dur="2s" repeatCount="indefinite"/></circle><circle cx="151" cy="47" r="2.4"><animate attributeName="opacity" values="1;.2;1" dur="2.6s" repeatCount="indefinite"/></circle><circle cx="145" cy="132" r="2"><animate attributeName="opacity" values=".2;1;.2" dur="1.8s" repeatCount="indefinite"/></circle></g>
+<g class="orbit" transform-origin="256px 256px">
+ <!-- rear depth strokes -->
+ <g class="wing wing-left">
+  <path d="M111 365 151 137Q155 116 174 132L256 210 228 245 181 201 151 373Z" fill="none" stroke="url(#edge)" stroke-width="39" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 12)"/>
+  <path d="M111 365 151 137Q155 116 174 132L256 210 228 245 181 201 151 373Z" fill="none" stroke="url(#ribbon)" stroke-width="31" stroke-linecap="round" stroke-linejoin="round" filter="url(#aura)"/>
+ </g>
+ <g class="wing wing-right">
+  <path d="m256 210 82-78q19-17 23 8l40 225h-43l-29-172-48 46Z" fill="none" stroke="url(#edge)" stroke-width="39" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 12)"/>
+  <path d="m256 210 82-78q19-17 23 8l40 225h-43l-29-172-48 46Z" fill="none" stroke="url(#ribbon)" stroke-width="31" stroke-linecap="round" stroke-linejoin="round" filter="url(#aura)"/>
+ </g>
+ <g class="core">
+  <path d="m207 263 48-48 49 48-49 51Z" fill="url(#edge)" transform="translate(0 10)"/>
+  <path d="m207 253 48-48 49 48-49 51Z" fill="url(#core)" stroke="#EADFFF" stroke-width="4" stroke-linejoin="round" filter="url(#aura)"/>
+  <path d="m225 253 30-30 31 30-31 31Z" fill="none" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="2"/>
+ </g>
+</g>
+<path d="M143 410Q256 453 369 410" fill="none" stroke="#35DDEB" stroke-width="5" stroke-linecap="round" opacity=".75" filter="url(#aura)"/>
 <style>
-.spin{animation:turn 8s cubic-bezier(.45,0,.55,1) infinite;transform-style:preserve-3d}
-.piece{transform-box:fill-box;transform-origin:center;animation-duration:8s;animation-iteration-count:infinite;animation-timing-function:cubic-bezier(.4,0,.2,1)}
-.left{animation-name:splitL}.middle{animation-name:splitM}.right{animation-name:splitR}
-@keyframes turn{0%,18%{transform:perspective(650px) rotateY(0deg) rotateX(-5deg) scale(1)}30%,68%{transform:perspective(650px) rotateY(180deg) rotateX(8deg) scale(.94)}82%,100%{transform:perspective(650px) rotateY(360deg) rotateX(-5deg) scale(1)}}
-@keyframes splitL{0%,25%,78%,100%{transform:translate3d(0,0,0)}42%,62%{transform:translate3d(-23px,-15px,35px) rotate(-13deg)}}
-@keyframes splitM{0%,25%,78%,100%{transform:translate3d(0,0,0)}42%,62%{transform:translate3d(0,-25px,48px) rotate(7deg)}}
-@keyframes splitR{0%,25%,78%,100%{transform:translate3d(0,0,0)}42%,62%{transform:translate3d(23px,-13px,35px) rotate(13deg)}}
-@media(prefers-reduced-motion:reduce){.spin,.piece{animation:none}}
-</style></svg>
+.orbit{animation:orbitTurn 9s cubic-bezier(.45,0,.55,1) infinite;transform-style:preserve-3d}
+.wing,.core{transform-box:fill-box;transform-origin:center;animation-duration:9s;animation-iteration-count:infinite;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+.wing-left{animation-name:breakLeft}.wing-right{animation-name:breakRight}.core{animation-name:breakCore}
+@keyframes orbitTurn{0%,18%{transform:perspective(900px) rotateY(0deg) rotateX(-4deg)}32%,68%{transform:perspective(900px) rotateY(180deg) rotateX(7deg) scale(.96)}84%,100%{transform:perspective(900px) rotateY(360deg) rotateX(-4deg)}}
+@keyframes breakLeft{0%,24%,80%,100%{transform:translate(0,0)}42%,64%{transform:translate(-30px,-20px) rotate(-8deg)}}
+@keyframes breakRight{0%,24%,80%,100%{transform:translate(0,0)}42%,64%{transform:translate(30px,-20px) rotate(8deg)}}
+@keyframes breakCore{0%,24%,80%,100%{transform:translate(0,0) scale(1)}42%,64%{transform:translate(0,25px) scale(.88)}}
+@media(prefers-reduced-motion:reduce){.orbit,.wing,.core{animation:none}}
+</style>
+</svg>
