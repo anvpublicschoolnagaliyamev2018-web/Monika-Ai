@@ -1,49 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
-<title id="title">MONIKA AI — Double M</title>
-<desc id="desc">A bold, connected double-M monogram with a clean cyan-to-violet gradient on a transparent background.</desc>
+<title id="title">MONIKA AI — Single Crossing M</title>
+<desc id="desc">One bold capital M with a central crossing stroke, cyan-to-violet gradient, transparent background.</desc>
 <defs>
-  <linearGradient id="face" x1="50" y1="90" x2="350" y2="310" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#68E8E5"/>
-    <stop offset=".5" stop-color="#6D91FF"/>
-    <stop offset="1" stop-color="#B477F5"/>
-  </linearGradient>
-  <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
-    <stop stop-color="#263A82" stop-opacity=".7"/>
-    <stop offset="1" stop-color="#111A45" stop-opacity=".15"/>
-  </linearGradient>
+ <linearGradient id="m-gradient" x1="60" y1="80" x2="340" y2="320" gradientUnits="userSpaceOnUse"><stop stop-color="#70E5E4"/><stop offset=".52" stop-color="#638EFF"/><stop offset="1" stop-color="#A875F5"/></linearGradient>
+ <filter id="depth" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset dy="7" result="offset"/><feComponentTransfer in="offset" result="shadow"><feFuncA type="linear" slope=".28"/></feComponentTransfer><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<g class="double-m">
-  <g class="left-m">
-    <path class="depth" d="M54 302 V112 L128 230 L202 112 V302" transform="translate(0 9)"/>
-    <path class="face-line" d="M54 302 V112 L128 230 L202 112 V302"/>
-  </g>
-  <g class="right-m">
-    <path class="depth" d="M198 302 V112 L272 230 L346 112 V302" transform="translate(0 9)"/>
-    <path class="face-line" d="M198 302 V112 L272 230 L346 112 V302"/>
-  </g>
+<g class="single-m" fill="none" stroke="url(#m-gradient)" stroke-width="25" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth)">
+ <path d="M76 312 V88 L324 312 V88"/>
+ <path class="cross-stroke" d="M76 88 L324 312" stroke-width="23" stroke="#8CCBFF"/>
 </g>
 <style>
-  .face-line,.depth{fill:none;stroke-linecap:round;stroke-linejoin:round}
-  .depth{stroke:url(#edge);stroke-width:31}
-  .face-line{stroke:url(#face);stroke-width:27}
-  .double-m{transform-box:fill-box;transform-origin:center;animation:turn 8s ease-in-out infinite}
-  .left-m,.right-m{transform-box:fill-box;transform-origin:center;animation:separate 7s cubic-bezier(.65,0,.25,1) infinite}
-  .right-m{animation-name:separate-right}
-  @keyframes turn{
-    0%,18%,82%,100%{transform:perspective(800px) rotateY(0) scale(1)}
-    40%,60%{transform:perspective(800px) rotateY(10deg) scale(1.025)}
-    50%{transform:perspective(800px) rotateY(0) scale(1.04)}
-  }
-  @keyframes separate{
-    0%,25%,78%,100%{transform:translate(0,0) rotate(0)}
-    40%,60%{transform:translate(-13px,-8px) rotate(-4deg)}
-    50%{transform:translate(-21px,-12px) rotate(-7deg)}
-  }
-  @keyframes separate-right{
-    0%,25%,78%,100%{transform:translate(0,0) rotate(0)}
-    40%,60%{transform:translate(13px,8px) rotate(4deg)}
-    50%{transform:translate(21px,12px) rotate(7deg)}
-  }
-  @media(prefers-reduced-motion:reduce){.double-m,.left-m,.right-m{animation:none}}
+.single-m{transform-box:fill-box;transform-origin:center;animation:turn 7s ease-in-out infinite}
+.cross-stroke{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 7s ease-in-out infinite}
+@keyframes turn{0%,18%,82%,100%{transform:perspective(700px) rotateY(0) scale(1)}38%,62%{transform:perspective(700px) rotateY(12deg) scale(1.025)}50%{transform:perspective(700px) rotateY(0) scale(1.04)}}
+@keyframes draw{0%,20%,80%,100%{stroke-dashoffset:420;opacity:.35}38%,62%{stroke-dashoffset:0;opacity:1}50%{stroke-dashoffset:0;opacity:1}}
+@media(prefers-reduced-motion:reduce){.single-m,.cross-stroke{animation:none;stroke-dashoffset:0}}
 </style>
 </svg>
