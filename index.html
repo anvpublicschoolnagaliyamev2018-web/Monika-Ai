@@ -37,8 +37,8 @@ body:after{background:#a33cff;bottom:-130px;right:-130px}
 #intro.intro-screen:before{background:#087cff;left:-100px;top:15%}
 #intro.intro-screen:after{background:#9b24ff;right:-100px;bottom:12%}
 .intro-core{width:min(78vw,390px);display:flex;flex-direction:column;align-items:center;gap:20px}
-.intro-logo-frame{width:min(76vw,360px);aspect-ratio:1;display:grid;place-items:center;border:1px solid #8dbdff35;border-radius:38px;background:linear-gradient(145deg,#ffffff0c,#526dff0a);box-shadow:0 0 55px #168cff22,inset 0 0 35px #8b5cff12;backdrop-filter:blur(12px);animation:introFloat 4.5s ease-in-out infinite}
-.intro-logo-frame img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
+.intro-logo-frame{width:min(76vw,360px);aspect-ratio:1;display:grid;place-items:center;background:transparent;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;animation:introFloat 4.5s ease-in-out infinite}
+.intro-logo-frame img{width:100%;height:100%;object-fit:contain;background:transparent;border:0;border-radius:0;box-shadow:none;mix-blend-mode:screen}
 .intro-wordmark{font-size:clamp(28px,7vw,42px);font-weight:950;letter-spacing:.22em;padding-left:.22em;background:linear-gradient(90deg,#fff,#76d8ff 48%,#d29aff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px #8c72ff35}
 .intro-tagline{font-size:10px;letter-spacing:.32em;color:#aebfff;padding-left:.32em}
 .intro-start{width:min(260px,78vw);margin-top:24px;position:relative;overflow:hidden}
@@ -259,6 +259,8 @@ const ai=getAI(app,{backend:new GoogleAIBackend()});
 const model=getGenerativeModel(ai,{model:"gemini-3.8-flash"});
 
 let currentUser=null;
+let introDismissed=false;
+let authResolved=false;
 let profileData={};
 let editingStudentId=null;
 
@@ -270,19 +272,26 @@ $(id).style.display=(id==="intro"?"flex":"block");
 window.scrollTo({top:0,behavior:"smooth"});
 };
 
+/* Always begin with the full-screen brand intro, including returning users. */
+show("intro");
+
 $("startBtn").onclick=()=>{
 const introScreen=$("intro");
 const loginScreen=$("login");
 if(introScreen.classList.contains("is-leaving"))return;
 introScreen.classList.add("is-leaving");
 setTimeout(()=>{
+introDismissed=true;
 introScreen.style.display="none";
 introScreen.classList.remove("is-leaving");
-show("login");
+const nextScreen=authResolved&&currentUser?"dashboard":"login";
+show(nextScreen);
+if(nextScreen==="login"){
 loginScreen.classList.remove("glitch-enter");
 void loginScreen.offsetWidth;
 loginScreen.classList.add("glitch-enter");
 setTimeout(()=>loginScreen.classList.remove("glitch-enter"),850);
+}
 },820);
 };
 
@@ -323,13 +332,13 @@ return collection(db,"users",currentUser.uid,name);
 
 onAuthStateChanged(auth,async user=>{
 currentUser=user;
+authResolved=true;
 
 if(!user){
-show("intro");
+if(introDismissed)show("login");
+else show("intro");
 return;
 }
-
-show("loading");
 
 try{
 const ref=userDoc();
@@ -347,11 +356,13 @@ createdAt:serverTimestamp()
 
 await loadProfile();
 updateHeader();
-show("dashboard");
+if(introDismissed)show("dashboard");
+else show("intro");
 
 }catch(e){
 console.error(e);
-show("login");
+if(introDismissed)show("login");
+else show("intro");
 $("message").textContent="Database error: "+e.message;
 }
 });
