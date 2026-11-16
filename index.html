@@ -370,6 +370,23 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;
  #dashboard .dashboard-tools-grid .tile{transition:none!important}
 }
 
+
+/* DASHBOARD IS AN INTRODUCTION; FEATURES LIVE ON THEIR OWN MODULE PAGES */
+#dashboard .dashboard-intro{max-width:860px;margin-left:auto;margin-right:auto}
+.dashboard-welcome{padding:24px 4px 22px}
+.dashboard-eyebrow{display:inline-block;color:#91a8ff;font-size:10px;font-weight:800;letter-spacing:2px;margin-bottom:12px}
+.dashboard-welcome h2{font-size:clamp(23px,5vw,32px);line-height:1.2;margin-bottom:11px}
+.dashboard-welcome p,.dashboard-note{color:#b7c3df;line-height:1.7;font-size:14px}
+.dashboard-overview{margin-top:8px;padding:20px;border:1px solid #ffffff18;border-radius:18px;background:linear-gradient(145deg,#ffffff0a,#ffffff03)}
+.dashboard-overview h3{font-size:16px;margin-bottom:14px}
+.overview-row{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid #ffffff12}
+.overview-row:last-child{border-bottom:0}
+.overview-row .dash-tool-icon{flex:none;margin:0}
+.overview-row strong{font-size:14px}
+.overview-row p{margin-top:4px;line-height:1.5}
+.dashboard-note{margin:18px 3px 3px;font-size:12px}
+@media(prefers-reduced-motion:reduce){#dashboard[style*="display: block"],#dashboard>.card{animation:none!important}}
+
 </style>
 </head>
 
@@ -454,66 +471,27 @@ Continue with Google
 <h1>MONIKA AI</h1>
 <p class="sub">TEACHER DASHBOARD</p>
 </header>
-<div class="card">
-<div class="profile">
-<img id="userPhoto" alt="Profile">
-<div>
-<h2 id="userName">Teacher</h2>
-<p class="small" id="userEmail"></p>
-</div>
-</div>
-<h2>Welcome Back! 👋</h2>
-<p class="small">What would you like to do today?</p>
-
-<div class="card dashboard-settings">
-<h3>⚙️ Dashboard Appearance</h3>
-<p class="small">Customize how your dashboard looks. Intro and login screens will stay unchanged.</p>
-<div class="preference-row">
-<span class="preference-label">Theme</span>
-<div class="preference-options" role="group" aria-label="Dashboard theme">
-<button type="button" id="darkThemeBtn">🌙 Dark</button>
-<button type="button" id="lightThemeBtn">☀️ Light</button>
-</div>
-</div>
-<div class="preference-row">
-<span class="preference-label">View Mode</span>
-<div class="preference-options" role="group" aria-label="Dashboard view mode">
-<button type="button" id="gridModeBtn">▦ Grid</button>
-<button type="button" id="listModeBtn">☰ List</button>
-</div>
-</div>
+<div class="card dashboard-intro">
+  <div class="profile">
+    <img id="userPhoto" alt="Profile">
+    <div><h2 id="userName">Welcome</h2><p class="small" id="userEmail"></p></div>
+  </div>
+  <section class="dashboard-welcome">
+    <span class="dashboard-eyebrow">YOUR PERSONAL WORKSPACE</span>
+    <h2>Welcome to MONIKA AI</h2>
+    <p>One simple workspace for smarter teaching, learning and everyday tasks. Choose a section from the menu to open it on its own dedicated page.</p>
+  </section>
+  <section class="dashboard-overview" aria-label="What MONIKA AI offers">
+    <h3>What you can do with MONIKA AI</h3>
+    <div class="overview-row"><span class="dash-tool-icon icon-check">✓</span><div><strong>AI Copy Checker</strong><p class="small">Upload answer sheets and review checking reports.</p></div></div>
+    <div class="overview-row"><span class="dash-tool-icon icon-chat">✦</span><div><strong>Ask AI – Sawal Jawab</strong><p class="small">Ask questions and get helpful AI responses in a chat.</p></div></div>
+    <div class="overview-row"><span class="dash-tool-icon icon-students">♙</span><div><strong>Student Records</strong><p class="small">Keep student information organised in one place.</p></div></div>
+    <div class="overview-row"><span class="dash-tool-icon icon-results">▥</span><div><strong>My Results</strong><p class="small">View your saved copy-checking results.</p></div></div>
+    <div class="overview-row"><span class="dash-tool-icon icon-profile">◎</span><div><strong>My Profile</strong><p class="small">View and update your personal profile details.</p></div></div>
+  </section>
+  <p class="dashboard-note">Each feature opens separately, so your workspace stays clean and easy to use.</p>
 </div>
 
-<div id="dashboardTools" class="dashboard-tools-grid">
-<div class="tile">
-<h3><span class="dash-tool-icon icon-check">✓</span>AI Copy Checker</h3>
-<p class="small">Upload student answer sheets.</p>
-<button class="primary" onclick="openModule('checker')">Check a Copy</button>
-</div>
-<div class="tile">
-<h3><span class="dash-tool-icon icon-chat">✦</span>Ask AI – Sawal Jawab</h3>
-<p class="small">Ask questions and get helpful answers from MONIKA AI.</p>
-<button class="primary" onclick="openModule('askai')">Ask MONIKA AI</button>
-</div>
-<div class="tile">
-<h3><span class="dash-tool-icon icon-students">♙</span>Student Records</h3>
-<p class="small">Manage student information.</p>
-<button class="primary" onclick="openModule('students')">Open Students</button>
-</div>
-<div class="tile">
-<h3><span class="dash-tool-icon icon-results">▥</span>My Results</h3>
-<p class="small">View saved checking reports.</p>
-<button class="primary" onclick="openModule('results')">View Results</button>
-</div>
-<div class="tile">
-<h3><span class="dash-tool-icon icon-profile">◎</span>My Profile</h3>
-<p class="small">Create and edit your profile.</p>
-<button class="primary" onclick="openModule('profile')">Edit Profile</button>
-</div>
-</div>
-
-
-</div>
 <nav class="bottom">
 <button onclick="show('dashboard')">🏠<br>Home</button>
 <button onclick="openModule('checker')">📷<br>Checking</button>
@@ -638,10 +616,10 @@ $("gridModeBtn")?.classList.toggle("active",dashboardPrefs.view==="grid");
 $("listModeBtn")?.classList.toggle("active",dashboardPrefs.view==="list");
 try{localStorage.setItem("monikaDashboardPrefs",JSON.stringify(dashboardPrefs));}catch(e){}
 }
-$("darkThemeBtn").onclick=()=>{dashboardPrefs.theme="dark";applyDashboardPrefs();};
-$("lightThemeBtn").onclick=()=>{dashboardPrefs.theme="light";applyDashboardPrefs();};
-$("gridModeBtn").onclick=()=>{dashboardPrefs.view="grid";applyDashboardPrefs();};
-$("listModeBtn").onclick=()=>{dashboardPrefs.view="list";applyDashboardPrefs();};
+$("darkThemeBtn")?.addEventListener("click",()=>{dashboardPrefs.theme="dark";applyDashboardPrefs();});
+$("lightThemeBtn")?.addEventListener("click",()=>{dashboardPrefs.theme="light";applyDashboardPrefs();});
+$("gridModeBtn")?.addEventListener("click",()=>{dashboardPrefs.view="grid";applyDashboardPrefs();});
+$("listModeBtn")?.addEventListener("click",()=>{dashboardPrefs.view="list";applyDashboardPrefs();});
 
 window.show=function(id){
 closeMonikaSidebar();
