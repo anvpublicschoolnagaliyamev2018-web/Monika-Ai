@@ -248,7 +248,7 @@ body.monika-light-dashboard .dash-menu-trigger{background:#fff;color:#293650;bor
   <button class="sidebar-link" type="button" data-menu-action="appearance"><span>⚙</span><span>Dashboard Appearance</span></button>
   <div class="sidebar-spacer"></div>
   <div class="sidebar-user"><strong id="sidebarUserName">Your account</strong><small id="sidebarUserEmail">Signed in to MONIKA AI</small></div>
-  <button class="sidebar-link signout" type="button" data-menu-action="logout"><span>↪</span><span>Sign Out</span></button>
+  
 </aside>
 
 
@@ -366,7 +366,7 @@ Continue with Google
 </div>
 </div>
 
-<button class="secondary" id="logoutBtn">Sign Out</button>
+
 </div>
 <nav class="bottom">
 <button onclick="show('dashboard')">🏠<br>Home</button>
@@ -404,7 +404,7 @@ from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 
 import {
 getAuth,GoogleAuthProvider,signInWithPopup,
-onAuthStateChanged,signOut
+onAuthStateChanged,signOut,setPersistence,browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
 import {
@@ -432,6 +432,8 @@ appId:"1:797305993723:web:3964fd771d355ab9b5735e"
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
+// Keep the Firebase session on this browser/device until the user signs out.
+await setPersistence(auth,browserLocalPersistence);
 const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
@@ -469,7 +471,7 @@ else if(["checker","askai","students","results","profile"].includes(action))open
 else if(action==="appearance"){
 show("dashboard");
 setTimeout(()=>{const panel=document.querySelector("#dashboard .dashboard-settings");panel?.scrollIntoView({behavior:"smooth",block:"center"});},80);
-}else if(action==="logout")$("logoutBtn").click();
+}
 });
 });
 
@@ -513,7 +515,9 @@ setTimeout(()=>{
 introFinished=true;
 introScreen.style.display="none";
 introScreen.classList.remove("is-leaving");
-show("login");
+show(authResolved
+  ? (currentUser && profileData.profileComplete===true ? "dashboard" : "login")
+  : "loading");
 updateLoginState();
 const loginScreen=$("login");
 loginScreen.classList.remove("soft-enter");
@@ -636,10 +640,15 @@ updateLoginState();
 }
 };
 
-$("logoutBtn").onclick=async()=>{
-try{await signOut(auth);}
-catch(e){alert(e.message);}
-};
+async function performSignOut(){
+  if(!confirm("Are you sure you want to sign out of MONIKA AI?")) return;
+  try{
+    closeMonikaSidebar();
+    await signOut(auth);
+  }catch(e){
+    alert("Sign out failed: "+e.message);
+  }
+}
 
 /* USER DATABASE REFERENCES */
 
@@ -659,6 +668,7 @@ authResolved=true;
 
 if(!user){
 profileData={};
+authResolved=true;
 updateLoginState();
 if(introFinished)show("login");
 return;
@@ -673,10 +683,12 @@ fillRegistrationForm({});
 }
 updateHeader();
 updateLoginState();
-if(introFinished)show("login");
+authResolved=true;
+if(introFinished)show(profileData.profileComplete===true?"dashboard":"login");
 }catch(e){
 console.error(e);
 profileData={};
+authResolved=true;
 if(introFinished)show("login");
 $("message").textContent="Profile verification error: "+e.message;
 }
@@ -1377,6 +1389,12 @@ style="width:85px;height:85px;object-fit:cover;border-radius:20px;margin-top:12p
 
 <button class="primary" id="saveProfileBtn">Save My Profile</button>
 <p class="status" id="profileStatus"></p>
+
+<div class="tile" style="margin-top:28px;border-color:#ff718455">
+  <h3 style="color:#ffb5c0">Account Security</h3>
+  <p class="small">Sign out from this device. You can sign in again whenever you need.</p>
+  <button class="secondary" id="profileSignOutBtn" type="button" style="border-color:#ff718455;color:#ffb5c0">↪ Sign Out</button>
+</div>
 `;
 
 $("profilePhotoFile").onchange=async()=>{
@@ -1395,6 +1413,7 @@ $("profilePreview").src=await compressImage(f);
 };
 
 $("saveProfileBtn").onclick=saveProfile;
+$("profileSignOutBtn").onclick=performSignOut;
 }
 
 function compressImage(file){
