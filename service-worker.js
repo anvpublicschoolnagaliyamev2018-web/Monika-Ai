@@ -1,10 +1,10 @@
-const CACHE_NAME = "monika-ai-shell-v4";
+const CACHE_NAME = "monika-ai-shell-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
   "./assets/icon-192.png",
-  "./assets/icon-512.png",
+  "./assets/monika-logo.svg",
   "./assets/monika-m-mark.svg",
   "./assets/favicon.svg"
 ];
