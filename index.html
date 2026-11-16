@@ -425,6 +425,52 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;
 .bottom .bottom-ai-button:active{transform:translateY(-2px) scale(.97)}
 @media(max-width:390px){.bottom{gap:1px;padding:8px 3px}.bottom button{font-size:9px;padding:7px 1px}}
 
+
+/* Dashboard header quick settings */
+#dashboard header.dashboard-header{position:relative}
+#dashboard .header-language-btn,#dashboard .header-theme-btn{position:absolute;top:20px;z-index:4;width:42px;height:42px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(145deg,#263967,#171f40);color:#fff;font-size:13px;font-weight:800;box-shadow:0 7px 18px #0003}
+#dashboard .header-language-btn{left:52px;width:54px}
+#dashboard .header-theme-btn{right:0;font-size:21px}
+body.monika-light-dashboard #dashboard .header-language-btn,body.monika-light-dashboard #dashboard .header-theme-btn{background:#fff;color:#253354;border-color:#d8deed}
+#dashboard .profile{margin-bottom:21px}
+#dashboard .profile h2{margin:0}
+#dashboard .promo-feature-visuals{display:block;margin:18px 0}
+.promo-slider-track{position:relative;min-height:310px}
+.promo-slide{position:absolute;inset:0;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:14px;padding:22px;border:1px solid #879aff45;border-radius:21px;background:radial-gradient(ellipse at 18% 40%,#6c79ff35,transparent 50%),linear-gradient(130deg,#1a2b50,#141b39 72%,#251d4d);opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .5s ease,transform .5s ease,visibility .5s}
+.promo-slide.active{position:relative;opacity:1;visibility:visible;transform:translateX(0)}
+.promo-slide-art{position:relative;min-height:220px;display:grid;place-items:center;overflow:hidden;border-radius:17px;background:radial-gradient(circle,#697bff45,transparent 68%)}
+.promo-slide-ai .slide-ai-orbit{position:absolute;width:180px;height:180px;border:1px solid #a6b3ff70;border-radius:50%;box-shadow:0 0 40px #677dff24}
+.slide-ai-chip{width:105px;height:105px;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:45px;color:#fff;background:linear-gradient(145deg,#638aff,#a34fe0);box-shadow:0 15px 40px #726bff70;transform:rotate(-8deg);animation:promoFloat 3.5s ease-in-out infinite}
+.slide-ai-chip small{font-size:11px;letter-spacing:3px}
+.slide-float{position:absolute;width:35px;height:35px;display:grid;place-items:center;border:1px solid #aebaff88;border-radius:12px;background:#202d59;color:#fff;font-size:20px}
+.slide-float.f1{top:22px;left:18%}.slide-float.f2{right:14%;bottom:25px}
+.promo-slide-checker{background:radial-gradient(circle,#39c6c044,transparent 70%)}
+.checker-paper{position:relative;width:125px;height:165px;padding:25px 15px;background:linear-gradient(145deg,#f9fbff,#cdd9f2);border-radius:12px;transform:rotate(-7deg);box-shadow:0 18px 40px #0005}
+.checker-paper span{display:block;height:5px;margin:0 0 13px;border-radius:5px;background:#8495b9}
+.checker-paper b{position:absolute;right:13px;bottom:13px;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#22b98b;color:white;font-size:26px;box-shadow:0 5px 15px #159d7a66}
+.checker-spark{position:absolute;right:19%;top:18%;font-size:30px;color:#a6fff0;animation:promoPulse 2s infinite alternate}
+.checker-ring{position:absolute;width:195px;height:195px;border:1px solid #8af3df55;border-radius:50%}
+.promo-slide-copy{padding:8px 5px}
+.promo-slide-kicker{font-size:10px;font-weight:800;letter-spacing:2px;color:#aab8ff}
+.promo-slide-copy h3{margin:10px 0;font-size:clamp(20px,4vw,26px);color:#fff}
+.promo-slide-copy p{color:#c3cde6;font-size:13px;line-height:1.7}
+.promo-slide-action{display:inline-flex;align-items:center;gap:15px;margin-top:16px;padding:11px 15px;border:0;border-radius:12px;background:linear-gradient(110deg,#617cff,#9557dc);color:#fff;font-size:12px;font-weight:800;box-shadow:0 7px 18px #586cff40}
+.promo-slide-action span{font-size:18px}
+.promo-slider-controls{display:flex;align-items:center;justify-content:center;gap:16px;padding:12px 0 0}
+.promo-slider-controls>button{width:30px;height:30px;border:1px solid #8295ff55;border-radius:50%;background:#ffffff0a;color:#dce5ff;font-size:22px;line-height:1}
+.promo-slider-dots{display:flex;gap:7px}
+.promo-slider-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#7180a5}
+.promo-slider-dots button.active{width:22px;border-radius:8px;background:#8d9cff}
+@media(max-width:620px){
+ #dashboard .header-language-btn{left:51px;width:49px;font-size:12px}
+ #dashboard .header-theme-btn{right:0}
+ .promo-slider-track{min-height:440px}
+ .promo-slide{grid-template-columns:1fr;gap:3px;padding:15px}
+ .promo-slide-art{min-height:185px}
+ .promo-slide-copy{padding:0 5px 8px}
+}
+@media(prefers-reduced-motion:reduce){.promo-slide,.slide-ai-chip,.slide-float{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 
@@ -503,16 +549,18 @@ Continue with Google
 </section>
 
 <section id="dashboard" class="section">
-<header>
+<header class="dashboard-header">
 <button class="dash-menu-trigger" type="button" onclick="toggleMonikaSidebar()" aria-label="Open navigation menu" aria-controls="monikaSidebar" aria-expanded="false">☰</button>
+<button class="header-language-btn" id="languageToggleBtn" type="button" aria-label="Switch app language">हिंदी</button>
+<button class="header-theme-btn" id="themeToggleBtn" type="button" aria-label="Switch dark or light theme" title="Change theme">☼</button>
 <div class="logo"><img src="assets/monika-logo.gif" alt="MONIKA AI animated 3D logo"></div>
 <h1>MONIKA AI</h1>
-<p class="sub">TEACHER DASHBOARD</p>
+<p class="sub" id="dashboardSubtitle">TEACHER DASHBOARD</p>
 </header>
 <div class="card dashboard-intro">
   <div class="profile">
     <img id="userPhoto" alt="Profile">
-    <div><h2 id="userName">Welcome</h2><p class="small" id="userEmail"></p></div>
+    <div><h2 id="userName">Welcome</h2></div>
   </div>
   <section class="dashboard-welcome">
     <div class="promo-copy">
@@ -528,20 +576,19 @@ Continue with Google
       <span class="promo-circuit circuit-one"></span><span class="promo-circuit circuit-two"></span>
     </div>
   </section>
-  <section class="promo-feature-visuals" aria-label="MONIKA AI highlights">
-    <article class="promo-visual-card">
-      <div class="promo-visual-image ai-visual" role="img" aria-label="Illustration of an intelligent AI assistant">
-        <svg viewBox="0 0 320 150" aria-hidden="true"><defs><linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7b8cff"/><stop offset="1" stop-color="#c16bff"/></linearGradient></defs><circle cx="160" cy="75" r="51" fill="none" stroke="#9daeff" stroke-opacity=".35" stroke-width="1.5"/><circle cx="160" cy="75" r="37" fill="#667cff" fill-opacity=".16" stroke="url(#aiGrad)" stroke-width="2"/><path d="M145 61h30a8 8 0 0 1 8 8v17a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8V69a8 8 0 0 1 8-8Z" fill="url(#aiGrad)" fill-opacity=".25" stroke="#c7ceff" stroke-width="1.5"/><path d="M148 77h24M151 84h18M160 53v8M160 95v8M138 75h-8M190 75h-8" stroke="#e4e8ff" stroke-width="2" stroke-linecap="round"/><circle cx="160" cy="75" r="3" fill="#fff"/><path d="M65 39l20 10m150 52 20 10M76 111l15-8m139-66 14-8" stroke="#7e91ff" stroke-width="2" stroke-linecap="round"/><circle cx="65" cy="39" r="4" fill="#a9b5ff"/><circle cx="255" cy="111" r="4" fill="#c48aff"/><circle cx="76" cy="111" r="3" fill="#8ce3ff"/><circle cx="239" cy="29" r="3" fill="#a9b5ff"/></svg>
-      </div>
-      <div><strong>AI that helps you move forward</strong><p class="small">Ask questions, explore ideas and get support when you need it.</p></div>
+  <section class="promo-feature-visuals" id="dashboardFeatureSlider" aria-label="MONIKA AI featured tools">
+  <div class="promo-slider-track" id="promoSliderTrack">
+    <article class="promo-slide active" data-slide="askai">
+      <div class="promo-slide-art promo-slide-ai" aria-hidden="true"><div class="slide-ai-orbit"></div><div class="slide-ai-chip">✦<small>AI</small></div><span class="slide-float f1">?</span><span class="slide-float f2">✧</span></div>
+      <div class="promo-slide-copy"><span class="promo-slide-kicker">FEATURE 01</span><h3>Ask AI – Sawal Jawab</h3><p>Ask questions, explore ideas and get helpful answers through your personal AI chat assistant.</p><button type="button" class="promo-slide-action" onclick="openModule('askai')">Explore Ask AI <span>→</span></button></div>
     </article>
-    <article class="promo-visual-card">
-      <div class="promo-visual-image tech-visual" role="img" aria-label="Illustration of connected technology and digital tools">
-        <svg viewBox="0 0 320 150" aria-hidden="true"><defs><linearGradient id="techGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4dd8d0"/><stop offset="1" stop-color="#6589ff"/></linearGradient></defs><path d="M42 35h236v80H42z" fill="#fff" fill-opacity=".035" stroke="#8ea8ff" stroke-opacity=".55"/><path d="M58 50h80v49H58zM151 50h52v49h-52zM216 50h48v49h-48z" fill="url(#techGrad)" fill-opacity=".13" stroke="#8ea8ff" stroke-opacity=".65"/><path d="M69 85l13-14 12 9 18-19 16 12M162 86l10-17 10 9 11-18M226 86h28M226 74h18M226 62h28" fill="none" stroke="#b9f5f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="82" cy="71" r="3" fill="#fff"/><circle cx="172" cy="69" r="3" fill="#fff"/><path d="M160 35V20m-9 0h18M90 115v12m-8 0h16M230 115v12m-8 0h16" stroke="#7edbd6" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div><strong>Technology, made simple</strong><p class="small">Useful digital tools in a clean, easy-to-use workspace.</p></div>
+    <article class="promo-slide" data-slide="checker">
+      <div class="promo-slide-art promo-slide-checker" aria-hidden="true"><div class="checker-paper"><span></span><span></span><span></span><b>✓</b></div><div class="checker-spark">✦</div><div class="checker-ring"></div></div>
+      <div class="promo-slide-copy"><span class="promo-slide-kicker">FEATURE 02</span><h3>AI Copy Checking</h3><p>Review answer sheets with AI assistance and keep your checking work organised.</p><button type="button" class="promo-slide-action" onclick="openModule('checker')">Explore Copy Checker <span>→</span></button></div>
     </article>
-  </section>
+  </div>
+  <div class="promo-slider-controls"><button type="button" id="promoPrev" aria-label="Previous slide">‹</button><div class="promo-slider-dots"><button type="button" class="active" data-slide-to="0" aria-label="Show Ask AI slide"></button><button type="button" data-slide-to="1" aria-label="Show Copy Checking slide"></button></div><button type="button" id="promoNext" aria-label="Next slide">›</button></div>
+</section>
   <section class="dashboard-overview" aria-label="What MONIKA AI offers">
     <h3>Explore what you can do</h3>
     <div class="overview-row"><span class="dash-tool-icon icon-check">✓</span><div><strong>AI Copy Checker</strong><p class="small">Upload answer sheets and review checking reports.</p></div></div>
@@ -678,11 +725,90 @@ $("lightThemeBtn")?.classList.toggle("active",dashboardPrefs.theme==="light");
 $("gridModeBtn")?.classList.toggle("active",dashboardPrefs.view==="grid");
 $("listModeBtn")?.classList.toggle("active",dashboardPrefs.view==="list");
 try{localStorage.setItem("monikaDashboardPrefs",JSON.stringify(dashboardPrefs));}catch(e){}
+updateHeaderControls?.();
 }
 $("darkThemeBtn")?.addEventListener("click",()=>{dashboardPrefs.theme="dark";applyDashboardPrefs();});
 $("lightThemeBtn")?.addEventListener("click",()=>{dashboardPrefs.theme="light";applyDashboardPrefs();});
 $("gridModeBtn")?.addEventListener("click",()=>{dashboardPrefs.view="grid";applyDashboardPrefs();});
 $("listModeBtn")?.addEventListener("click",()=>{dashboardPrefs.view="list";applyDashboardPrefs();});
+
+$("themeToggleBtn")?.addEventListener("click",()=>{
+ dashboardPrefs.theme=dashboardPrefs.theme==="dark"?"light":"dark";
+ applyDashboardPrefs();
+ updateHeaderControls();
+});
+let appLanguage="en";
+try{appLanguage=localStorage.getItem("monikaAppLanguage")==="hi"?"hi":"en";}catch(e){}
+const languageText={
+ en:{language:"हिंदी",subtitle:"TEACHER DASHBOARD",eyebrow:"MEET YOUR SMARTER WORKSPACE",headline:"Big ideas. Better learning.",headlineAccent:"One intelligent assistant.",intro:"Meet MONIKA AI — a modern companion for teaching, learning and everyday work. Explore useful tools, get quick help and keep your work organised in one place.",ai:"AI-powered help",workspace:"Simple workspace",everyone:"Made for everyone",askTitle:"Ask AI – Sawal Jawab",askDesc:"Ask questions, explore ideas and get helpful answers through your personal AI chat assistant.",askButton:"Explore Ask AI",checkTitle:"AI Copy Checking",checkDesc:"Review answer sheets with AI assistance and keep your checking work organised.",checkButton:"Explore Copy Checker",overview:"Explore what you can do",features:"What you can do with MONIKA AI",copy:"AI Copy Checker",copyDesc:"Upload answer sheets and review checking reports.",ask:"Ask AI – Sawal Jawab",askOverview:"Ask questions and get helpful AI responses in a chat.",students:"Student Records",studentsDesc:"Keep student information organised in one place.",results:"My Results",resultsDesc:"View your saved copy-checking results.",profile:"My Profile",profileDesc:"View and update your personal profile details.",note:"Each feature opens separately, so your workspace stays clean and easy to use."},
+ hi:{language:"English",subtitle:"शिक्षक डैशबोर्ड",eyebrow:"आपके स्मार्ट वर्कस्पेस में आपका स्वागत है",headline:"बड़े विचार। बेहतर सीखना।",headlineAccent:"एक बुद्धिमान सहायक।",intro:"मिलिए MONIKA AI से — पढ़ाने, सीखने और रोज़मर्रा के कामों के लिए आपका आधुनिक साथी। उपयोगी टूल्स खोजें, तुरंत मदद पाएँ और अपना काम व्यवस्थित रखें।",ai:"AI से मदद",workspace:"आसान वर्कस्पेस",everyone:"सभी के लिए",askTitle:"AI से सवाल-जवाब",askDesc:"अपने AI चैट सहायक से सवाल पूछें और उपयोगी जवाब पाएँ।",askButton:"Ask AI खोलें",checkTitle:"AI कॉपी चेकिंग",checkDesc:"AI की मदद से उत्तर पुस्तिकाएँ जाँचें और रिपोर्ट व्यवस्थित रखें।",checkButton:"कॉपी चेकर खोलें",overview:"आप क्या-क्या कर सकते हैं",features:"MONIKA AI की सुविधाएँ",copy:"AI कॉपी चेकर",copyDesc:"उत्तर पुस्तिकाएँ अपलोड करें और जाँच रिपोर्ट देखें।",ask:"AI से सवाल-जवाब",askOverview:"चैट में सवाल पूछें और AI से उपयोगी जवाब पाएँ।",students:"विद्यार्थी रिकॉर्ड",studentsDesc:"विद्यार्थियों की जानकारी व्यवस्थित रखें।",results:"मेरे परिणाम",resultsDesc:"अपनी सेव की गई कॉपी-जाँच रिपोर्ट देखें।",profile:"मेरी प्रोफाइल",profileDesc:"अपनी प्रोफाइल की जानकारी देखें और बदलें।",note:"हर सुविधा अलग पेज पर खुलेगी, जिससे आपका वर्कस्पेस साफ़ और आसान रहेगा।"}
+};
+function applyAppLanguage(){
+ const t=languageText[appLanguage];
+ $("languageToggleBtn").textContent=t.language;
+ $("dashboardSubtitle").textContent=t.subtitle;
+ const set=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value;};
+ set(".dashboard-eyebrow",t.eyebrow);
+ const hero=document.querySelector(".dashboard-welcome h2");
+ if(hero)hero.innerHTML=t.headline+" <em>"+t.headlineAccent+"</em>";
+ set(".dashboard-welcome .promo-copy>p",t.intro);
+ const chips=document.querySelectorAll(".promo-points span");
+ [t.ai,t.workspace,t.everyone].forEach((v,i)=>{if(chips[i])chips[i].textContent=v;});
+ const slideTitles=document.querySelectorAll(".promo-slide-copy h3");
+ const slideDescriptions=document.querySelectorAll(".promo-slide-copy p");
+ const slideButtons=document.querySelectorAll(".promo-slide-action");
+ if(slideTitles[0])slideTitles[0].textContent=t.askTitle;
+ if(slideTitles[1])slideTitles[1].textContent=t.checkTitle;
+ if(slideDescriptions[0])slideDescriptions[0].textContent=t.askDesc;
+ if(slideDescriptions[1])slideDescriptions[1].textContent=t.checkDesc;
+ if(slideButtons[0])slideButtons[0].innerHTML=t.askButton+" <span>→</span>";
+ if(slideButtons[1])slideButtons[1].innerHTML=t.checkButton+" <span>→</span>";
+ set(".dashboard-overview h3",t.features);
+ const rows=document.querySelectorAll(".dashboard-overview .overview-row");
+ const rowTitles=[t.copy,t.ask,t.students,t.results,t.profile];
+ const rowDescriptions=[t.copyDesc,t.askOverview,t.studentsDesc,t.resultsDesc,t.profileDesc];
+ rows.forEach((row,i)=>{if(rowTitles[i])row.querySelector("strong").textContent=rowTitles[i];if(rowDescriptions[i])row.querySelector("p").textContent=rowDescriptions[i];});
+ set(".dashboard-note",t.note);
+ document.querySelectorAll("#monikaSidebar .sidebar-link").forEach((el)=>{
+  const action=el.dataset.menuAction;
+  const label=el.querySelectorAll("span")[1];
+  if(!label)return;
+  const map=appLanguage==="hi"?{home:"डैशबोर्ड",checker:"AI कॉपी चेकर",askai:"AI से सवाल-जवाब",students:"विद्यार्थी रिकॉर्ड",results:"मेरे परिणाम",profile:"मेरी प्रोफाइल",appearance:"डैशबोर्ड थीम"}:{home:"Dashboard",checker:"AI Copy Checker",askai:"Ask AI – Sawal Jawab",students:"Student Records",results:"My Results",profile:"My Profile",appearance:"Dashboard Appearance"};
+  if(map[action])label.textContent=map[action];
+ });
+}
+function updateHeaderControls(){
+ const b=$("themeToggleBtn");if(!b)return;
+ const light=dashboardPrefs.theme==="light";
+ b.textContent=light?"☾":"☼";
+ b.title=light?"Switch to dark theme":"Switch to light theme";
+ b.setAttribute("aria-label",b.title);
+}
+$("languageToggleBtn")?.addEventListener("click",()=>{
+ appLanguage=appLanguage==="en"?"hi":"en";
+ try{localStorage.setItem("monikaAppLanguage",appLanguage);}catch(e){}
+ applyAppLanguage();
+});
+function applyDashboardHeaderSettings(){applyDashboardPrefs();updateHeaderControls();applyAppLanguage();}
+applyDashboardHeaderSettings();
+
+let promoSlideIndex=0,promoSlideTimer=null;
+function showPromoSlide(index){
+ const slides=[...document.querySelectorAll(".promo-slide")];
+ if(!slides.length)return;
+ promoSlideIndex=(index+slides.length)%slides.length;
+ slides.forEach((slide,i)=>slide.classList.toggle("active",i===promoSlideIndex));
+ document.querySelectorAll(".promo-slider-dots button").forEach((dot,i)=>dot.classList.toggle("active",i===promoSlideIndex));
+}
+function startPromoSlider(){
+ if(promoSlideTimer)clearInterval(promoSlideTimer);
+ promoSlideTimer=setInterval(()=>showPromoSlide(promoSlideIndex+1),5000);
+}
+$("promoPrev")?.addEventListener("click",()=>{showPromoSlide(promoSlideIndex-1);startPromoSlider();});
+$("promoNext")?.addEventListener("click",()=>{showPromoSlide(promoSlideIndex+1);startPromoSlider();});
+document.querySelectorAll(".promo-slider-dots button").forEach(dot=>dot.addEventListener("click",()=>{showPromoSlide(Number(dot.dataset.slideTo));startPromoSlider();}));
+showPromoSlide(0);startPromoSlider();
+
 
 window.show=function(id){
 closeMonikaSidebar();
@@ -894,7 +1020,6 @@ $("sidebarUserEmail").textContent=currentUser.email||"Signed in to MONIKA AI";
 $("userName").textContent=
 profileData.fullName||profileData.teacherName||currentUser.displayName||"Teacher";
 
-$("userEmail").textContent=currentUser.email||"";
 
 $("userPhoto").src=
 profileData.photoData||
