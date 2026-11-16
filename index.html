@@ -526,6 +526,20 @@ body.monika-light-dashboard #dashboard .promo-slide-copy p{color:#475569}
 body.monika-light-dashboard #dashboard .promo-slide{background:linear-gradient(130deg,#EAF1FF,#F8FAFC);border-color:#BFDBFE}
 body.monika-light-dashboard #dashboard .promo-slide-kicker{color:#1D4ED8}
 
+
+/* Prevent accidental long-press text highlighting on the dashboard intro.
+   Form fields remain selectable/editable. */
+#dashboard,#dashboard *{
+ -webkit-user-select:none!important;
+ user-select:none!important;
+ -webkit-touch-callout:none;
+}
+#dashboard input,#dashboard textarea,[contenteditable="true"]{
+ -webkit-user-select:text!important;
+ user-select:text!important;
+ -webkit-touch-callout:default;
+}
+
 </style>
 </head>
 
@@ -546,8 +560,6 @@ body.monika-light-dashboard #dashboard .promo-slide-kicker{color:#1D4ED8}
   <button class="sidebar-link" type="button" data-menu-action="students"><span>♙</span><span>Student Records</span></button>
   <button class="sidebar-link" type="button" data-menu-action="results"><span>▤</span><span>My Results</span></button>
   <button class="sidebar-link" type="button" data-menu-action="profile"><span>◉</span><span>My Profile</span></button>
-  <div class="sidebar-caption">PREFERENCES</div>
-  <button class="sidebar-link" type="button" data-menu-action="appearance"><span>⚙</span><span>Dashboard Appearance</span></button>
   <div class="sidebar-spacer"></div>
   <div class="sidebar-user"><strong id="sidebarUserName">Your account</strong><small id="sidebarUserEmail">Signed in to MONIKA AI</small></div>
   
