@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "MONIKA AI",
+  "short_name": "MONIKA AI",
+  "description": "MONIKA AI — your personal AI assistant and copy checking platform.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B1020",
+  "theme_color": "#0B1020",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/monika-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/monika-m-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
