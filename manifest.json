@@ -1,10 +1,10 @@
 {
-  "id": "./",
+  "id": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/",
   "name": "MONIKA AI",
   "short_name": "MONIKA AI",
   "description": "MONIKA AI — your personal AI assistant and copy checking platform.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/",
+  "scope": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0B1020",
@@ -12,19 +12,19 @@
   "lang": "en",
   "icons": [
     {
-      "src": "assets/icon-192.png",
+      "src": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/assets/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "https://anvpublicschoolnagaliyamev2018-web.github.io/Monika-Ai/assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
