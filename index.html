@@ -387,6 +387,36 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;
 .dashboard-note{margin:18px 3px 3px;font-size:12px}
 @media(prefers-reduced-motion:reduce){#dashboard[style*="display: block"],#dashboard>.card{animation:none!important}}
 
+
+/* ADVERTISING-STYLE DASHBOARD INTRO WITH ORIGINAL AI / TECH ARTWORK */
+.dashboard-welcome{position:relative;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:14px;min-height:270px;padding:26px 22px;border:1px solid #8295ff35;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 85% 45%,#745dff2b,transparent 43%),linear-gradient(125deg,#19294a,#121b35 60%,#1b1740)}
+.promo-copy{position:relative;z-index:2}
+.dashboard-welcome h2{max-width:480px;font-size:clamp(25px,5vw,37px);line-height:1.12;letter-spacing:-.8px;margin:0 0 13px}
+.dashboard-welcome h2 em{display:block;color:#9eabff;font-style:normal}
+.dashboard-welcome p{max-width:500px;color:#c1cbe3;line-height:1.7;font-size:13px}
+.promo-points{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px}
+.promo-points span{padding:7px 9px;border:1px solid #ffffff20;border-radius:20px;background:#ffffff09;color:#dce4ff;font-size:10px}
+.promo-art{position:relative;min-height:210px;display:grid;place-items:center}
+.promo-art-glow{position:absolute;width:170px;height:170px;border-radius:50%;background:#686bff55;filter:blur(42px)}
+.promo-orbit{position:absolute;border:1px solid #9aabff55;border-radius:50%;transform:rotate(-25deg)}
+.orbit-one{width:190px;height:100px}.orbit-two{width:150px;height:190px;transform:rotate(48deg)}
+.promo-ai-core{position:relative;width:100px;height:100px;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,#7488ff,#8c54d8);border:1px solid #d7dcff;box-shadow:0 15px 45px #6b62ff66,inset 0 1px 10px #ffffff60;transform:rotate(-8deg)}
+.promo-ai-core span{font-size:35px;font-weight:900;letter-spacing:2px;color:#fff}.promo-ai-core small{font-size:8px;letter-spacing:3px;color:#eef0ff}
+.promo-node{position:absolute;z-index:2;display:grid;place-items:center;width:34px;height:34px;border:1px solid #aebaff88;border-radius:12px;background:#202d59;color:#dce4ff;box-shadow:0 7px 18px #0004}
+.node-one{top:25px;right:17%}.node-two{bottom:25px;left:13%}.node-three{top:45%;right:3%}
+.promo-circuit{position:absolute;width:36px;height:1px;background:#9bb1ff99}.circuit-one{top:55px;left:9%}.circuit-two{bottom:50px;right:11%}
+.promo-feature-visuals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:17px 0}
+.promo-visual-card{overflow:hidden;border:1px solid #ffffff18;border-radius:17px;background:#ffffff07}
+.promo-visual-image{height:125px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at center,#5265ba3b,transparent 70%),linear-gradient(135deg,#18264a,#1c1b42)}
+.promo-visual-image svg{width:100%;height:100%}
+.tech-visual{background:radial-gradient(ellipse at center,#2d9b9b2b,transparent 70%),linear-gradient(135deg,#142e45,#182447)}
+.promo-visual-card>div:last-child{padding:13px 14px 15px}
+.promo-visual-card strong{font-size:13px}.promo-visual-card p{margin-top:5px;line-height:1.5;color:#b7c3df}
+@media(max-width:620px){.dashboard-welcome{grid-template-columns:1fr;padding:22px 17px;gap:0}.promo-art{min-height:165px;margin-top:5px}.promo-feature-visuals{grid-template-columns:1fr}.promo-visual-image{height:115px}}
+@media(prefers-reduced-motion:no-preference){.promo-ai-core{animation:promoFloat 4s ease-in-out infinite}.promo-node{animation:promoPulse 3.2s ease-in-out infinite alternate}.node-two{animation-delay:.7s}.node-three{animation-delay:1.3s}}
+@keyframes promoFloat{50%{transform:translateY(-7px) rotate(-4deg)}}
+@keyframes promoPulse{to{transform:translateY(-5px);box-shadow:0 9px 24px #7c8cff33}}
+
 </style>
 </head>
 
@@ -477,12 +507,35 @@ Continue with Google
     <div><h2 id="userName">Welcome</h2><p class="small" id="userEmail"></p></div>
   </div>
   <section class="dashboard-welcome">
-    <span class="dashboard-eyebrow">YOUR PERSONAL WORKSPACE</span>
-    <h2>Welcome to MONIKA AI</h2>
-    <p>One simple workspace for smarter teaching, learning and everyday tasks. Choose a section from the menu to open it on its own dedicated page.</p>
+    <div class="promo-copy">
+      <span class="dashboard-eyebrow">MEET YOUR SMARTER WORKSPACE</span>
+      <h2>Big ideas. Better learning. <em>One intelligent assistant.</em></h2>
+      <p>Meet MONIKA AI — a modern companion for teaching, learning and everyday work. Explore useful tools, get quick help and keep your work organised in one place.</p>
+      <div class="promo-points"><span>✦ AI-powered help</span><span>⌁ Simple workspace</span><span>◈ Made for everyone</span></div>
+    </div>
+    <div class="promo-art" aria-label="AI and technology illustration">
+      <div class="promo-art-glow"></div><div class="promo-orbit orbit-one"></div><div class="promo-orbit orbit-two"></div>
+      <div class="promo-ai-core"><span>AI</span><small>MONIKA</small></div>
+      <span class="promo-node node-one">✦</span><span class="promo-node node-two">⌘</span><span class="promo-node node-three">◉</span>
+      <span class="promo-circuit circuit-one"></span><span class="promo-circuit circuit-two"></span>
+    </div>
+  </section>
+  <section class="promo-feature-visuals" aria-label="MONIKA AI highlights">
+    <article class="promo-visual-card">
+      <div class="promo-visual-image ai-visual" role="img" aria-label="Illustration of an intelligent AI assistant">
+        <svg viewBox="0 0 320 150" aria-hidden="true"><defs><linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7b8cff"/><stop offset="1" stop-color="#c16bff"/></linearGradient></defs><circle cx="160" cy="75" r="51" fill="none" stroke="#9daeff" stroke-opacity=".35" stroke-width="1.5"/><circle cx="160" cy="75" r="37" fill="#667cff" fill-opacity=".16" stroke="url(#aiGrad)" stroke-width="2"/><path d="M145 61h30a8 8 0 0 1 8 8v17a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8V69a8 8 0 0 1 8-8Z" fill="url(#aiGrad)" fill-opacity=".25" stroke="#c7ceff" stroke-width="1.5"/><path d="M148 77h24M151 84h18M160 53v8M160 95v8M138 75h-8M190 75h-8" stroke="#e4e8ff" stroke-width="2" stroke-linecap="round"/><circle cx="160" cy="75" r="3" fill="#fff"/><path d="M65 39l20 10m150 52 20 10M76 111l15-8m139-66 14-8" stroke="#7e91ff" stroke-width="2" stroke-linecap="round"/><circle cx="65" cy="39" r="4" fill="#a9b5ff"/><circle cx="255" cy="111" r="4" fill="#c48aff"/><circle cx="76" cy="111" r="3" fill="#8ce3ff"/><circle cx="239" cy="29" r="3" fill="#a9b5ff"/></svg>
+      </div>
+      <div><strong>AI that helps you move forward</strong><p class="small">Ask questions, explore ideas and get support when you need it.</p></div>
+    </article>
+    <article class="promo-visual-card">
+      <div class="promo-visual-image tech-visual" role="img" aria-label="Illustration of connected technology and digital tools">
+        <svg viewBox="0 0 320 150" aria-hidden="true"><defs><linearGradient id="techGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4dd8d0"/><stop offset="1" stop-color="#6589ff"/></linearGradient></defs><path d="M42 35h236v80H42z" fill="#fff" fill-opacity=".035" stroke="#8ea8ff" stroke-opacity=".55"/><path d="M58 50h80v49H58zM151 50h52v49h-52zM216 50h48v49h-48z" fill="url(#techGrad)" fill-opacity=".13" stroke="#8ea8ff" stroke-opacity=".65"/><path d="M69 85l13-14 12 9 18-19 16 12M162 86l10-17 10 9 11-18M226 86h28M226 74h18M226 62h28" fill="none" stroke="#b9f5f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="82" cy="71" r="3" fill="#fff"/><circle cx="172" cy="69" r="3" fill="#fff"/><path d="M160 35V20m-9 0h18M90 115v12m-8 0h16M230 115v12m-8 0h16" stroke="#7edbd6" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div><strong>Technology, made simple</strong><p class="small">Useful digital tools in a clean, easy-to-use workspace.</p></div>
+    </article>
   </section>
   <section class="dashboard-overview" aria-label="What MONIKA AI offers">
-    <h3>What you can do with MONIKA AI</h3>
+    <h3>Explore what you can do</h3>
     <div class="overview-row"><span class="dash-tool-icon icon-check">✓</span><div><strong>AI Copy Checker</strong><p class="small">Upload answer sheets and review checking reports.</p></div></div>
     <div class="overview-row"><span class="dash-tool-icon icon-chat">✦</span><div><strong>Ask AI – Sawal Jawab</strong><p class="small">Ask questions and get helpful AI responses in a chat.</p></div></div>
     <div class="overview-row"><span class="dash-tool-icon icon-students">♙</span><div><strong>Student Records</strong><p class="small">Keep student information organised in one place.</p></div></div>
