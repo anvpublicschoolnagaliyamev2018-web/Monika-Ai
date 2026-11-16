@@ -664,7 +664,6 @@ Continue with Google
     <div class="overview-row"><span class="dash-tool-icon icon-results">▥</span><div><strong>My Results</strong><p class="small">View your saved copy-checking results.</p></div></div>
     <div class="overview-row"><span class="dash-tool-icon icon-profile">◎</span><div><strong>My Profile</strong><p class="small">View and update your personal profile details.</p></div></div>
   </section>
-  <p class="dashboard-note">Each feature opens separately, so your workspace stays clean and easy to use.</p>
 </div>
 
 <nav class="bottom" aria-label="Quick navigation">
@@ -835,7 +834,6 @@ function applyAppLanguage(){
  const rowTitles=[t.copy,t.ask,t.students,t.results,t.profile];
  const rowDescriptions=[t.copyDesc,t.askOverview,t.studentsDesc,t.resultsDesc,t.profileDesc];
  rows.forEach((row,i)=>{if(rowTitles[i])row.querySelector("strong").textContent=rowTitles[i];if(rowDescriptions[i])row.querySelector("p").textContent=rowDescriptions[i];});
- set(".dashboard-note",t.note);
  document.querySelectorAll("#monikaSidebar .sidebar-link").forEach((el)=>{
   const action=el.dataset.menuAction;
   const label=el.querySelectorAll("span")[1];
