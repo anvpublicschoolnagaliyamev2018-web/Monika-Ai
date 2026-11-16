@@ -321,6 +321,55 @@ body.monika-light-dashboard .dash-menu-trigger{background:#fff;color:#293650;bor
 #dashboard #dashboardTools.list-mode>.tile button{width:100%;margin-top:12px}
 }
 
+
+/* POLISHED DASHBOARD — warm, considered motion and clear tool icons */
+#dashboard{transform-origin:50% 0}
+#dashboard[style*="display: block"]{animation:dashboardArrive .55s cubic-bezier(.2,.75,.25,1) both}
+@keyframes dashboardArrive{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+#dashboard>header{position:relative;padding-top:34px}
+#dashboard>header .logo{width:76px;height:76px;border-radius:23px;margin-bottom:15px;box-shadow:0 5px 0 #292c83,0 14px 28px #5365ff40}
+#dashboard>.card{animation:dashboardCardIn .6s .08s both}
+@keyframes dashboardCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+#dashboard .profile{background:linear-gradient(110deg,#ffffff0d,#ffffff04);border-color:#ffffff1b}
+#dashboard .profile img{box-shadow:0 5px 16px #526fff35}
+#dashboard .dashboard-tools-grid .tile{position:relative;overflow:hidden;isolation:isolate;min-height:164px;padding:19px;transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease;background:linear-gradient(145deg,#263763,#172342)}
+#dashboard .dashboard-tools-grid .tile:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(#6f8bff,#b16cff);opacity:0;transition:opacity .2s}
+#dashboard .dashboard-tools-grid .tile:after{content:"";position:absolute;width:120px;height:120px;right:-64px;top:-64px;border-radius:50%;background:#8298ff0d;z-index:-1}
+#dashboard .dashboard-tools-grid .tile:hover{transform:translateY(-4px);border-color:#8ca1ff65;box-shadow:0 16px 30px #0005}
+#dashboard .dashboard-tools-grid .tile:hover:before{opacity:1}
+#dashboard .dashboard-tools-grid .tile:nth-child(1){animation:tileRise .48s .12s both}
+#dashboard .dashboard-tools-grid .tile:nth-child(2){animation:tileRise .48s .19s both}
+#dashboard .dashboard-tools-grid .tile:nth-child(3){animation:tileRise .48s .26s both}
+#dashboard .dashboard-tools-grid .tile:nth-child(4){animation:tileRise .48s .33s both}
+#dashboard .dashboard-tools-grid .tile:nth-child(5){animation:tileRise .48s .40s both}
+@keyframes tileRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.dash-tool-icon{display:inline-grid;place-items:center;vertical-align:middle;width:34px;height:34px;margin-right:9px;border-radius:11px;font-size:18px;font-weight:800;color:#fff;box-shadow:0 5px 14px #0002}
+.icon-check{background:linear-gradient(135deg,#258d9d,#3b6dd9)}
+.icon-chat{background:linear-gradient(135deg,#6e62df,#a14fce)}
+.icon-students{background:linear-gradient(135deg,#238f78,#3d9dba)}
+.icon-results{background:linear-gradient(135deg,#bd7b32,#d45b70)}
+.icon-profile{background:linear-gradient(135deg,#526fff,#8c64ce)}
+#dashboard .tile h3{display:flex;align-items:center;gap:0;font-size:15px;letter-spacing:.1px}
+#dashboard .tile .small{min-height:39px;color:#b5c2df}
+#dashboard .tile .primary{margin-top:14px;box-shadow:0 3px 0 #39349d;transition:filter .2s,transform .2s}
+#dashboard .tile .primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+#dashboard .dashboard-settings{background:#ffffff07;border-color:#ffffff18}
+.askai-topbar-left{display:flex;align-items:center;gap:12px;min-width:0}
+.askai-back{flex:none;display:inline-flex;align-items:center;gap:5px;padding:9px 12px;border:1px solid #ffffff24;border-radius:13px;background:#ffffff0b;color:#e5ebff;font-size:12px}
+.askai-back:hover{background:#ffffff17;border-color:#ffffff42}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;color:#35415b;border-color:#dce2ef}
+@media(max-width:600px){
+ #dashboard .dashboard-tools-grid .tile{min-height:0}
+ #dashboard .tile .small{min-height:0}
+ .askai-topbar-left{gap:7px}
+ .askai-back{padding:8px 9px}
+ .askai-back span{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ #dashboard[style*="display: block"],#dashboard>.card,#dashboard .dashboard-tools-grid .tile{animation:none!important}
+ #dashboard .dashboard-tools-grid .tile{transition:none!important}
+}
+
 </style>
 </head>
 
@@ -437,27 +486,27 @@ Continue with Google
 
 <div id="dashboardTools" class="dashboard-tools-grid">
 <div class="tile">
-<h3>📸 AI Copy Checker</h3>
+<h3><span class="dash-tool-icon icon-check">✓</span>AI Copy Checker</h3>
 <p class="small">Upload student answer sheets.</p>
 <button class="primary" onclick="openModule('checker')">Check a Copy</button>
 </div>
 <div class="tile">
-<h3>💬 Ask AI – Sawal Jawab</h3>
+<h3><span class="dash-tool-icon icon-chat">✦</span>Ask AI – Sawal Jawab</h3>
 <p class="small">Ask questions and get helpful answers from MONIKA AI.</p>
 <button class="primary" onclick="openModule('askai')">Ask MONIKA AI</button>
 </div>
 <div class="tile">
-<h3>👨‍🎓 Student Records</h3>
+<h3><span class="dash-tool-icon icon-students">♙</span>Student Records</h3>
 <p class="small">Manage student information.</p>
 <button class="primary" onclick="openModule('students')">Open Students</button>
 </div>
 <div class="tile">
-<h3>📊 My Results</h3>
+<h3><span class="dash-tool-icon icon-results">▥</span>My Results</h3>
 <p class="small">View saved checking reports.</p>
 <button class="primary" onclick="openModule('results')">View Results</button>
 </div>
 <div class="tile">
-<h3>👤 My Profile</h3>
+<h3><span class="dash-tool-icon icon-profile">◎</span>My Profile</h3>
 <p class="small">Create and edit your profile.</p>
 <button class="primary" onclick="openModule('profile')">Edit Profile</button>
 </div>
@@ -857,7 +906,10 @@ askAIChats=[];
 root.innerHTML=`
 <div class="askai-app">
   <div class="askai-topbar">
-    <div class="askai-brand"><span class="askai-brand-mark">✦</span><div><strong>MONIKA AI</strong><small>Ask anything</small></div></div>
+    <div class="askai-topbar-left">
+      <button class="askai-back" id="askAIBackBtn" type="button" aria-label="Back to dashboard" title="Back to dashboard">← <span>Back</span></button>
+      <div class="askai-brand"><span class="askai-brand-mark">✦</span><div><strong>MONIKA AI</strong><small>Ask anything</small></div></div>
+    </div>
     <div style="display:flex;align-items:center;gap:8px">
       <button class="askai-history-toggle" id="askAIHistoryToggle" type="button">☰ Chats</button>
       <button class="askai-clear" id="askAIClearBtn" type="button" title="Start a new chat" aria-label="Start a new chat">＋ <span>New chat</span></button>
@@ -887,6 +939,7 @@ root.innerHTML=`
   </div>
 </div>
 `;
+$("askAIBackBtn").onclick=()=>show("dashboard");
 $("askAISendBtn").onclick=sendAskAIQuestion;
 $("askAIClearBtn").onclick=startNewAskAIChat;
 $("askAIHistoryToggle").onclick=()=>$("askAILayout").classList.toggle("history-open");
