@@ -150,11 +150,75 @@ body.monika-light-dashboard #module .result{background:#f5f7fc;color:#202b43;bor
 body.monika-light-dashboard #module .item-actions button{background:#e9edf7;color:#26324a;border-color:#d7deeb}
 @media(max-width:430px){.dashboard-tools-grid{grid-template-columns:1fr}.dashboard-tools-grid.list-mode .tile{display:block}.dashboard-tools-grid.list-mode .tile button{width:100%;margin-top:13px}}
 
+
+/* PREMIUM DASHBOARD SHELL + RESPONSIVE SLIDE SIDEBAR */
+#dashboard header,#module header{position:relative;padding:22px 58px 18px}
+#dashboard header .logo,#module header .logo{width:76px;height:76px;border-radius:23px;margin-bottom:13px}
+#dashboard header h1,#module header h1{font-size:clamp(23px,5vw,29px);letter-spacing:3px}
+#dashboard .card:first-of-type{padding:clamp(16px,3vw,25px);border-radius:26px}
+#dashboard .dashboard-settings{background:rgba(10,17,42,.58);border-radius:20px;box-shadow:none}
+#dashboard .tile{position:relative;overflow:hidden;min-height:158px;padding:20px;border-radius:21px;background:linear-gradient(145deg,rgba(42,57,108,.92),rgba(19,29,62,.98));transition:transform .25s,border-color .25s,box-shadow .25s}
+#dashboard .tile:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(#7bdcff,#a16bff);opacity:.8}
+#dashboard .tile:hover{transform:translateY(-4px);border-color:#879cff;box-shadow:0 16px 30px #0005}
+#dashboard .tile h3{font-size:16px;margin-bottom:7px}
+#dashboard .tile .primary{margin-top:15px}
+#dashboard .bottom{max-width:650px;margin:18px auto 0}
+.dash-menu-trigger{position:absolute;left:0;top:20px;width:44px;height:44px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(145deg,#263967,#171f40);color:#fff;font-size:22px;box-shadow:0 7px 18px #0003;z-index:2}
+.dash-menu-trigger:hover{filter:brightness(1.2)}
+#monikaSidebarBackdrop{position:fixed;inset:0;background:rgba(2,5,17,.65);backdrop-filter:blur(5px);z-index:80;opacity:0;visibility:hidden;transition:.28s}
+#monikaSidebar{position:fixed;z-index:81;inset:0 auto 0 0;width:min(300px,84vw);padding:22px 17px;background:linear-gradient(160deg,#111b3a 0%,#090f24 75%);border-right:1px solid rgba(153,174,255,.24);box-shadow:22px 0 70px #0008;transform:translateX(-105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+body.sidebar-open #monikaSidebar{transform:translateX(0)}
+body.sidebar-open #monikaSidebarBackdrop{opacity:1;visibility:visible}
+.sidebar-brand{display:flex;align-items:center;gap:12px;padding:7px 5px 20px;border-bottom:1px solid #ffffff18}
+.sidebar-brand img{width:48px;height:48px;object-fit:contain;border-radius:14px}
+.sidebar-brand strong{display:block;font-size:16px;letter-spacing:2px}
+.sidebar-brand small{display:block;color:#9eadd4;font-size:10px;letter-spacing:1.5px;margin-top:4px}
+.sidebar-close{margin-left:auto;width:34px;height:34px;border:1px solid #ffffff22;border-radius:10px;background:#ffffff0b;color:#fff;font-size:20px}
+.sidebar-caption{font-size:10px;letter-spacing:2px;color:#8393c1;font-weight:800;padding:7px 10px 0}
+.sidebar-link{display:flex;align-items:center;gap:13px;width:100%;padding:13px 14px;border:1px solid transparent;border-radius:14px;background:transparent;color:#e5ebff;text-align:left;font-size:13px;font-weight:750}
+.sidebar-link span:first-child{width:25px;text-align:center;font-size:18px}
+.sidebar-link:hover,.sidebar-link.active{background:linear-gradient(100deg,#526fff38,#9a5bff24);border-color:#8295ff55;color:#fff}
+.sidebar-spacer{flex:1;min-height:20px}
+.sidebar-user{padding:12px;border-radius:15px;background:#ffffff0b;border:1px solid #ffffff17;color:#dce5ff;font-size:12px;overflow-wrap:anywhere}
+.sidebar-user small{display:block;color:#94a4d0;margin-top:4px}
+.sidebar-link.signout{color:#ffb5c0}
+body.monika-light-dashboard #monikaSidebar{background:linear-gradient(160deg,#fff,#f0f3fb);border-color:#dce2ef;box-shadow:22px 0 70px #17264a25}
+body.monika-light-dashboard .sidebar-brand{border-color:#e2e7f1}
+body.monika-light-dashboard .sidebar-brand strong,body.monika-light-dashboard .sidebar-link{color:#202b43}
+body.monika-light-dashboard .sidebar-brand small,body.monika-light-dashboard .sidebar-caption{color:#71809d}
+body.monika-light-dashboard .sidebar-close{color:#293650;background:#edf1f8;border-color:#dce2ef}
+body.monika-light-dashboard .sidebar-link:hover,body.monika-light-dashboard .sidebar-link.active{background:#e9edff;border-color:#cbd4ff}
+body.monika-light-dashboard .sidebar-user{background:#f3f5fa;border-color:#e0e5ef;color:#27334c}
+body.monika-light-dashboard .sidebar-user small{color:#72809a}
+body.monika-light-dashboard .dash-menu-trigger{background:#fff;color:#293650;border-color:#dce2ef;box-shadow:0 6px 16px #17264a15}
+@media(max-width:430px){#dashboard header,#module header{padding:18px 48px 15px}#dashboard header .logo,#module header .logo{width:66px;height:66px}.dash-menu-trigger{top:16px;width:40px;height:40px}#dashboard .tile{min-height:0}}
+
 </style>
 </head>
 
 <body>
 <div class="app">
+
+<div id="monikaSidebarBackdrop" onclick="closeMonikaSidebar()" aria-hidden="true"></div>
+<aside id="monikaSidebar" aria-label="Main navigation">
+  <div class="sidebar-brand">
+    <img src="assets/monika-logo.gif" alt="MONIKA AI">
+    <div><strong>MONIKA AI</strong><small>INTELLIGENCE WITH IDENTITY</small></div>
+    <button class="sidebar-close" type="button" onclick="closeMonikaSidebar()" aria-label="Close menu">×</button>
+  </div>
+  <div class="sidebar-caption">WORKSPACE</div>
+  <button class="sidebar-link active" type="button" data-menu-action="home"><span>⌂</span><span>Dashboard</span></button>
+  <button class="sidebar-link" type="button" data-menu-action="checker"><span>▧</span><span>AI Copy Checker</span></button>
+  <button class="sidebar-link" type="button" data-menu-action="students"><span>♙</span><span>Student Records</span></button>
+  <button class="sidebar-link" type="button" data-menu-action="results"><span>▤</span><span>My Results</span></button>
+  <button class="sidebar-link" type="button" data-menu-action="profile"><span>◉</span><span>My Profile</span></button>
+  <div class="sidebar-caption">PREFERENCES</div>
+  <button class="sidebar-link" type="button" data-menu-action="appearance"><span>⚙</span><span>Dashboard Appearance</span></button>
+  <div class="sidebar-spacer"></div>
+  <div class="sidebar-user"><strong id="sidebarUserName">Your account</strong><small id="sidebarUserEmail">Signed in to MONIKA AI</small></div>
+  <button class="sidebar-link signout" type="button" data-menu-action="logout"><span>↪</span><span>Sign Out</span></button>
+</aside>
+
 
 <section id="intro" class="section intro-screen">
 <div class="intro-core">
@@ -207,6 +271,7 @@ Continue with Google
 
 <section id="dashboard" class="section">
 <header>
+<button class="dash-menu-trigger" type="button" onclick="toggleMonikaSidebar()" aria-label="Open navigation menu" aria-controls="monikaSidebar" aria-expanded="false">☰</button>
 <div class="logo"><img src="assets/monika-logo.gif" alt="MONIKA AI animated 3D logo"></div>
 <h1>MONIKA AI</h1>
 <p class="sub">TEACHER DASHBOARD</p>
@@ -276,6 +341,7 @@ Continue with Google
 
 <section id="module" class="section">
 <header>
+<button class="dash-menu-trigger" type="button" onclick="toggleMonikaSidebar()" aria-label="Open navigation menu" aria-controls="monikaSidebar" aria-expanded="false">☰</button>
 <div class="logo"><img src="assets/monika-logo.gif" alt="MONIKA AI animated 3D logo"></div>
 <h1 id="moduleTitle">MONIKA AI</h1>
 <p class="sub">INTELLIGENCE WITH IDENTITY</p>
@@ -344,6 +410,32 @@ let editingStudentId=null;
 const $=id=>document.getElementById(id);
 
 
+
+/* SLIDE SIDEBAR NAVIGATION */
+window.toggleMonikaSidebar=function(){
+document.body.classList.toggle("sidebar-open");
+document.querySelectorAll(".dash-menu-trigger").forEach(b=>b.setAttribute("aria-expanded",document.body.classList.contains("sidebar-open")?"true":"false"));
+};
+window.closeMonikaSidebar=function(){
+document.body.classList.remove("sidebar-open");
+document.querySelectorAll(".dash-menu-trigger").forEach(b=>b.setAttribute("aria-expanded","false"));
+};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMonikaSidebar();});
+document.querySelectorAll("#monikaSidebar [data-menu-action]").forEach(btn=>{
+btn.addEventListener("click",()=>{
+const action=btn.dataset.menuAction;
+document.querySelectorAll("#monikaSidebar .sidebar-link").forEach(x=>x.classList.remove("active"));
+btn.classList.add("active");
+closeMonikaSidebar();
+if(action==="home")show("dashboard");
+else if(["checker","students","results","profile"].includes(action))openModule(action);
+else if(action==="appearance"){
+show("dashboard");
+setTimeout(()=>{const panel=document.querySelector("#dashboard .dashboard-settings");panel?.scrollIntoView({behavior:"smooth",block:"center"});},80);
+}else if(action==="logout")$("logoutBtn").click();
+});
+});
+
 /* DASHBOARD APPEARANCE PREFERENCES — intro/login remain untouched */
 const dashboardPrefs={theme:"dark",view:"grid"};
 try{
@@ -367,8 +459,11 @@ $("gridModeBtn").onclick=()=>{dashboardPrefs.view="grid";applyDashboardPrefs();}
 $("listModeBtn").onclick=()=>{dashboardPrefs.view="list";applyDashboardPrefs();};
 
 window.show=function(id){
+closeMonikaSidebar();
 document.querySelectorAll(".section").forEach(s=>s.style.display="none");
 $(id).style.display=(id==="intro"?"flex":"block");
+document.body.classList.toggle("app-area-active",id==="dashboard"||id==="module");
+if(id==="dashboard"||id==="module")applyDashboardPrefs();
 window.scrollTo({top:0,behavior:"smooth"});
 };
 
@@ -558,6 +653,8 @@ profileData=snap.exists()?snap.data():{};
 }
 
 function updateHeader(){
+$("sidebarUserName").textContent=profileData.fullName||profileData.teacherName||currentUser.displayName||"Your account";
+$("sidebarUserEmail").textContent=currentUser.email||"Signed in to MONIKA AI";
 $("userName").textContent=
 profileData.fullName||profileData.teacherName||currentUser.displayName||"Teacher";
 
