@@ -664,7 +664,6 @@ return collection(db,"users",currentUser.uid,name);
 
 onAuthStateChanged(auth,async user=>{
 currentUser=user;
-authResolved=true;
 
 if(!user){
 profileData={};
