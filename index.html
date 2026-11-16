@@ -376,23 +376,23 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;
 /* Animated feature carousel for all dashboard tools */
 .feature-overview-slider{overflow:hidden}
 .overview-slides{position:relative;min-height:250px}
-.overview-feature-slide{display:none;min-height:235px;padding:22px 18px;border:1px solid #7895ff40;border-radius:18px;background:radial-gradient(circle at 88% 8%,#2563eb28,transparent 42%),linear-gradient(145deg,#192847,#121b32);color:#f8fafc;animation:overviewSlideIn .55s cubic-bezier(.2,.75,.25,1) both}
+.overview-feature-slide{display:none;min-height:235px;padding:22px 18px;border:1px solid #7895ff40;border-radius:18px;background:radial-gradient(circle at 88% 8%,#2563eb28,transparent 42%),linear-gradient(145deg,#192847,#121b32);color:#f8fafc;animation:overviewSlideVertical .7s cubic-bezier(.2,.75,.25,1) both}
 .overview-feature-slide.active{display:flex;flex-direction:column;align-items:flex-start}
 .overview-feature-slide .dash-tool-icon{width:48px;height:48px;font-size:24px;margin:0 0 15px;border-radius:15px;animation:overviewIconFloat 2.8s ease-in-out infinite}
 .overview-kicker{font-size:10px;letter-spacing:2px;font-weight:800;color:#91b5ff}
 .overview-feature-slide h4{font-size:21px;margin:7px 0 6px;color:#fff}
 .overview-feature-slide p{font-size:13px;line-height:1.65;color:#c2cee5;max-width:440px}
-.overview-feature-slide>button{margin-top:17px;padding:11px 15px;border:0;border-radius:11px;background:linear-gradient(110deg,#2563eb,#38bdf8);color:#fff;font-weight:800;font-size:12px;box-shadow:0 8px 20px #2563eb45}
-.overview-feature-slide>button b{font-size:17px;margin-left:12px}
-.overview-slider-controls{display:flex;align-items:center;justify-content:center;gap:15px;padding-top:15px}
-.overview-slider-controls>button{width:31px;height:31px;border-radius:50%;border:1px solid #8295ff55;background:#ffffff0a;color:#dce5ff;font-size:22px;line-height:1}
-#overviewDots{display:flex;gap:7px;align-items:center}
-#overviewDots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#7180a5}
-#overviewDots button.active{width:22px;border-radius:8px;background:#38bdf8}
+
+
+
+
+
+
+
 body.monika-light-dashboard .overview-feature-slide{background:linear-gradient(145deg,#eff5ff,#e5edff);border-color:#cbd8f4;color:#17233d}
 body.monika-light-dashboard .overview-feature-slide h4{color:#17233d}
 body.monika-light-dashboard .overview-feature-slide p{color:#53627d}
-@keyframes overviewSlideIn{from{opacity:0;transform:translateX(22px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes overviewSlideVertical{from{opacity:0;transform:translateY(28px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes overviewIconFloat{50%{transform:translateY(-5px) rotate(3deg)}}
 @media(max-width:620px){.overview-slides{min-height:265px}.overview-feature-slide{min-height:250px;padding:19px 16px}}
 @media(prefers-reduced-motion:reduce){.overview-feature-slide,.overview-feature-slide .dash-tool-icon{animation:none!important}}
@@ -684,13 +684,13 @@ Continue with Google
   <section class="dashboard-overview feature-overview-slider" aria-label="What MONIKA AI offers">
     <h3>Explore what you can do</h3>
     <div class="overview-slides" id="overviewSlides">
-      <article class="overview-feature-slide active"><span class="dash-tool-icon icon-check">✓</span><span class="overview-kicker">FEATURE 01</span><h4>AI Copy Checker</h4><p>Upload answer sheets and review checking reports.</p><button type="button" onclick="openModule('checker')">Open Copy Checker <b>→</b></button></article>
-      <article class="overview-feature-slide"><span class="dash-tool-icon icon-chat">✦</span><span class="overview-kicker">FEATURE 02</span><h4>Ask AI – Sawal Jawab</h4><p>Ask questions and get helpful AI responses in a chat.</p><button type="button" onclick="openModule('askai')">Open Ask AI <b>→</b></button></article>
-      <article class="overview-feature-slide"><span class="dash-tool-icon icon-students">♙</span><span class="overview-kicker">FEATURE 03</span><h4>Student Records</h4><p>Keep student information organised in one place.</p><button type="button" onclick="openModule('students')">Open Student Records <b>→</b></button></article>
-      <article class="overview-feature-slide"><span class="dash-tool-icon icon-results">▥</span><span class="overview-kicker">FEATURE 04</span><h4>My Results</h4><p>View your saved copy-checking results.</p><button type="button" onclick="openModule('results')">View My Results <b>→</b></button></article>
-      <article class="overview-feature-slide"><span class="dash-tool-icon icon-profile">◎</span><span class="overview-kicker">FEATURE 05</span><h4>My Profile</h4><p>View and update your personal profile details.</p><button type="button" onclick="openModule('profile')">Open My Profile <b>→</b></button></article>
+      <article class="overview-feature-slide active"><span class="dash-tool-icon icon-check">✓</span><span class="overview-kicker">FEATURE 01</span><h4>AI Copy Checker</h4><p>Upload answer sheets and review checking reports.</p></article>
+      <article class="overview-feature-slide"><span class="dash-tool-icon icon-chat">✦</span><span class="overview-kicker">FEATURE 02</span><h4>Ask AI – Sawal Jawab</h4><p>Ask questions and get helpful AI responses in a chat.</p></article>
+      <article class="overview-feature-slide"><span class="dash-tool-icon icon-students">♙</span><span class="overview-kicker">FEATURE 03</span><h4>Student Records</h4><p>Keep student information organised in one place.</p></article>
+      <article class="overview-feature-slide"><span class="dash-tool-icon icon-results">▥</span><span class="overview-kicker">FEATURE 04</span><h4>My Results</h4><p>View your saved copy-checking results.</p></article>
+      <article class="overview-feature-slide"><span class="dash-tool-icon icon-profile">◎</span><span class="overview-kicker">FEATURE 05</span><h4>My Profile</h4><p>View and update your personal profile details.</p></article>
     </div>
-    <div class="overview-slider-controls"><button type="button" id="overviewPrev" aria-label="Previous feature">‹</button><div id="overviewDots"><button class="active" data-overview-to="0" aria-label="Feature 1"></button><button data-overview-to="1" aria-label="Feature 2"></button><button data-overview-to="2" aria-label="Feature 3"></button><button data-overview-to="3" aria-label="Feature 4"></button><button data-overview-to="4" aria-label="Feature 5"></button></div><button type="button" id="overviewNext" aria-label="Next feature">›</button></div>
+    
   </section>
 </div>
 
@@ -888,11 +888,8 @@ applyDashboardHeaderSettings();
 
 
 let overviewSlideIndex=0,overviewSlideTimer=null;
-function showOverviewSlide(index){const slides=[...document.querySelectorAll(".overview-feature-slide")];if(!slides.length)return;overviewSlideIndex=(index+slides.length)%slides.length;slides.forEach((el,i)=>el.classList.toggle("active",i===overviewSlideIndex));document.querySelectorAll("#overviewDots button").forEach((el,i)=>el.classList.toggle("active",i===overviewSlideIndex));}
+function showOverviewSlide(index){const slides=[...document.querySelectorAll(".overview-feature-slide")];if(!slides.length)return;overviewSlideIndex=(index+slides.length)%slides.length;slides.forEach((el,i)=>el.classList.toggle("active",i===overviewSlideIndex));}
 function startOverviewSlider(){if(overviewSlideTimer)clearInterval(overviewSlideTimer);overviewSlideTimer=setInterval(()=>showOverviewSlide(overviewSlideIndex+1),4500);}
-document.getElementById("overviewPrev")?.addEventListener("click",()=>{showOverviewSlide(overviewSlideIndex-1);startOverviewSlider();});
-document.getElementById("overviewNext")?.addEventListener("click",()=>{showOverviewSlide(overviewSlideIndex+1);startOverviewSlider();});
-document.querySelectorAll("#overviewDots button").forEach(dot=>dot.addEventListener("click",()=>{showOverviewSlide(Number(dot.dataset.overviewTo));startOverviewSlider();}));
 showOverviewSlide(0);startOverviewSlider();
 
 let promoSlideIndex=0,promoSlideTimer=null;
