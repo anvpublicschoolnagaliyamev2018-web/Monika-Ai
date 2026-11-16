@@ -417,6 +417,14 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-back{background:#fff;
 @keyframes promoFloat{50%{transform:translateY(-7px) rotate(-4deg)}}
 @keyframes promoPulse{to{transform:translateY(-5px);box-shadow:0 9px 24px #7c8cff33}}
 
+
+/* Quick access to Ask AI from the persistent bottom navigation */
+.bottom{gap:3px;padding:9px 5px}
+.bottom button{min-width:0;white-space:nowrap;line-height:1.45;font-size:10px}
+.bottom .bottom-ai-button{color:#fff;background:linear-gradient(145deg,#586eff,#9857df);border:1px solid #b6baff70;border-radius:13px;box-shadow:0 5px 14px #625cff45;font-weight:800;transform:translateY(-5px);padding:9px 2px}
+.bottom .bottom-ai-button:active{transform:translateY(-2px) scale(.97)}
+@media(max-width:390px){.bottom{gap:1px;padding:8px 3px}.bottom button{font-size:9px;padding:7px 1px}}
+
 </style>
 </head>
 
@@ -545,11 +553,12 @@ Continue with Google
   <p class="dashboard-note">Each feature opens separately, so your workspace stays clean and easy to use.</p>
 </div>
 
-<nav class="bottom">
-<button onclick="show('dashboard')">🏠<br>Home</button>
-<button onclick="openModule('checker')">📷<br>Checking</button>
-<button onclick="openModule('students')">👨‍🎓<br>Students</button>
-<button onclick="openModule('profile')">👤<br>Profile</button>
+<nav class="bottom" aria-label="Quick navigation">
+<button onclick="show('dashboard')" aria-label="Home">🏠<br>Home</button>
+<button onclick="openModule('checker')" aria-label="AI Copy Checker">📷<br>Checking</button>
+<button class="bottom-ai-button" onclick="openModule('askai')" aria-label="Ask MONIKA AI">✦<br>Ask AI</button>
+<button onclick="openModule('students')" aria-label="Student Records">👨‍🎓<br>Students</button>
+<button onclick="openModule('profile')" aria-label="My Profile">👤<br>Profile</button>
 </nav>
 </section>
 
@@ -564,11 +573,12 @@ Continue with Google
 <div id="moduleContent"></div>
 <button class="secondary" onclick="show('dashboard')">← Back to Dashboard</button>
 </div>
-<nav class="bottom">
-<button onclick="show('dashboard')">🏠<br>Home</button>
-<button onclick="openModule('checker')">📷<br>Checking</button>
-<button onclick="openModule('students')">👨‍🎓<br>Students</button>
-<button onclick="openModule('profile')">👤<br>Profile</button>
+<nav class="bottom" aria-label="Quick navigation">
+<button onclick="show('dashboard')" aria-label="Home">🏠<br>Home</button>
+<button onclick="openModule('checker')" aria-label="AI Copy Checker">📷<br>Checking</button>
+<button class="bottom-ai-button" onclick="openModule('askai')" aria-label="Ask MONIKA AI">✦<br>Ask AI</button>
+<button onclick="openModule('students')" aria-label="Student Records">👨‍🎓<br>Students</button>
+<button onclick="openModule('profile')" aria-label="My Profile">👤<br>Profile</button>
 </nav>
 </section>
 
