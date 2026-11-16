@@ -5,6 +5,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B1020">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MONIKA AI">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/monika-logo.svg">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <title>MONIKA AI | Intelligence with Identity</title>
 
@@ -2105,6 +2111,15 @@ pre{white-space:pre-wrap;line-height:1.7;font-size:14px}
 <body>
 <h2>MONIKA AI - COPY CHECK REPORT</h2>
 <pre>${esc(text)}</pre>
+<script>
+/* Register MONIKA AI offline shell for installable app support */
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js", { scope: "./" })
+      .catch(error => console.warn("MONIKA AI offline support:", error));
+  });
+}
+</script>
 </body>
 </html>
 `);
