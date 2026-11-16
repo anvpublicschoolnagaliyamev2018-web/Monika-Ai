@@ -224,6 +224,43 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-assistant{background:
  .askai-clear{padding:8px 10px}
 }
 
+/* ASK AI CHAT HISTORY + IMPROVED SEND CONTROL */
+.askai-layout{display:flex;flex:1;min-height:0;width:100%;gap:0}
+.askai-history{flex:none;width:250px;display:flex;flex-direction:column;min-height:0;padding:14px 10px 12px 0;border-right:1px solid #ffffff16}
+.askai-history-head{display:flex;align-items:center;justify-content:space-between;padding:4px 5px 12px;color:#eaf0ff;font-size:12px;font-weight:800;letter-spacing:.5px}
+.askai-history-list{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.askai-history-empty{padding:14px 9px;color:#8290ae;font-size:12px;line-height:1.6}
+.askai-history-item{display:flex;align-items:center;gap:5px;padding:5px;border:1px solid transparent;border-radius:12px;background:transparent}
+.askai-history-item.active{background:#ffffff12;border-color:#ffffff18}
+.askai-history-open{flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:8px 6px;border:0;background:transparent;color:#cbd6ef;font-size:12px;font-weight:600}
+.askai-history-delete{flex:none;width:32px;height:32px;border:0;border-radius:9px;background:transparent;color:#8f9db9;font-size:17px}
+.askai-history-delete:hover{background:#ff53651c;color:#ff8c99}
+.askai-history-toggle{display:none;border:1px solid #ffffff24;background:#ffffff0b;color:#dce5ff;border-radius:12px;padding:8px 10px;font-size:12px}
+.askai-main{display:flex;flex:1;flex-direction:column;min-width:0;min-height:0;padding-left:16px}
+.askai-send{display:grid;place-items:center;font-size:22px;font-weight:900;transition:transform .18s,filter .18s,opacity .18s}
+.askai-send:not(:disabled):hover{filter:brightness(1.18);transform:translateY(-2px);box-shadow:0 5px 18px #6d70ff66}
+.askai-send:disabled{cursor:wait;opacity:.65}
+.askai-send.is-loading{font-size:0}
+.askai-send.is-loading:after{content:"";width:17px;height:17px;border:2px solid #ffffff65;border-top-color:#fff;border-radius:50%;animation:askaiSpin .7s linear infinite}
+@keyframes askaiSpin{to{transform:rotate(360deg)}}
+.askai-composer{transition:border-color .2s,box-shadow .2s}
+.askai-composer:focus-within{border-color:#718cff;box-shadow:0 0 0 3px #647cff25,0 8px 30px #0005}
+.askai-composer textarea{overflow-y:auto}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history{border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history-head{color:#26324a}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history-item.active{background:#e9edff;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history-open{color:#35415b}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history-delete{color:#7b879d}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-history-toggle{background:#fff;color:#35415b;border-color:#dce2ef}
+@media(max-width:640px){
+ .askai-layout{position:relative}
+ .askai-history{position:absolute;z-index:5;left:0;top:0;bottom:0;width:min(270px,82vw);padding:12px;background:#0d162a;border:1px solid #ffffff20;border-radius:0 16px 16px 0;box-shadow:18px 0 45px #0008;transform:translateX(-115%);transition:transform .25s}
+ .askai-layout.history-open .askai-history{transform:translateX(0)}
+ .askai-main{padding-left:0}
+ .askai-history-toggle{display:inline-flex;align-items:center;gap:6px}
+ body.monika-light-dashboard.monika-askai-fullscreen .askai-history{background:#fff;border-color:#dce2ef}
+}
+
 /* PREMIUM DASHBOARD SHELL + RESPONSIVE SLIDE SIDEBAR */
 #dashboard header,#module header{position:relative;padding:22px 58px 18px}
 #dashboard header .logo,#module header .logo{width:76px;height:76px;border-radius:23px;margin-bottom:13px}
@@ -811,40 +848,175 @@ show("module");
 
 /* ASK MONIKA AI - GENERAL QUESTION & ANSWER */
 let askAIHistory=[];
+let askAIChatId=null;
+let askAIChats=[];
 function renderAskAI(root){
 askAIHistory=[];
+askAIChatId=null;
+askAIChats=[];
 root.innerHTML=`
 <div class="askai-app">
   <div class="askai-topbar">
     <div class="askai-brand"><span class="askai-brand-mark">✦</span><div><strong>MONIKA AI</strong><small>Ask anything</small></div></div>
-    <button class="askai-clear" id="askAIClearBtn" type="button" title="New chat" aria-label="Clear conversation">＋ <span>New chat</span></button>
-  </div>
-  <div id="askAIConversation" class="askai-conversation" aria-live="polite">
-    <div class="askai-welcome">
-      <div class="askai-welcome-icon">✦</div>
-      <h2>What can I help with?</h2>
-      <p>Ask MONIKA AI anything. Continue the conversation naturally.</p>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="askai-history-toggle" id="askAIHistoryToggle" type="button">☰ Chats</button>
+      <button class="askai-clear" id="askAIClearBtn" type="button" title="Start a new chat" aria-label="Start a new chat">＋ <span>New chat</span></button>
     </div>
   </div>
-  <div class="askai-composer-wrap">
-    <div class="askai-composer">
-      <textarea id="askAIQuestion" rows="1" maxlength="4000" placeholder="Message MONIKA AI..." aria-label="Message MONIKA AI"></textarea>
-      <button class="askai-send" id="askAISendBtn" type="button" aria-label="Send message">↑</button>
-    </div>
-    <p class="askai-disclaimer" id="askAIStatus" role="status">MONIKA AI can make mistakes. Check important information.</p>
+  <div class="askai-layout" id="askAILayout">
+    <aside class="askai-history" aria-label="Chat history">
+      <div class="askai-history-head"><span>CHAT HISTORY</span><span id="askAIChatCount">0</span></div>
+      <div class="askai-history-list" id="askAIHistoryList"><p class="askai-history-empty">Loading your chats...</p></div>
+    </aside>
+    <main class="askai-main">
+      <div id="askAIConversation" class="askai-conversation" aria-live="polite">
+        <div class="askai-welcome">
+          <div class="askai-welcome-icon">✦</div>
+          <h2>What can I help with?</h2>
+          <p>Ask MONIKA AI anything. Your conversations will be saved here.</p>
+        </div>
+      </div>
+      <div class="askai-composer-wrap">
+        <div class="askai-composer">
+          <textarea id="askAIQuestion" rows="1" maxlength="4000" placeholder="Message MONIKA AI..." aria-label="Message MONIKA AI"></textarea>
+          <button class="askai-send" id="askAISendBtn" type="button" aria-label="Send message" title="Send message">↑</button>
+        </div>
+        <p class="askai-disclaimer" id="askAIStatus" role="status">MONIKA AI can make mistakes. Check important information.</p>
+      </div>
+    </main>
   </div>
 </div>
 `;
 $("askAISendBtn").onclick=sendAskAIQuestion;
-$("askAIClearBtn").onclick=()=>{
-askAIHistory=[];
-$("askAIConversation").innerHTML='<div class="askai-welcome">Conversation cleared. Ask me something new!</div>';
-$("askAIStatus").textContent="New conversation started.";
-};
+$("askAIClearBtn").onclick=startNewAskAIChat;
+$("askAIHistoryToggle").onclick=()=>$("askAILayout").classList.toggle("history-open");
 $("askAIQuestion").addEventListener("keydown",e=>{
-if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();sendAskAIQuestion();}
+if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAskAIQuestion();}
+});
+$("askAIQuestion").addEventListener("input",e=>{
+e.target.style.height="30px";
+e.target.style.height=Math.min(e.target.scrollHeight,140)+"px";
+});
+loadAskAIChats();
+}
+
+function askAIWelcome(message){
+const conversation=$("askAIConversation");
+conversation.innerHTML=`<div class="askai-welcome"><div class="askai-welcome-icon">✦</div><h2>${message||"What can I help with?"}</h2><p>Ask MONIKA AI anything. Continue the conversation naturally.</p></div>`;
+}
+
+function renderAskAIHistoryList(){
+const list=$("askAIHistoryList");
+if(!list)return;
+$("askAIChatCount").textContent=String(askAIChats.length);
+list.innerHTML="";
+if(!askAIChats.length){
+list.innerHTML='<p class="askai-history-empty">Your saved conversations will appear here.</p>';
+return;
+}
+askAIChats.forEach(chat=>{
+const item=document.createElement("div");
+item.className="askai-history-item"+(chat.id===askAIChatId?" active":"");
+const open=document.createElement("button");
+open.type="button";
+open.className="askai-history-open";
+open.textContent=chat.title||"New conversation";
+open.title=chat.title||"New conversation";
+open.onclick=()=>openAskAIChat(chat.id);
+const del=document.createElement("button");
+del.type="button";
+del.className="askai-history-delete";
+del.textContent="×";
+del.title="Delete this chat";
+del.setAttribute("aria-label","Delete "+(chat.title||"chat"));
+del.onclick=async e=>{
+e.stopPropagation();
+if(!confirm("Is chat ko permanently delete karna hai?"))return;
+try{
+await deleteDoc(doc(db,"users",currentUser.uid,"chats",chat.id));
+askAIChats=askAIChats.filter(c=>c.id!==chat.id);
+if(askAIChatId===chat.id){askAIChatId=null;askAIHistory=[];askAIWelcome();}
+renderAskAIHistoryList();
+$("askAIStatus").textContent="Chat deleted.";
+}catch(error){alert("Chat delete nahi hui: "+error.message);}
+};
+item.append(open,del);
+list.append(item);
 });
 }
+
+async function loadAskAIChats(){
+if(!currentUser)return;
+const list=$("askAIHistoryList");
+if(list)list.innerHTML='<p class="askai-history-empty">Loading your chats...</p>';
+try{
+const snap=await getDocs(userCollection("chats"));
+askAIChats=[];
+snap.forEach(d=>askAIChats.push({id:d.id,...d.data()}));
+askAIChats.sort((a,b)=>(b.updatedAtLocal||"").localeCompare(a.updatedAtLocal||""));
+renderAskAIHistoryList();
+}catch(error){
+console.error("Chat history load failed:",error);
+if(list)list.innerHTML='<p class="askai-history-empty">Could not load chat history. Please refresh and try again.</p>';
+}
+}
+
+async function saveAskAIChat(){
+if(!currentUser||!askAIHistory.length)return;
+const firstQuestion=askAIHistory.find(m=>m.role==="user")?.text||"New conversation";
+const data={
+title:firstQuestion.length>48?firstQuestion.slice(0,48)+"…":firstQuestion,
+messages:askAIHistory,
+updatedAt:serverTimestamp(),
+updatedAtLocal:new Date().toISOString()
+};
+if(!askAIChatId){
+data.createdAt=serverTimestamp();
+data.createdAtLocal=new Date().toISOString();
+const ref=await addDoc(userCollection("chats"),data);
+askAIChatId=ref.id;
+}else{
+await setDoc(doc(db,"users",currentUser.uid,"chats",askAIChatId),data,{merge:true});
+}
+const index=askAIChats.findIndex(c=>c.id===askAIChatId);
+const saved={id:askAIChatId,...data};
+if(index>=0)askAIChats[index]=saved;else askAIChats.unshift(saved);
+askAIChats.sort((a,b)=>(b.updatedAtLocal||"").localeCompare(a.updatedAtLocal||""));
+renderAskAIHistoryList();
+}
+
+function openAskAIChat(chatId){
+const chat=askAIChats.find(c=>c.id===chatId);
+if(!chat)return;
+askAIChatId=chatId;
+askAIHistory=Array.isArray(chat.messages)?chat.messages:[];
+const conversation=$("askAIConversation");
+conversation.innerHTML="";
+if(!askAIHistory.length)askAIWelcome();
+askAIHistory.forEach(message=>{
+const bubble=document.createElement("div");
+bubble.className="askai-message "+(message.role==="user"?"askai-user":"askai-assistant");
+bubble.textContent=message.text||"";
+conversation.append(bubble);
+});
+conversation.scrollTop=conversation.scrollHeight;
+$("askAIStatus").textContent="Saved conversation opened.";
+$("askAILayout").classList.remove("history-open");
+renderAskAIHistoryList();
+}
+
+function startNewAskAIChat(){
+askAIHistory=[];
+askAIChatId=null;
+askAIWelcome();
+$("askAIQuestion").value="";
+$("askAIQuestion").style.height="30px";
+$("askAIStatus").textContent="New conversation started.";
+$("askAILayout").classList.remove("history-open");
+renderAskAIHistoryList();
+$("askAIQuestion").focus();
+}
+
 async function sendAskAIQuestion(){
 const field=$("askAIQuestion");
 const question=field.value.trim();
@@ -855,9 +1027,13 @@ if(!question){status.textContent="Please type your question first.";field.focus(
 if(question.length>4000){status.textContent="Question is too long. Please keep it under 4,000 characters.";return;}
 if(!currentUser){status.textContent="Please sign in again to continue.";return;}
 button.disabled=true;
+button.classList.add("is-loading");
+button.textContent="";
+button.setAttribute("aria-label","MONIKA AI is preparing your answer");
 field.disabled=true;
-button.textContent="MONIKA AI is thinking...";
 status.textContent="Preparing your answer...";
+const welcome=conversation.querySelector(".askai-welcome");
+if(welcome)welcome.remove();
 const userBubble=document.createElement("div");
 userBubble.className="askai-message askai-user";
 userBubble.textContent=question;
@@ -867,6 +1043,7 @@ pending.className="askai-message askai-assistant askai-pending";
 pending.textContent="MONIKA AI is thinking...";
 conversation.append(pending);
 field.value="";
+field.style.height="30px";
 conversation.scrollTop=conversation.scrollHeight;
 try{
 const transcript=askAIHistory.map(m=>(m.role==="user"?"User: ":"MONIKA AI: ")+m.text).join("\n\n");
@@ -892,16 +1069,19 @@ if(!answer)throw new Error("AI returned an empty response.");
 pending.classList.remove("askai-pending");
 pending.textContent=answer;
 askAIHistory.push({role:"user",text:question},{role:"assistant",text:answer});
-status.textContent="Answer received.";
+await saveAskAIChat();
+status.textContent="Answer received. Chat saved.";
 }catch(error){
 console.error(error);
 pending.textContent="Sorry, I couldn't get an answer. "+error.message;
 pending.classList.remove("askai-pending");
-status.textContent="Please try again. If the problem continues, the AI backend may need a chat-request update.";
+status.textContent="Please try again. If the problem continues, check your connection.";
 }finally{
 button.disabled=false;
+button.classList.remove("is-loading");
+button.textContent="↑";
+button.setAttribute("aria-label","Send message");
 field.disabled=false;
-button.textContent="✦ Send Question";
 field.focus();
 conversation.scrollTop=conversation.scrollHeight;
 }
