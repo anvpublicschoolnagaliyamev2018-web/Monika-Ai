@@ -206,6 +206,24 @@ body.monika-light-dashboard .sidebar-user small{color:#72809a}
 body.monika-light-dashboard .dash-menu-trigger{background:#fff;color:#293650;border-color:#dce2ef;box-shadow:0 6px 16px #17264a15}
 @media(max-width:430px){#dashboard header,#module header{padding:18px 48px 15px}#dashboard header .logo,#module header .logo{width:66px;height:66px}.dash-menu-trigger{top:16px;width:40px;height:40px}#dashboard .tile{min-height:0}}
 
+
+/* EXPLICIT GRID/LIST LAYOUT — includes every dashboard tool card */
+#dashboard #dashboardTools:not(.list-mode){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#dashboard #dashboardTools.list-mode{display:grid;grid-template-columns:1fr;gap:12px}
+#dashboard #dashboardTools>.tile{width:100%;min-width:0;margin:0}
+#dashboard #dashboardTools.list-mode>.tile{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#dashboard #dashboardTools.list-mode>.tile .small{flex:1;min-width:140px}
+#dashboard #dashboardTools.list-mode>.tile button{width:auto;min-width:145px;margin-top:0}
+@media(max-width:430px){
+#dashboard #dashboardTools:not(.list-mode){grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#dashboard #dashboardTools:not(.list-mode)>.tile{padding:13px 11px;min-height:145px}
+#dashboard #dashboardTools:not(.list-mode)>.tile h3{font-size:14px}
+#dashboard #dashboardTools:not(.list-mode)>.tile .small{font-size:11px}
+#dashboard #dashboardTools:not(.list-mode)>.tile button{font-size:11px;padding:10px 7px}
+#dashboard #dashboardTools.list-mode>.tile{display:block}
+#dashboard #dashboardTools.list-mode>.tile button{width:100%;margin-top:12px}
+}
+
 </style>
 </head>
 
