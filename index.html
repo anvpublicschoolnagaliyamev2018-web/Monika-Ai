@@ -151,6 +151,19 @@ body.monika-light-dashboard #module .item-actions button{background:#e9edf7;colo
 @media(max-width:430px){.dashboard-tools-grid{grid-template-columns:1fr}.dashboard-tools-grid.list-mode .tile{display:block}.dashboard-tools-grid.list-mode .tile button{width:100%;margin-top:13px}}
 
 
+
+/* ASK AI CHAT UI */
+.askai-conversation{display:flex;flex-direction:column;gap:11px;max-height:52vh;min-height:170px;overflow-y:auto;padding:12px;margin-top:16px;border:1px solid var(--border);border-radius:17px;background:#070d1f}
+.askai-welcome{padding:14px;border-radius:14px;background:#172348;color:#dce5ff;font-size:13px;line-height:1.7}
+.askai-message{max-width:92%;white-space:pre-wrap;overflow-wrap:anywhere;padding:13px 15px;border-radius:15px;font-size:13px;line-height:1.75}
+.askai-user{align-self:flex-end;background:linear-gradient(120deg,#536fff,#8053ed);color:#fff;border-bottom-right-radius:5px}
+.askai-assistant{align-self:flex-start;background:#182448;border:1px solid #5266a366;color:#eef2ff;border-bottom-left-radius:5px}
+.askai-pending{opacity:.72;font-style:italic}
+body.monika-light-dashboard #module .askai-conversation{background:#f5f7fc;border-color:#dce2ef}
+body.monika-light-dashboard #module .askai-welcome{background:#e9edff;color:#293650}
+body.monika-light-dashboard #module .askai-assistant{background:#fff;color:#202b43;border-color:#dce2ef}
+@media(max-width:430px){.askai-message{max-width:98%}}
+
 /* PREMIUM DASHBOARD SHELL + RESPONSIVE SLIDE SIDEBAR */
 #dashboard header,#module header{position:relative;padding:22px 58px 18px}
 #dashboard header .logo,#module header .logo{width:76px;height:76px;border-radius:23px;margin-bottom:13px}
@@ -209,6 +222,7 @@ body.monika-light-dashboard .dash-menu-trigger{background:#fff;color:#293650;bor
   <div class="sidebar-caption">WORKSPACE</div>
   <button class="sidebar-link active" type="button" data-menu-action="home"><span>⌂</span><span>Dashboard</span></button>
   <button class="sidebar-link" type="button" data-menu-action="checker"><span>▧</span><span>AI Copy Checker</span></button>
+  <button class="sidebar-link" type="button" data-menu-action="askai"><span>💬</span><span>Ask AI – Sawal Jawab</span></button>
   <button class="sidebar-link" type="button" data-menu-action="students"><span>♙</span><span>Student Records</span></button>
   <button class="sidebar-link" type="button" data-menu-action="results"><span>▤</span><span>My Results</span></button>
   <button class="sidebar-link" type="button" data-menu-action="profile"><span>◉</span><span>My Profile</span></button>
@@ -311,6 +325,11 @@ Continue with Google
 <h3>📸 AI Copy Checker</h3>
 <p class="small">Upload student answer sheets.</p>
 <button class="primary" onclick="openModule('checker')">Check a Copy</button>
+</div>
+<div class="tile">
+<h3>💬 Ask AI – Sawal Jawab</h3>
+<p class="small">Ask questions and get helpful answers from MONIKA AI.</p>
+<button class="primary" onclick="openModule('askai')">Ask MONIKA AI</button>
 </div>
 <div class="tile">
 <h3>👨‍🎓 Student Records</h3>
@@ -428,7 +447,7 @@ document.querySelectorAll("#monikaSidebar .sidebar-link").forEach(x=>x.classList
 btn.classList.add("active");
 closeMonikaSidebar();
 if(action==="home")show("dashboard");
-else if(["checker","students","results","profile"].includes(action))openModule(action);
+else if(["checker","askai","students","results","profile"].includes(action))openModule(action);
 else if(action==="appearance"){
 show("dashboard");
 setTimeout(()=>{const panel=document.querySelector("#dashboard .dashboard-settings");panel?.scrollIntoView({behavior:"smooth",block:"center"});},80);
@@ -680,6 +699,7 @@ window.openModule=function(name){
 
 const titles={
 checker:"AI COPY CHECKER",
+askai:"ASK AI - SAWAL JAWAB",
 students:"STUDENT RECORDS",
 results:"MY RESULTS",
 profile:"MY PROFILE"
@@ -690,12 +710,106 @@ $("moduleTitle").textContent=titles[name]||"MONIKA AI";
 const content=$("moduleContent");
 
 if(name==="checker")renderChecker(content);
+if(name==="askai")renderAskAI(content);
 if(name==="students")renderStudents(content);
 if(name==="results")renderResults(content);
 if(name==="profile")renderProfile(content);
 
 show("module");
 };
+
+/* ASK MONIKA AI - GENERAL QUESTION & ANSWER */
+let askAIHistory=[];
+function renderAskAI(root){
+askAIHistory=[];
+root.innerHTML=`
+<div class="askai-heading">
+<h2>💬 Ask MONIKA AI</h2>
+<p class="small">Ask questions about studies, teaching, technology, writing, or everyday topics.</p>
+</div>
+<div class="hint">Tip: Write a clear question. You can ask follow-up questions in the same conversation. AI responses may occasionally be incorrect, so verify important information.</div>
+<div id="askAIConversation" class="askai-conversation" aria-live="polite">
+<div class="askai-welcome">👋 Hello! I'm MONIKA AI. What would you like to know today?</div>
+</div>
+<label for="askAIQuestion">Your Question</label>
+<textarea id="askAIQuestion" rows="3" maxlength="4000" placeholder="Type your question here..."></textarea>
+<p class="small">Press Ctrl + Enter or tap Send Question.</p>
+<button class="primary" id="askAISendBtn" type="button">✦ Send Question</button>
+<button class="secondary" id="askAIClearBtn" type="button">Clear Conversation</button>
+<p class="status" id="askAIStatus" role="status"></p>
+`;
+$("askAISendBtn").onclick=sendAskAIQuestion;
+$("askAIClearBtn").onclick=()=>{
+askAIHistory=[];
+$("askAIConversation").innerHTML='<div class="askai-welcome">Conversation cleared. Ask me something new!</div>';
+$("askAIStatus").textContent="New conversation started.";
+};
+$("askAIQuestion").addEventListener("keydown",e=>{
+if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();sendAskAIQuestion();}
+});
+}
+async function sendAskAIQuestion(){
+const field=$("askAIQuestion");
+const question=field.value.trim();
+const button=$("askAISendBtn");
+const status=$("askAIStatus");
+const conversation=$("askAIConversation");
+if(!question){status.textContent="Please type your question first.";field.focus();return;}
+if(question.length>4000){status.textContent="Question is too long. Please keep it under 4,000 characters.";return;}
+if(!currentUser){status.textContent="Please sign in again to continue.";return;}
+button.disabled=true;
+field.disabled=true;
+button.textContent="MONIKA AI is thinking...";
+status.textContent="Preparing your answer...";
+const userBubble=document.createElement("div");
+userBubble.className="askai-message askai-user";
+userBubble.textContent=question;
+conversation.append(userBubble);
+const pending=document.createElement("div");
+pending.className="askai-message askai-assistant askai-pending";
+pending.textContent="MONIKA AI is thinking...";
+conversation.append(pending);
+field.value="";
+conversation.scrollTop=conversation.scrollHeight;
+try{
+const transcript=askAIHistory.map(m=>(m.role==="user"?"User: ":"MONIKA AI: ")+m.text).join("\n\n");
+const prompt=`You are MONIKA AI, a helpful, friendly and accurate AI assistant. Answer the user's question clearly in the same language as the question. Use simple explanations and examples when useful. If you are unsure, say so. Do not invent facts. For medical, legal, financial or safety-critical questions, give cautious general information and recommend a qualified professional when appropriate.
+
+Conversation so far:
+${transcript||"This is the beginning of the conversation."}
+
+New user question:
+${question}
+
+Give a helpful, well-structured answer.`;
+const idToken=await auth.currentUser.getIdToken();
+const response=await fetch("https://monika-ai-backend.anmolkashyap6768.workers.dev/",{
+method:"POST",
+headers:{"Content-Type":"application/json","Authorization":"Bearer "+idToken},
+body:JSON.stringify({prompt:prompt,files:[]})
+});
+const result=await response.json();
+if(!response.ok)throw new Error([result.error,result.details].filter(Boolean).join(" — ")||"AI request failed.");
+const answer=result.answer;
+if(!answer)throw new Error("AI returned an empty response.");
+pending.classList.remove("askai-pending");
+pending.textContent=answer;
+askAIHistory.push({role:"user",text:question},{role:"assistant",text:answer});
+status.textContent="Answer received.";
+}catch(error){
+console.error(error);
+pending.textContent="Sorry, I couldn't get an answer. "+error.message;
+pending.classList.remove("askai-pending");
+status.textContent="Please try again. If the problem continues, the AI backend may need a chat-request update.";
+}catchEndDummy
+}finally{
+button.disabled=false;
+field.disabled=false;
+button.textContent="✦ Send Question";
+field.focus();
+conversation.scrollTop=conversation.scrollHeight;
+}
+}
 
 /* COPY CHECKER */
 
