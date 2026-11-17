@@ -674,6 +674,24 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-new,body.monik
 .checker-file-label:active,.checker-camera-button:active{transform:scale(.97)}
 @media(max-width:480px){.checker-upload-actions{gap:8px}.checker-file-label,.checker-camera-button{flex:1 1 calc(50% - 8px);font-size:12px;padding:10px 8px}}
 
+
+.checker-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.checker-heading-row h2{margin:0}
+.checker-saved-toggle{flex:0 0 auto;border:1px solid #ffffff24;border-radius:13px;padding:10px 12px;background:linear-gradient(135deg,#315eea,#7954e8);color:#fff;font-size:12px;font-weight:700}
+.checker-saved-backdrop{position:fixed;inset:0;z-index:10020;background:#020611a8;backdrop-filter:blur(3px)}
+.checker-saved-backdrop[hidden]{display:none}
+.checker-saved-drawer{position:fixed;z-index:10021;top:0;bottom:0;left:0;width:min(88vw,360px);padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));background:#101a2d;color:#eef2ff;box-shadow:18px 0 50px #0008;transform:translateX(-110%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+.checker-saved-drawer.open{transform:translateX(0)}
+.checker-drawer-head{display:flex;align-items:center;justify-content:space-between;font-size:17px}
+.checker-drawer-head button{width:36px;height:36px;border:0;border-radius:50%;background:#ffffff15;color:#fff;font-size:25px}
+.checker-saved-list{display:flex;flex-direction:column;gap:9px;overflow-y:auto}
+.checker-saved-item{display:flex;align-items:center;gap:7px;padding:9px;border:1px solid #ffffff18;border-radius:13px;background:#ffffff08}
+.checker-saved-open{flex:1;min-width:0;border:0;background:transparent;color:inherit;text-align:left;display:flex;flex-direction:column;gap:5px}
+.checker-saved-open strong{font-size:14px;overflow-wrap:anywhere}
+.checker-saved-open span,.checker-saved-open small{font-size:11px;color:#aab8d4}
+.checker-saved-delete{width:38px;height:38px;flex:0 0 auto;border:0;border-radius:10px;background:#8d283522;color:#ff9b9b}
+@media(max-width:480px){.checker-saved-toggle{font-size:11px;padding:9px 10px}}
+
 </style>
 </head>
 
@@ -1903,7 +1921,9 @@ conversation.scrollTop=conversation.scrollHeight;
 
 function renderChecker(root){
 root.innerHTML=`
-<h2>🤖 AI Copy Checker</h2>
+<div class="checker-heading-row"><div><h2>🤖 AI Copy Checker</h2></div><button type="button" class="checker-saved-toggle" id="checkerSavedToggle">☰ Saved Copies</button></div>
+<div class="checker-saved-backdrop" id="checkerSavedBackdrop" hidden></div>
+<aside class="checker-saved-drawer" id="checkerSavedDrawer" aria-hidden="true"><div class="checker-drawer-head"><strong>📚 Saved Copies</strong><button type="button" id="checkerSavedClose" aria-label="Close">×</button></div><p class="small">Your checked copy reports are saved privately to your account.</p><div id="checkerSavedList" class="checker-saved-list"><p class="small">Open to load saved copies.</p></div></aside>
 <p class="small">Upload only the student's answer sheet. No question paper or answer key required.</p>
 
 <label>Student Name</label>
@@ -1944,6 +1964,10 @@ AI will try to identify visible questions and answers. If the question is not vi
 `;
 
 $("checkBtn").onclick=checkAnswerSheet;
+$("checkerSavedToggle").onclick=()=>toggleCheckerSavedDrawer(true);
+$("checkerSavedClose").onclick=()=>toggleCheckerSavedDrawer(false);
+$("checkerSavedBackdrop").onclick=()=>toggleCheckerSavedDrawer(false);
+loadSavedCopyChecks();
 $("answerCameraBtn").onclick=()=>$("answerCameraInput").click();
 $("answerCameraInput").addEventListener("change",event=>{
  const photo=event.target.files&&event.target.files[0];
@@ -1983,6 +2007,37 @@ fallbackCopy(t);
 $("printResult").onclick=()=>{
 printReport($("aiResult").textContent);
 };
+}
+
+function toggleCheckerSavedDrawer(open){
+ const drawer=$("checkerSavedDrawer"),backdrop=$("checkerSavedBackdrop");
+ if(!drawer||!backdrop)return;
+ drawer.classList.toggle("open",!!open);backdrop.hidden=!open;
+ drawer.setAttribute("aria-hidden",String(!open));
+ if(open)loadSavedCopyChecks();
+}
+async function loadSavedCopyChecks(){
+ const list=$("checkerSavedList");if(!list||!currentUser)return;
+ list.innerHTML='<p class="small">Loading saved copies...</p>';
+ try{
+  const snap=await getDocs(userCollection("copyChecks"));
+  const records=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAtLocal||"").localeCompare(a.createdAtLocal||""));
+  if(!records.length){list.innerHTML='<p class="small">No checked copies saved yet.</p>';return;}
+  list.innerHTML=records.map(r=>'<article class="checker-saved-item"><button type="button" class="checker-saved-open" data-copy-id="'+esc(r.id)+'"><strong>'+esc(r.studentName||"Unnamed student")+'</strong><span>'+esc([r.className,r.subject].filter(Boolean).join(" • "))+'</span><small>'+esc(r.createdAtLocal?new Date(r.createdAtLocal).toLocaleString():"Saved copy")+'</small></button><button type="button" class="checker-saved-delete" data-copy-delete="'+esc(r.id)+'">🗑</button></article>').join("");
+  list.querySelectorAll("[data-copy-id]").forEach(btn=>btn.onclick=()=>{
+   const r=records.find(x=>x.id===btn.dataset.copyId);if(!r)return;
+   $("studentName").value=r.studentName==="Not provided"?"":r.studentName||"";
+   $("className").value=r.className||"";$("subjectName").value=r.subject||"";
+   $("totalMarks").value=r.totalMarks||"";$("aiResult").textContent=r.report||"No report saved.";
+   $("checkStatus").textContent="Saved copy opened. Original uploaded files are not stored.";
+   toggleCheckerSavedDrawer(false);
+  });
+  list.querySelectorAll("[data-copy-delete]").forEach(btn=>btn.onclick=async()=>{
+   if(!confirm("Is saved copy report ko permanently delete karna hai?"))return;
+   try{await deleteDoc(doc(db,"users",currentUser.uid,"copyChecks",btn.dataset.copyDelete));await loadSavedCopyChecks();}
+   catch(e){alert("Delete failed: "+e.message);}
+  });
+ }catch(e){list.innerHTML='<p class="small">Could not load saved copies: '+esc(e.message)+'</p>';}
 }
 
 /* FILE CONVERSION */
@@ -2168,6 +2223,14 @@ throw new Error("AI returned an empty response.");
 
 resultBox.textContent=output;
 status.textContent="Checking complete. Please review the marks.";
+
+try{
+await addDoc(userCollection("copyChecks"),{
+studentName:student||"Not provided",className,subject,totalMarks:total,report:output,
+createdAt:serverTimestamp(),createdAtLocal:new Date().toISOString()
+});
+status.textContent+=" Copy report saved in Saved Copies.";
+}catch(copySaveError){status.textContent+=" Copy report could not be saved: "+copySaveError.message;}
 
 try{
 await addDoc(userCollection("results"),{
