@@ -1139,10 +1139,11 @@ profileData=snap.exists()?snap.data():{};
 }
 
 function updateHeader(){
-$("sidebarUserName").textContent=profileData.fullName||profileData.teacherName||currentUser.displayName||"Your account";
+const profileName=(profileData.fullName||profileData.name||profileData.teacherName||"").trim();
+const shownName=profileName||"Your account";
+$("sidebarUserName").textContent=shownName;
 $("sidebarUserEmail").textContent=currentUser.email||"Signed in to MONIKA AI";
-$("userName").textContent=
-profileData.fullName||profileData.teacherName||currentUser.displayName||"Teacher";
+$("userName").textContent=profileName||"Welcome";
 
 
 $("userPhoto").src=
@@ -2096,7 +2097,7 @@ src="${esc(p.photoData||p.photoURL||currentUser.photoURL||"https://www.gravatar.
 style="width:85px;height:85px;object-fit:cover;border-radius:20px;margin-top:12px">
 
 <label>Teacher Name *</label>
-<input id="teacherName" value="${esc(p.teacherName||currentUser.displayName||"")}">
+<input id="teacherName" value="${esc(p.fullName||p.name||p.teacherName||"")}">
 
 <label>School Name</label>
 <input id="schoolName" value="${esc(p.schoolName||"")}">
@@ -2199,6 +2200,8 @@ const file=$("profilePhotoFile").files[0];
 if(file)photoData=await compressImage(file);
 
 const data={
+name:name,
+fullName:name,
 teacherName:name,
 schoolName:$("schoolName").value.trim(),
 teacherSubject:$("teacherSubject").value.trim(),
