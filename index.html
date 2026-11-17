@@ -1248,6 +1248,7 @@ root.innerHTML=`
             <option value="hi">हिन्दी (Hindi)</option>
             <option value="en">English</option>
             <option value="hinglish">Hinglish (Roman Hindi)</option>
+            <option value="bgc">हरियाणवी (Haryanvi)</option>
             <option value="ur">اردو (Urdu)</option>
             <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
             <option value="bn">বাংলা (Bengali)</option>
@@ -1494,6 +1495,7 @@ const ASKAI_LANGUAGE_CONFIG={
 hi:{name:"Hindi",speechLocale:"hi-IN",writingRule:"Write in natural, grammatically correct Hindi using Devanagari script only. Never write Hindi in Roman letters. Check spelling, matras, grammar and punctuation carefully."},
 en:{name:"English",speechLocale:"en-IN",writingRule:"Write in clear, natural, grammatically correct English. Check spelling, grammar, capitalization and punctuation carefully."},
 hinglish:{name:"Hinglish",speechLocale:"hi-IN",writingRule:"Write natural Hinglish in Roman/Latin letters, mixing Hindi and English naturally. Do not convert Hindi words into Devanagari unless the user explicitly asks."},
+bgc:{name:"Haryanvi",speechLocale:"hi-IN",writingRule:"Write in natural, conversational Haryanvi (the Haryana dialect), not standard Hindi. Use Devanagari script. Prefer authentic Haryanvi vocabulary, idioms and sentence patterns while keeping the meaning clear. Do not turn the answer into ordinary Hindi or Romanized Hindi. If a word or expression is uncertain, use simple natural Haryanvi rather than inventing unusual words. Proofread spelling, grammar and punctuation." ,speechNote:"Haryanvi text will use your device’s Hindi (hi-IN) speech engine because dedicated Haryanvi voice support may not be available."},
 ur:{name:"Urdu",speechLocale:"ur-PK",writingRule:"Write in natural, grammatically correct Urdu using Urdu script. Check spelling, grammar and punctuation carefully."},
 pa:{name:"Punjabi",speechLocale:"pa-IN",writingRule:"Write in natural Punjabi using Gurmukhi script. Check spelling, grammar and punctuation carefully."},
 bn:{name:"Bengali",speechLocale:"bn-IN",writingRule:"Write in natural Bengali using Bengali script. Check spelling, grammar and punctuation carefully."},
@@ -1627,7 +1629,7 @@ utterance.voice=chosenVoice;
 $("askAIStatus").textContent="Aapke device me "+selected.name+" ki voice installed nahi hai. Phone ki Text-to-speech settings me is language ki voice install karein.";
 return;
 }
-utterance.onstart=()=>{$("askAIStatus").textContent=selected.name+" voice me jawab suna rahe hain…";};
+utterance.onstart=()=>{$("askAIStatus").textContent=selected.speechNote||selected.name+" voice me jawab suna rahe hain…";};
 utterance.onerror=()=>{$("askAIStatus").textContent="Voice playback nahi ho paya. Device ki Text-to-speech settings check karein.";};
 window.speechSynthesis.speak(utterance);
 }
