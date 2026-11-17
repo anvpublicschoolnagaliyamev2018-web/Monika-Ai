@@ -225,6 +225,20 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-image-preview{backgro
 body.monika-light-dashboard.monika-askai-fullscreen .askai-image-preview-name{color:#35415b}
 body.monika-light-dashboard.monika-askai-fullscreen .askai-image-remove{background:#eef1f8;color:#35415b;border-color:#dce2ef}
 @media(max-width:430px){.askai-composer{gap:6px;padding:8px}.askai-attach{width:34px;height:34px}.askai-image-preview{padding:7px}.askai-image-preview img{width:50px;height:50px}}
+/* ChatGPT-like mobile composer: full-width writing area with controls on a separate row */
+.askai-composer{flex-wrap:wrap;align-items:center;column-gap:9px;row-gap:10px}
+.askai-composer textarea{order:0;flex:1 1 100%;width:100%;min-height:44px;max-height:180px;padding:9px 4px!important;font-size:16px;line-height:1.5}
+.askai-attach{order:1}
+.askai-voice-toggle{order:2}
+.askai-mic{order:3}
+.askai-send{order:4;margin-left:auto}
+.askai-voice-row{display:flex;align-items:center;gap:8px;margin:0 2px 8px}
+.askai-voice-row label{font-size:11px;font-weight:700;color:#aebcda;white-space:nowrap}
+.askai-voice-row select{min-width:0;flex:1;padding:8px 10px;border:1px solid #ffffff28;border-radius:12px;background:#121c30;color:#f1f5ff;font-size:12px}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-voice-row label{color:#64708a}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-voice-row select{background:#fff;color:#35415b;border-color:#dce2ef}
+@media(max-width:430px){.askai-composer{gap:8px;padding:10px 11px}.askai-composer textarea{min-height:48px}.askai-voice-row select{font-size:11px}}
+
 .askai-composer textarea{flex:1;min-width:0;max-height:140px;min-height:30px;resize:none;border:0!important;outline:none!important;background:transparent!important;color:#f3f5ff!important;padding:5px 0!important;font:inherit;font-size:14px;line-height:1.5}
 .askai-composer textarea::placeholder{color:#8492b0}
 .askai-send{flex:none;width:39px;height:39px;border:0;border-radius:50%;background:linear-gradient(135deg,#5578ff,#9852ff);color:#fff;font-size:24px;line-height:1}
@@ -1264,6 +1278,7 @@ root.innerHTML=`
           </select>
           <span class="askai-language-note">Text • Microphone • Voice reply</span>
         </div>
+        <div class="askai-voice-row"><label for="askAIVoiceSelect">Voice</label><select id="askAIVoiceSelect" aria-label="Choose installed speaking voice"><option value="">Automatic device voice</option></select></div>
         <div class="askai-image-preview" id="askAIImagePreview" hidden></div>
         <div class="askai-composer">
           <input id="askAIImageInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
@@ -1285,6 +1300,7 @@ $("askAIImageBtn").onclick=()=>$("askAIImageInput").click();
 $("askAIImageInput").onchange=handleAskAIImageSelect;
 $("askAIMicBtn").onclick=startAskAIVoiceInput;
 $("askAIVoiceToggle").onclick=toggleAskAIVoice;
+initAskAIVoicePicker();
 const languageSelect=$("askAILanguage");
 if(languageSelect){
   let savedLanguage="hi";
@@ -1604,6 +1620,35 @@ if(!askAIVoiceEnabled&&"speechSynthesis" in window)window.speechSynthesis.cancel
 $("askAIStatus").textContent=askAIVoiceEnabled?"Voice replies enabled. Use the microphone to speak.":"Voice replies disabled.";
 }
 
+function initAskAIVoicePicker(){
+ const select=$("askAIVoiceSelect");
+ if(!select||!("speechSynthesis" in window))return;
+ const populate=()=>{
+  const previous=select.value;
+  const voices=window.speechSynthesis.getVoices();
+  select.innerHTML='<option value="">Automatic device voice</option>';
+  const language=getAskAILanguage();
+  const base=language.speechLocale.split("-")[0].toLowerCase();
+  const matching=voices.filter(v=>(v.lang||"").replace("_","-").toLowerCase().startsWith(base));
+  matching.forEach((voice,index)=>{
+   const option=document.createElement("option");
+   option.value=voice.voiceURI||voice.name;
+   option.textContent=voice.name+" ("+voice.lang+")";
+   select.append(option);
+  });
+  if([...select.options].some(o=>o.value===previous))select.value=previous;
+  else{
+   let saved="";try{saved=localStorage.getItem("monika_ai_voice_uri")||"";}catch(e){}
+   if([...select.options].some(o=>o.value===saved))select.value=saved;
+  }
+ };
+ populate();
+ window.speechSynthesis.onvoiceschanged=populate;
+ select.addEventListener("change",()=>{
+  try{localStorage.setItem("monika_ai_voice_uri",select.value);}catch(e){}
+  $("askAIStatus").textContent=select.value?"Selected voice saved.":"Automatic device voice selected.";
+ });
+}
 function speakAskAIText(text){
 if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
 $("askAIStatus").textContent="Voice playback is not supported in this browser.";
@@ -1622,7 +1667,9 @@ const matchingVoices=voices.filter(voice=>{
 const voiceLocale=(voice.lang||"").replace("_","-").toLowerCase();
 return voiceLocale===locale.toLowerCase()||voiceLocale.startsWith(baseLocale+"-");
 });
-const chosenVoice=matchingVoices.find(voice=>/google|natural|neural/i.test(voice.name))||matchingVoices[0];
+const voiceSelect=$("askAIVoiceSelect");
+ const selectedVoiceURI=voiceSelect?.value||"";
+ const chosenVoice=matchingVoices.find(voice=>(voice.voiceURI||voice.name)===selectedVoiceURI)||matchingVoices.find(voice=>/google|natural|neural/i.test(voice.name))||matchingVoices[0];
 if(chosenVoice){
 utterance.voice=chosenVoice;
 }else if(voices.length){
