@@ -571,6 +571,24 @@ body.monika-light-dashboard #dashboard .promo-slide-kicker{color:#1D4ED8}
  -webkit-touch-callout:default;
 }
 
+
+/* Voice chat and message editing controls */
+.askai-voice-toggle,.askai-mic{flex:none;min-height:38px;padding:0 11px;border:1px solid #ffffff22;border-radius:20px;background:#1b2948;color:#dce5ff;font-size:11px;font-weight:800}
+.askai-mic{width:40px;padding:0;font-size:17px}
+.askai-mic.is-listening{background:#c93658;color:#fff;box-shadow:0 0 0 5px #c9365833;animation:askaiPulse 1s infinite}
+@keyframes askaiPulse{50%{box-shadow:0 0 0 9px #c9365810}}
+.askai-message-actions{display:flex;justify-content:flex-end;margin-top:8px}
+.askai-message-actions button,.askai-edit-actions button{border:1px solid #ffffff20;border-radius:9px;background:#ffffff0b;color:#bdcaff;padding:6px 10px;font-size:11px}
+.askai-edit-input{width:100%;min-height:90px;background:#0b1428;color:#fff;border:1px solid #8095ff;border-radius:10px;padding:10px}
+.askai-edit-actions{display:flex;gap:8px;margin-top:8px}
+.askai-edit-actions button:first-child{background:#536fff;color:#fff}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-voice-toggle,
+body.monika-light-dashboard.monika-askai-fullscreen .askai-mic{background:#eef1f8;color:#35415b;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-message-actions button,
+body.monika-light-dashboard.monika-askai-fullscreen .askai-edit-actions button{background:#eef1f8;color:#35415b;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-edit-input{background:#fff;color:#172033;border-color:#9aa9c8}
+@media(max-width:430px){.askai-composer{gap:6px;padding:8px}.askai-voice-toggle{padding:0 8px;font-size:10px}.askai-mic{width:36px;min-height:36px}.askai-send{width:36px;height:36px}}
+
 </style>
 </head>
 
@@ -1203,6 +1221,8 @@ root.innerHTML=`
       <div class="askai-composer-wrap">
         <div class="askai-composer">
           <textarea id="askAIQuestion" rows="1" maxlength="4000" placeholder="Message MONIKA AI..." aria-label="Message MONIKA AI"></textarea>
+          <button class="askai-voice-toggle" id="askAIVoiceToggle" type="button" aria-pressed="false" title="Turn voice replies on or off">🔊 Voice off</button>
+          <button class="askai-mic" id="askAIMicBtn" type="button" aria-label="Speak your message" title="Speak your message">🎙</button>
           <button class="askai-send" id="askAISendBtn" type="button" aria-label="Send message" title="Send message">↑</button>
         </div>
         <p class="askai-disclaimer" id="askAIStatus" role="status">MONIKA AI can make mistakes. Check important information.</p>
@@ -1213,6 +1233,8 @@ root.innerHTML=`
 `;
 $("askAIBackBtn").onclick=()=>show("dashboard");
 $("askAISendBtn").onclick=sendAskAIQuestion;
+$("askAIMicBtn").onclick=startAskAIVoiceInput;
+$("askAIVoiceToggle").onclick=toggleAskAIVoice;
 $("askAIClearBtn").onclick=startNewAskAIChat;
 $("askAIHistoryToggle").onclick=()=>$("askAILayout").classList.toggle("history-open");
 $("askAIQuestion").addEventListener("keydown",e=>{
@@ -1315,16 +1337,7 @@ const chat=askAIChats.find(c=>c.id===chatId);
 if(!chat)return;
 askAIChatId=chatId;
 askAIHistory=Array.isArray(chat.messages)?chat.messages:[];
-const conversation=$("askAIConversation");
-conversation.innerHTML="";
-if(!askAIHistory.length)askAIWelcome();
-askAIHistory.forEach(message=>{
-const bubble=document.createElement("div");
-bubble.className="askai-message "+(message.role==="user"?"askai-user":"askai-assistant");
-bubble.textContent=message.text||"";
-conversation.append(bubble);
-});
-conversation.scrollTop=conversation.scrollHeight;
+renderAskAIConversation();
 $("askAIStatus").textContent="Saved conversation opened.";
 $("askAILayout").classList.remove("history-open");
 renderAskAIHistoryList();
@@ -1340,6 +1353,148 @@ $("askAIStatus").textContent="New conversation started.";
 $("askAILayout").classList.remove("history-open");
 renderAskAIHistoryList();
 $("askAIQuestion").focus();
+}
+
+/* ASK MONIKA AI: editable messages and browser voice support */
+let askAIVoiceEnabled=false;
+let askAISpeechRecognition=null;
+let askAIVoiceAutoSend=false;
+
+function renderAskAIConversation(){
+const conversation=$("askAIConversation");
+if(!conversation)return;
+conversation.innerHTML="";
+if(!askAIHistory.length){askAIWelcome();return;}
+askAIHistory.forEach((message,index)=>{
+const bubble=document.createElement("div");
+bubble.className="askai-message "+(message.role==="user"?"askai-user":"askai-assistant");
+const body=document.createElement("div");
+body.className="askai-message-text";
+body.textContent=message.text||"";
+bubble.append(body);
+const actions=document.createElement("div");
+actions.className="askai-message-actions";
+const action=document.createElement("button");
+action.type="button";
+if(message.role==="user"){
+action.textContent="✎ Edit";
+action.title="Edit this message and regenerate the answer";
+action.onclick=()=>editAskAIMessage(index,bubble);
+}else{
+action.textContent="🔊 Listen";
+action.title="Read this answer aloud";
+action.onclick=()=>speakAskAIText(message.text||"");
+}
+actions.append(action);
+bubble.append(actions);
+conversation.append(bubble);
+});
+conversation.scrollTop=conversation.scrollHeight;
+}
+
+function editAskAIMessage(index,bubble){
+const message=askAIHistory[index];
+if(!message||message.role!=="user")return;
+bubble.innerHTML="";
+const editor=document.createElement("textarea");
+editor.className="askai-edit-input";
+editor.maxLength=4000;
+editor.value=message.text||"";
+const actions=document.createElement("div");
+actions.className="askai-edit-actions";
+const save=document.createElement("button");
+save.type="button";save.textContent="Save & regenerate";
+const cancel=document.createElement("button");
+cancel.type="button";cancel.textContent="Cancel";
+cancel.onclick=()=>renderAskAIConversation();
+save.onclick=async()=>{
+const updated=editor.value.trim();
+if(!updated){editor.focus();return;}
+if(updated.length>4000){$("askAIStatus").textContent="Message is too long.";return;}
+askAIHistory=askAIHistory.slice(0,index);
+renderAskAIConversation();
+$("askAIQuestion").value=updated;
+$("askAIQuestion").style.height="auto";
+$("askAIQuestion").style.height=Math.min($("askAIQuestion").scrollHeight,140)+"px";
+await sendAskAIQuestion();
+};
+actions.append(save,cancel);
+bubble.append(editor,actions);
+editor.focus();
+}
+
+function toggleAskAIVoice(){
+askAIVoiceEnabled=!askAIVoiceEnabled;
+const button=$("askAIVoiceToggle");
+if(button){
+button.textContent=askAIVoiceEnabled?"🔊 Voice on":"🔊 Voice off";
+button.setAttribute("aria-pressed",String(askAIVoiceEnabled));
+}
+if(!askAIVoiceEnabled&&"speechSynthesis" in window)window.speechSynthesis.cancel();
+$("askAIStatus").textContent=askAIVoiceEnabled?"Voice replies enabled. Use the microphone to speak.":"Voice replies disabled.";
+}
+
+function speakAskAIText(text){
+if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
+$("askAIStatus").textContent="Voice playback is not supported in this browser.";
+return;
+}
+window.speechSynthesis.cancel();
+const utterance=new SpeechSynthesisUtterance(text);
+utterance.lang=/[\\u0900-\\u097F]/.test(text)?"hi-IN":"en-IN";
+utterance.rate=1;
+utterance.pitch=1;
+window.speechSynthesis.speak(utterance);
+}
+
+function startAskAIVoiceInput(){
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SpeechRecognition){
+$("askAIStatus").textContent="Voice input is not supported here. Please use Chrome or type your message.";
+return;
+}
+if(askAISpeechRecognition){
+try{askAISpeechRecognition.stop();}catch(e){}
+askAISpeechRecognition=null;
+return;
+}
+const recognition=new SpeechRecognition();
+askAISpeechRecognition=recognition;
+recognition.lang="hi-IN";
+recognition.interimResults=true;
+recognition.continuous=false;
+let finalTranscript="";
+askAIVoiceAutoSend=false;
+recognition.onstart=()=>{$("askAIMicBtn").classList.add("is-listening");$("askAIStatus").textContent="Listening… Speak now.";};
+recognition.onresult=event=>{
+let interim="";
+for(let i=event.resultIndex;i<event.results.length;i++){
+const phrase=event.results[i][0].transcript;
+if(event.results[i].isFinal)finalTranscript+=phrase;
+else interim+=phrase;
+}
+$("askAIQuestion").value=(finalTranscript+" "+interim).trim();
+};
+recognition.onerror=event=>{
+$("askAIStatus").textContent=event.error==="not-allowed"?"Microphone permission denied. Allow microphone access in browser settings.":"Voice input error: "+event.error;
+askAIVoiceAutoSend=false;
+};
+recognition.onend=()=>{
+askAISpeechRecognition=null;
+$("askAIMicBtn").classList.remove("is-listening");
+if(finalTranscript.trim()){
+$("askAIQuestion").value=finalTranscript.trim();
+askAIVoiceAutoSend=true;
+sendAskAIQuestion();
+}else if(!$("askAIQuestion").value.trim()){
+$("askAIStatus").textContent="I couldn't hear that. Tap the microphone and try again.";
+}
+};
+try{recognition.start();}catch(error){
+askAISpeechRecognition=null;
+$("askAIMicBtn").classList.remove("is-listening");
+$("askAIStatus").textContent="Could not start microphone: "+error.message;
+}
 }
 
 async function sendAskAIQuestion(){
@@ -1394,7 +1549,9 @@ if(!answer)throw new Error("AI returned an empty response.");
 pending.classList.remove("askai-pending");
 pending.textContent=answer;
 askAIHistory.push({role:"user",text:question},{role:"assistant",text:answer});
+renderAskAIConversation();
 await saveAskAIChat();
+if(askAIVoiceEnabled)speakAskAIText(answer);
 status.textContent="Answer received. Chat saved.";
 }catch(error){
 console.error(error);
