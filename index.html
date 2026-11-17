@@ -666,6 +666,14 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-new,body.monik
 @media(max-width:430px){.askai-topbar{gap:6px}.askai-topbar-left{gap:7px}.askai-brand strong{font-size:12px}.askai-history-toggle{padding:8px 9px;font-size:11px}.askai-composer{padding:11px 12px}.askai-composer textarea{min-height:62px!important;height:62px;font-size:16px!important}.askai-attach,.askai-mic,.askai-send{width:40px;height:40px}}
 @media(prefers-reduced-motion:reduce){.askai-message,.askai-welcome,.askai-brand-mark{animation:none!important}.askai-settings-drawer{transition:none}}
 
+ 
+.checker-upload-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0}
+.checker-upload-actions input[type=file]#answerFiles{flex:1 1 100%;min-width:0}
+.checker-file-label,.checker-camera-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:43px;padding:10px 15px;border-radius:13px;border:1px solid #ffffff25;background:#182744;color:#f4f7ff;font-size:13px;font-weight:700;cursor:pointer}
+.checker-camera-button{background:linear-gradient(135deg,#315eea,#7852e8);border-color:transparent}
+.checker-file-label:active,.checker-camera-button:active{transform:scale(.97)}
+@media(max-width:480px){.checker-upload-actions{gap:8px}.checker-file-label,.checker-camera-button{flex:1 1 calc(50% - 8px);font-size:12px;padding:10px 8px}}
+
 </style>
 </head>
 
@@ -1914,8 +1922,13 @@ root.innerHTML=`
 <textarea id="teacherInstructions" placeholder="Optional instructions..."></textarea>
 
 <label>Upload Student Answer Sheet</label>
-<input id="answerFiles" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
-
+<div class="checker-upload-actions">
+  <label class="checker-file-label" for="answerFiles">📁 Choose Files</label>
+  <button type="button" class="checker-camera-button" id="answerCameraBtn">📷 Take Photo</button>
+  <input id="answerFiles" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
+  <input id="answerCameraInput" type="file" accept="image/*" capture="environment" hidden>
+</div>
+<p class="small" id="answerFileStatus">You can upload files or take a photo directly with your camera.</p>
 <p class="small">Maximum 10 files. Each file up to 5 MB. Total up to 10 MB.</p>
 
 <div class="hint">
@@ -1931,6 +1944,28 @@ AI will try to identify visible questions and answers. If the question is not vi
 `;
 
 $("checkBtn").onclick=checkAnswerSheet;
+$("answerCameraBtn").onclick=()=>$("answerCameraInput").click();
+$("answerCameraInput").addEventListener("change",event=>{
+ const photo=event.target.files&&event.target.files[0];
+ if(!photo)return;
+ const current=Array.from($("answerFiles").files||[]);
+ if(current.length>=10){$("answerFileStatus").textContent="Maximum 10 files allowed. Remove a file before adding another photo.";event.target.value="";return;}
+ try{
+  const transfer=new DataTransfer();
+  current.forEach(file=>transfer.items.add(file));
+  transfer.items.add(photo);
+  $("answerFiles").files=transfer.files;
+  $("answerFileStatus").textContent=transfer.files.length+" file(s) selected, including camera photo: "+photo.name;
+ }catch(error){
+  $("answerFileStatus").textContent="Could not add camera photo. Please use Choose Files instead.";
+  console.error("Camera photo attach failed:",error);
+ }
+ event.target.value="";
+});
+$("answerFiles").addEventListener("change",()=>{
+ const count=$("answerFiles").files.length;
+ $("answerFileStatus").textContent=count?count+" file(s) selected. You can add a camera photo too.":"You can upload files or take a photo directly with your camera.";
+});
 
 $("copyResult").onclick=async()=>{
 const t=$("aiResult").textContent;
