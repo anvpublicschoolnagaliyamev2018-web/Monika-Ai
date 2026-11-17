@@ -624,6 +624,48 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-edit-actions button{b
 body.monika-light-dashboard.monika-askai-fullscreen .askai-edit-input{background:#fff;color:#172033;border-color:#9aa9c8}
 @media(max-width:430px){.askai-composer{gap:6px;padding:8px}.askai-voice-toggle{padding:0 8px;font-size:10px}.askai-mic{width:36px;min-height:36px}.askai-send{width:36px;height:36px}}
 
+ 
+/* MONIKA AI refreshed ChatGPT-style layout */
+.askai-topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+.askai-history-toggle{border:1px solid #ffffff20;background:#15213a;color:#eaf0ff;border-radius:22px;padding:9px 12px;font-size:12px}
+.askai-composer{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border-radius:27px}
+.askai-composer textarea{order:0!important;display:block;flex:0 0 100%!important;width:100%!important;min-width:100%!important;box-sizing:border-box;min-height:58px!important;max-height:180px!important;height:58px;resize:none;padding:10px 4px!important;font-size:16px!important;line-height:1.55!important}
+.askai-attach{order:1!important}
+.askai-mic{order:2!important}
+.askai-send{order:3!important;margin-left:auto}
+.askai-image-preview{margin-bottom:9px}
+.askai-message{animation:askaiMessageIn .28s ease both}
+.askai-welcome{animation:askaiWelcomeIn .5s cubic-bezier(.2,.8,.2,1) both}
+.askai-brand-mark{animation:askaiMarkPulse 3s ease-in-out infinite}
+.askai-pending{position:relative;min-height:48px}
+.askai-pending:after{content:"";display:inline-block;width:25px;height:7px;margin-left:8px;background:radial-gradient(circle,#91a9ff 2px,transparent 3px) 0 50%/9px 9px repeat-x;animation:askaiDots .8s steps(3,end) infinite}
+@keyframes askaiMessageIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes askaiWelcomeIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes askaiMarkPulse{0%,100%{box-shadow:0 0 0 0 #875cff00}50%{box-shadow:0 0 0 7px #875cff18}}
+@keyframes askaiDots{to{background-position:9px 50%}}
+.askai-settings-drawer{position:fixed;z-index:10002;top:0;bottom:0;left:0;width:min(86vw,340px);padding:calc(18px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom));background:#101a2d;color:#eef2ff;border-right:1px solid #ffffff20;box-shadow:18px 0 50px #0008;transform:translateX(-110%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:18px;overflow-y:auto}
+.askai-settings-drawer.open{transform:translateX(0)}
+.askai-drawer-backdrop{position:fixed;inset:0;z-index:10001;background:#020611a8;backdrop-filter:blur(3px)}
+.askai-drawer-backdrop[hidden]{display:none}
+.askai-drawer-head{display:flex;align-items:center;justify-content:space-between;font-size:17px;letter-spacing:1px}
+.askai-drawer-head button{width:36px;height:36px;border:0;border-radius:50%;background:#ffffff12;color:#fff;font-size:25px}
+.askai-drawer-new,.askai-drawer-chats{width:100%;padding:13px 14px;border:1px solid #ffffff20;border-radius:14px;background:#1b2b49;color:#fff;text-align:left;font-size:14px}
+.askai-drawer-section{display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid #ffffff18;border-radius:16px;background:#ffffff08}
+.askai-drawer-title{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#9caed2;margin-bottom:3px}
+.askai-drawer-section label{font-size:12px;color:#b7c4df}
+.askai-drawer-section select{width:100%;min-width:0;padding:12px;border:1px solid #ffffff25;border-radius:12px;background:#0c1527;color:#f4f6ff;font-size:14px}
+.askai-drawer-section .askai-voice-toggle{width:100%;min-height:42px;border-radius:12px}
+.askai-drawer-note{margin:0;color:#95a4c3;font-size:11px;line-height:1.5}
+body.askai-drawer-open{overflow:hidden}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-settings-drawer{background:#fff;color:#172033;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-head button{background:#eef1f8;color:#26324a}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-section{background:#f7f8fc;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-section label,body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-note{color:#64708a}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-section select{background:#fff;color:#172033;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-new,body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-chats{background:#eef1ff;color:#26324a;border-color:#dce2ef}
+@media(max-width:430px){.askai-topbar{gap:6px}.askai-topbar-left{gap:7px}.askai-brand strong{font-size:12px}.askai-history-toggle{padding:8px 9px;font-size:11px}.askai-composer{padding:11px 12px}.askai-composer textarea{min-height:62px!important;height:62px;font-size:16px!important}.askai-attach,.askai-mic,.askai-send{width:40px;height:40px}}
+@media(prefers-reduced-motion:reduce){.askai-message,.askai-welcome,.askai-brand-mark{animation:none!important}.askai-settings-drawer{transition:none}}
+
 </style>
 </head>
 
@@ -1238,10 +1280,27 @@ root.innerHTML=`
       <div class="askai-brand"><span class="askai-brand-mark">✦</span><div><strong>MONIKA AI</strong><small>Ask anything</small></div></div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="askai-history-toggle" id="askAIHistoryToggle" type="button">☰ Chats</button>
+      <button class="askai-history-toggle" id="askAISettingsToggle" type="button" aria-label="Open AI menu">☰ Menu</button>
+      <button class="askai-history-toggle" id="askAIHistoryToggle" type="button">Chats</button>
       <button class="askai-clear" id="askAIClearBtn" type="button" title="Start a new chat" aria-label="Start a new chat">＋ <span>New chat</span></button>
     </div>
   </div>
+  <div class="askai-drawer-backdrop" id="askAIDrawerBackdrop" hidden></div>
+  <aside class="askai-settings-drawer" id="askAISettingsDrawer" aria-label="AI settings" aria-hidden="true">
+    <div class="askai-drawer-head"><strong>MONIKA AI</strong><button type="button" id="askAIDrawerClose" aria-label="Close menu">×</button></div>
+    <button class="askai-drawer-new" type="button" id="askAIDrawerNewChat">＋ New chat</button>
+    <div class="askai-drawer-section"><span class="askai-drawer-title">AI SETTINGS</span>
+      <label for="askAILanguage">Response language</label>
+      <select id="askAILanguage" aria-label="Choose AI response and voice language">
+        <option value="hi">हिन्दी (Hindi)</option><option value="en">English</option><option value="hinglish">Hinglish (Roman Hindi)</option><option value="bgc">हरियाणवी (Haryanvi)</option><option value="ur">اردو (Urdu)</option><option value="pa">ਪੰਜਾਬੀ (Punjabi)</option><option value="bn">বাংলা (Bengali)</option><option value="mr">मराठी (Marathi)</option><option value="gu">ગુજરાતી (Gujarati)</option><option value="ta">தமிழ் (Tamil)</option><option value="te">తెలుగు (Telugu)</option><option value="kn">ಕನ್ನಡ (Kannada)</option><option value="ml">മലയാളം (Malayalam)</option><option value="ar">العربية (Arabic)</option><option value="fr">Français (French)</option><option value="es">Español (Spanish)</option>
+      </select>
+      <label for="askAIVoiceSelect">Speaking voice</label>
+      <select id="askAIVoiceSelect" aria-label="Choose installed speaking voice"><option value="">Automatic device voice</option></select>
+      <button class="askai-voice-toggle" id="askAIVoiceToggle" type="button" aria-pressed="false" title="Turn voice replies on or off">🔊 Voice off</button>
+      <p class="askai-drawer-note">Voice options depend on the voices installed on your device.</p>
+    </div>
+    <button class="askai-drawer-chats" type="button" id="askAIDrawerChats">☰ Chat history</button>
+  </aside>
   <div class="askai-layout" id="askAILayout">
     <aside class="askai-history" aria-label="Chat history">
       <div class="askai-history-head"><span>CHAT HISTORY</span><span id="askAIChatCount">0</span></div>
@@ -1256,35 +1315,11 @@ root.innerHTML=`
         </div>
       </div>
       <div class="askai-composer-wrap">
-        <div class="askai-language-row">
-          <label for="askAILanguage">Language</label>
-          <select id="askAILanguage" aria-label="Choose AI response and voice language">
-            <option value="hi">हिन्दी (Hindi)</option>
-            <option value="en">English</option>
-            <option value="hinglish">Hinglish (Roman Hindi)</option>
-            <option value="bgc">हरियाणवी (Haryanvi)</option>
-            <option value="ur">اردو (Urdu)</option>
-            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-            <option value="bn">বাংলা (Bengali)</option>
-            <option value="mr">मराठी (Marathi)</option>
-            <option value="gu">ગુજરાતી (Gujarati)</option>
-            <option value="ta">தமிழ் (Tamil)</option>
-            <option value="te">తెలుగు (Telugu)</option>
-            <option value="kn">ಕನ್ನಡ (Kannada)</option>
-            <option value="ml">മലയാളം (Malayalam)</option>
-            <option value="ar">العربية (Arabic)</option>
-            <option value="fr">Français (French)</option>
-            <option value="es">Español (Spanish)</option>
-          </select>
-          <span class="askai-language-note">Text • Microphone • Voice reply</span>
-        </div>
-        <div class="askai-voice-row"><label for="askAIVoiceSelect">Voice</label><select id="askAIVoiceSelect" aria-label="Choose installed speaking voice"><option value="">Automatic device voice</option></select></div>
         <div class="askai-image-preview" id="askAIImagePreview" hidden></div>
         <div class="askai-composer">
           <input id="askAIImageInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
           <button class="askai-attach" id="askAIImageBtn" type="button" aria-label="Upload an image" title="Upload an image">＋</button>
           <textarea id="askAIQuestion" rows="1" maxlength="4000" placeholder="Message MONIKA AI..." aria-label="Message MONIKA AI"></textarea>
-          <button class="askai-voice-toggle" id="askAIVoiceToggle" type="button" aria-pressed="false" title="Turn voice replies on or off">🔊 Voice off</button>
           <button class="askai-mic" id="askAIMicBtn" type="button" aria-label="Speak your message" title="Speak your message">🎙</button>
           <button class="askai-send" id="askAISendBtn" type="button" aria-label="Send message" title="Send message">↑</button>
         </div>
@@ -1294,6 +1329,12 @@ root.innerHTML=`
   </div>
 </div>
 `;
+$("askAISettingsToggle").onclick=()=>toggleAskAIDrawer(true);
+$("askAIDrawerClose").onclick=()=>toggleAskAIDrawer(false);
+$("askAIDrawerBackdrop").onclick=()=>toggleAskAIDrawer(false);
+$("askAIDrawerNewChat").onclick=()=>{startNewAskAIChat();toggleAskAIDrawer(false);};
+$("askAIDrawerChats").onclick=()=>{toggleAskAIDrawer(false);$("askAILayout").classList.add("history-open");};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")toggleAskAIDrawer(false);});
 $("askAIBackBtn").onclick=()=>show("dashboard");
 $("askAISendBtn").onclick=sendAskAIQuestion;
 $("askAIImageBtn").onclick=()=>$("askAIImageInput").click();
@@ -1319,12 +1360,20 @@ $("askAIQuestion").addEventListener("keydown",e=>{
 if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAskAIQuestion();}
 });
 $("askAIQuestion").addEventListener("input",e=>{
-e.target.style.height="30px";
-e.target.style.height=Math.min(e.target.scrollHeight,140)+"px";
+e.target.style.height="auto";
+e.target.style.height=Math.min(Math.max(e.target.scrollHeight,56),180)+"px";
 });
 loadAskAIChats();
 }
 
+function toggleAskAIDrawer(open){
+ const drawer=$("askAISettingsDrawer"),backdrop=$("askAIDrawerBackdrop");
+ if(!drawer||!backdrop)return;
+ drawer.classList.toggle("open",!!open);
+ backdrop.hidden=!open;
+ drawer.setAttribute("aria-hidden",String(!open));
+ document.body.classList.toggle("askai-drawer-open",!!open);
+}
 function clearAskAISelectedImage(){
 if(askAISelectedImage?.previewUrl){
 const used=askAIHistory.some(m=>m.imagePreview===askAISelectedImage.previewUrl);
