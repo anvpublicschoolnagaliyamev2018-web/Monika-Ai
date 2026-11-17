@@ -203,6 +203,14 @@ body.monika-askai-fullscreen #moduleContent{display:flex;flex:1;min-height:0;wid
 .askai-user{border-bottom-right-radius:5px}
 .askai-assistant{border-bottom-left-radius:5px;background:#141e34;border:1px solid #ffffff14;color:#edf2ff}
 .askai-composer-wrap{flex:none;width:100%;padding:12px 0 max(16px,env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,#080d18 18%)}
+.askai-language-row{display:flex;align-items:center;gap:9px;margin:0 0 9px;padding:0 4px}
+.askai-language-row label{color:#aebcda;font-size:11px;font-weight:800}
+.askai-language-row select{max-width:245px;min-width:150px;padding:8px 12px;border:1px solid #ffffff28;border-radius:12px;background:#121c30;color:#f1f5ff;font-size:12px;font-weight:700;outline:none}
+.askai-language-note{color:#8492af;font-size:10px}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-language-row label{color:#64708a}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-language-row select{background:#fff;color:#35415b;border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-language-note{color:#77839a}
+@media(max-width:430px){.askai-language-row select{flex:1;min-width:0;max-width:none}.askai-language-note{display:none}}
 .askai-composer{display:flex;align-items:flex-end;gap:10px;padding:10px 11px 10px 17px;border:1px solid #ffffff25;border-radius:25px;background:#121c30;box-shadow:0 8px 30px #0005}
 .askai-attach{flex:none;width:38px;height:38px;border:1px solid #ffffff22;border-radius:50%;background:#1b2948;color:#dce5ff;font-size:21px;line-height:1}
 .askai-image-preview{display:flex;align-items:center;gap:10px;margin:0 0 9px;padding:9px 11px;border:1px solid #ffffff20;border-radius:14px;background:#121c30}
@@ -1234,6 +1242,27 @@ root.innerHTML=`
         </div>
       </div>
       <div class="askai-composer-wrap">
+        <div class="askai-language-row">
+          <label for="askAILanguage">Language</label>
+          <select id="askAILanguage" aria-label="Choose AI response and voice language">
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="en">English</option>
+            <option value="hinglish">Hinglish (Roman Hindi)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="fr">Français (French)</option>
+            <option value="es">Español (Spanish)</option>
+          </select>
+          <span class="askai-language-note">Text • Microphone • Voice reply</span>
+        </div>
         <div class="askai-image-preview" id="askAIImagePreview" hidden></div>
         <div class="askai-composer">
           <input id="askAIImageInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
@@ -1255,6 +1284,18 @@ $("askAIImageBtn").onclick=()=>$("askAIImageInput").click();
 $("askAIImageInput").onchange=handleAskAIImageSelect;
 $("askAIMicBtn").onclick=startAskAIVoiceInput;
 $("askAIVoiceToggle").onclick=toggleAskAIVoice;
+const languageSelect=$("askAILanguage");
+if(languageSelect){
+  let savedLanguage="hi";
+  try{savedLanguage=localStorage.getItem("monika_ai_chat_language")||"hi";}catch(e){}
+  languageSelect.value=ASKAI_LANGUAGE_CONFIG[savedLanguage]?savedLanguage:"hi";
+  languageSelect.addEventListener("change",()=>{
+    const selected=getAskAILanguage();
+    try{localStorage.setItem("monika_ai_chat_language",languageSelect.value);}catch(e){}
+    if(askAISpeechRecognition){try{askAISpeechRecognition.stop();}catch(e){}}
+    $("askAIStatus").textContent=selected.name+" selected. Text, microphone and voice replies will use this language.";
+  });
+}
 $("askAIClearBtn").onclick=startNewAskAIChat;
 $("askAIHistoryToggle").onclick=()=>$("askAILayout").classList.toggle("history-open");
 $("askAIQuestion").addEventListener("keydown",e=>{
@@ -1449,6 +1490,28 @@ $("askAIQuestion").focus();
 }
 
 /* ASK MONIKA AI: editable messages and browser voice support */
+const ASKAI_LANGUAGE_CONFIG={
+hi:{name:"Hindi",speechLocale:"hi-IN",writingRule:"Write in natural, grammatically correct Hindi using Devanagari script only. Never write Hindi in Roman letters. Check spelling, matras, grammar and punctuation carefully."},
+en:{name:"English",speechLocale:"en-IN",writingRule:"Write in clear, natural, grammatically correct English. Check spelling, grammar, capitalization and punctuation carefully."},
+hinglish:{name:"Hinglish",speechLocale:"hi-IN",writingRule:"Write natural Hinglish in Roman/Latin letters, mixing Hindi and English naturally. Do not convert Hindi words into Devanagari unless the user explicitly asks."},
+ur:{name:"Urdu",speechLocale:"ur-PK",writingRule:"Write in natural, grammatically correct Urdu using Urdu script. Check spelling, grammar and punctuation carefully."},
+pa:{name:"Punjabi",speechLocale:"pa-IN",writingRule:"Write in natural Punjabi using Gurmukhi script. Check spelling, grammar and punctuation carefully."},
+bn:{name:"Bengali",speechLocale:"bn-IN",writingRule:"Write in natural Bengali using Bengali script. Check spelling, grammar and punctuation carefully."},
+mr:{name:"Marathi",speechLocale:"mr-IN",writingRule:"Write in natural Marathi using Devanagari script. Check spelling, grammar and punctuation carefully."},
+gu:{name:"Gujarati",speechLocale:"gu-IN",writingRule:"Write in natural Gujarati using Gujarati script. Check spelling, grammar and punctuation carefully."},
+ta:{name:"Tamil",speechLocale:"ta-IN",writingRule:"Write in natural Tamil using Tamil script. Check spelling, grammar and punctuation carefully."},
+te:{name:"Telugu",speechLocale:"te-IN",writingRule:"Write in natural Telugu using Telugu script. Check spelling, grammar and punctuation carefully."},
+kn:{name:"Kannada",speechLocale:"kn-IN",writingRule:"Write in natural Kannada using Kannada script. Check spelling, grammar and punctuation carefully."},
+ml:{name:"Malayalam",speechLocale:"ml-IN",writingRule:"Write in natural Malayalam using Malayalam script. Check spelling, grammar and punctuation carefully."},
+ar:{name:"Arabic",speechLocale:"ar-SA",writingRule:"Write in natural, grammatically correct Arabic using Arabic script. Check spelling and punctuation carefully."},
+fr:{name:"French",speechLocale:"fr-FR",writingRule:"Write in natural, grammatically correct French. Check spelling, accents, grammar and punctuation carefully."},
+es:{name:"Spanish",speechLocale:"es-ES",writingRule:"Write in natural, grammatically correct Spanish. Check spelling, accents, grammar and punctuation carefully."}
+};
+function getAskAILanguage(){
+const key=$("askAILanguage")?.value||"hi";
+return ASKAI_LANGUAGE_CONFIG[key]||ASKAI_LANGUAGE_CONFIG.hi;
+}
+
 let askAIVoiceEnabled=false;
 let askAISpeechRecognition=null;
 let askAIVoiceAutoSend=false;
@@ -1544,11 +1607,28 @@ if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
 $("askAIStatus").textContent="Voice playback is not supported in this browser.";
 return;
 }
+const selected=getAskAILanguage();
+const locale=selected.speechLocale;
 window.speechSynthesis.cancel();
 const utterance=new SpeechSynthesisUtterance(text);
-utterance.lang=/[\\u0900-\\u097F]/.test(text)?"hi-IN":"en-IN";
-utterance.rate=1;
+utterance.lang=locale;
+utterance.rate=0.96;
 utterance.pitch=1;
+const voices=window.speechSynthesis.getVoices();
+const baseLocale=locale.split("-")[0].toLowerCase();
+const matchingVoices=voices.filter(voice=>{
+const voiceLocale=(voice.lang||"").replace("_","-").toLowerCase();
+return voiceLocale===locale.toLowerCase()||voiceLocale.startsWith(baseLocale+"-");
+});
+const chosenVoice=matchingVoices.find(voice=>/google|natural|neural/i.test(voice.name))||matchingVoices[0];
+if(chosenVoice){
+utterance.voice=chosenVoice;
+}else if(voices.length){
+$("askAIStatus").textContent="Aapke device me "+selected.name+" ki voice installed nahi hai. Phone ki Text-to-speech settings me is language ki voice install karein.";
+return;
+}
+utterance.onstart=()=>{$("askAIStatus").textContent=selected.name+" voice me jawab suna rahe hain…";};
+utterance.onerror=()=>{$("askAIStatus").textContent="Voice playback nahi ho paya. Device ki Text-to-speech settings check karein.";};
 window.speechSynthesis.speak(utterance);
 }
 
@@ -1565,7 +1645,7 @@ return;
 }
 const recognition=new SpeechRecognition();
 askAISpeechRecognition=recognition;
-recognition.lang="hi-IN";
+recognition.lang=getAskAILanguage().speechLocale;
 recognition.interimResults=true;
 recognition.continuous=false;
 let finalTranscript="";
@@ -1646,7 +1726,15 @@ field.style.height="30px";
 conversation.scrollTop=conversation.scrollHeight;
 try{
 const transcript=askAIHistory.map(m=>(m.role==="user"?"User: ":"MONIKA AI: ")+m.text).join("\n\n");
-const prompt=`You are MONIKA AI, a helpful, friendly and accurate AI assistant. Answer the user's question clearly in the same language as the question. Use simple explanations and examples when useful. If you are unsure, say so. Do not invent facts. For medical, legal, financial or safety-critical questions, give cautious general information and recommend a qualified professional when appropriate.
+const selectedLanguage=getAskAILanguage();
+const prompt=`You are MONIKA AI, a helpful, friendly and accurate AI assistant.
+
+MANDATORY RESPONSE LANGUAGE:
+The user has selected: ${selectedLanguage.name}.
+${selectedLanguage.writingRule}
+Always use the selected language even if the user's message is written in another language or script, unless the user explicitly asks to switch languages for that message. Before sending the answer, silently proofread it for spelling, grammar, correct script, and punctuation. Do not use Romanized Hindi when Hindi is selected. Do not transliterate the answer into a different script.
+
+Use simple explanations and examples when useful. If you are unsure, say so. Do not invent facts. For medical, legal, financial or safety-critical questions, give cautious general information and recommend a qualified professional when appropriate.
 
 Conversation so far:
 ${transcript||"This is the beginning of the conversation."}
