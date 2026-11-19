@@ -1612,11 +1612,37 @@ let askAIVoiceAutoSend=false;
 
 function formatAskAIMarkdown(value){
 const escapeHTML=text=>String(text||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-let safe=escapeHTML(value);
-safe=safe.replace(/\\*\\*(.+?)\\*\\*/gs,"<strong>$1</strong>");
-safe=safe.replace(/(^|\\s)\\*(?!\\s)([^*\\n]+?)\\*(?=\\s|$)/g,"$1<em>$2</em>");
-safe=safe.replace(/\\*\\*/g,"");
-return safe.replace(/\\n/g,"<br>");
+const inlineMarkdown=line=>{
+let safe=escapeHTML(line);
+safe=safe.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
+safe=safe.replace(/\*([^*\n]+)\*/g,"<em>$1</em>");
+safe=safe.replace(/\`([^\`]+)\`/g,"<code>$1</code>");
+return safe;
+};
+const lines=String(value||"").replace(/\r\n?/g,"\n").split("\n");
+let html="",listType=null;
+const closeList=()=>{if(listType){html+="</"+listType+">";listType=null;}};
+for(const rawLine of lines){
+const line=rawLine.trim();
+if(!line){closeList();continue;}
+const numbered=line.match(/^\d+[.)]\s+(.+)$/);
+const bullet=line.match(/^[-*•]\s+(.+)$/);
+if(numbered||bullet){
+const type=numbered?"ol":"ul";
+if(listType!==type){closeList();html+="<"+type+">";listType=type;}
+html+="<li>"+inlineMarkdown((numbered||bullet)[1])+"</li>";
+continue;
+}
+closeList();
+if(/^#{1,6}\s+/.test(line)){
+const level=line.match(/^#+/)[0].length;
+html+="<h"+level+">"+inlineMarkdown(line.replace(/^#{1,6}\s+/,""))+"</h"+level+">";
+}else{
+html+="<p>"+inlineMarkdown(line)+"</p>";
+}
+}
+closeList();
+return html;
 }
 
 function renderAskAIConversation(){
