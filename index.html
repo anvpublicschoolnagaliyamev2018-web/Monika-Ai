@@ -1382,6 +1382,7 @@ root.innerHTML=`
           <button class="askai-attach" id="askAIImageBtn" type="button" aria-label="Upload an image" title="Upload an image">＋</button>
           <textarea id="askAIQuestion" rows="1" maxlength="4000" placeholder="Message MONIKA AI..." aria-label="Message MONIKA AI"></textarea>
           <button class="askai-mic" id="askAIMicBtn" type="button" aria-label="Speak your message" title="Speak your message">🎙</button>
+          <button class="askai-composer-voice" id="askAIComposerVoiceBtn" type="button" aria-label="Open live voice mode" title="Start voice conversation"><span aria-hidden="true">▮▮▮</span></button>
           <button class="askai-send" id="askAISendBtn" type="button" aria-label="Send message" title="Send message">↑</button>
         </div>
         <p class="askai-disclaimer" id="askAIStatus" role="status">MONIKA AI can make mistakes. Check important information.</p>
@@ -1406,6 +1407,7 @@ $("askAISendBtn").onclick=sendAskAIQuestion;
 $("askAIImageBtn").onclick=()=>$("askAIImageInput").click();
 $("askAIImageInput").onchange=handleAskAIImageSelect;
 $("askAIMicBtn").onclick=startAskAIVoiceInput;
+$("askAIComposerVoiceBtn").onclick=openAskAILiveVoice;
 $("askAIVoiceToggle").onclick=toggleAskAIVoice;
 initAskAIVoicePicker();
 const languageSelect=$("askAILanguage");
@@ -2883,6 +2885,25 @@ win.document.write(`
 body{font-family:Arial;padding:30px;color:#111}
 h2{margin-bottom:20px}
 pre{white-space:pre-wrap;line-height:1.7;font-size:14px}
+
+/* Compact ChatGPT-style composer controls: mic and live voice beside the text field */
+.askai-composer{flex-wrap:nowrap!important;align-items:center!important;gap:8px!important}
+.askai-composer .askai-attach{order:0!important;flex:none}
+.askai-composer textarea{order:1!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;min-height:42px!important;height:42px!important;max-height:120px!important;padding:8px 2px!important}
+.askai-composer .askai-mic{order:2!important;flex:none;width:38px;height:38px;min-height:38px;padding:0;border-radius:50%}
+.askai-composer-voice{order:3!important;flex:none;width:40px;height:40px;border:0;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;letter-spacing:-2px;box-shadow:0 2px 9px #2563eb55}
+.askai-composer-voice:active{transform:scale(.94)}
+.askai-composer .askai-send{order:4!important;flex:none;margin-left:0!important}
+@media(max-width:430px){
+ .askai-composer{gap:6px!important;padding:9px 10px!important}
+ .askai-composer textarea{font-size:15px!important;min-height:40px!important;height:40px!important}
+ .askai-composer .askai-attach{width:34px;height:34px}
+ .askai-composer .askai-mic{width:36px;height:36px;min-height:36px}
+ .askai-composer-voice{width:38px;height:38px}
+ .askai-composer .askai-send{width:36px;height:36px}
+}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-composer-voice{background:#2563eb;color:#fff}
+
 </style>
 </head>
 <body>
