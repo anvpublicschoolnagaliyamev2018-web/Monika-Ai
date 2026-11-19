@@ -1610,6 +1610,15 @@ let askAIVoiceEnabled=false;
 let askAISpeechRecognition=null;
 let askAIVoiceAutoSend=false;
 
+function formatAskAIMarkdown(value){
+const escapeHTML=text=>String(text||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+let safe=escapeHTML(value);
+safe=safe.replace(/\\*\\*(.+?)\\*\\*/gs,"<strong>$1</strong>");
+safe=safe.replace(/(^|\\s)\\*(?!\\s)([^*\\n]+?)\\*(?=\\s|$)/g,"$1<em>$2</em>");
+safe=safe.replace(/\\*\\*/g,"");
+return safe.replace(/\\n/g,"<br>");
+}
+
 function renderAskAIConversation(){
 const conversation=$("askAIConversation");
 if(!conversation)return;
@@ -1620,7 +1629,8 @@ const bubble=document.createElement("div");
 bubble.className="askai-message "+(message.role==="user"?"askai-user":"askai-assistant");
 const body=document.createElement("div");
 body.className="askai-message-text";
-body.textContent=message.text||"";
+if(message.role==="assistant")body.innerHTML=formatAskAIMarkdown(message.text||"");
+else body.textContent=message.text||"";
 bubble.append(body);
 if(message.imagePreview){
 const image=document.createElement("img");
