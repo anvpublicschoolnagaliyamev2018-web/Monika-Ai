@@ -675,6 +675,7 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-new,body.monik
 @media(max-width:480px){.checker-upload-actions{gap:8px}.checker-file-label,.checker-camera-button{flex:1 1 calc(50% - 8px);font-size:12px;padding:10px 8px}}
 
 
+.checker-file-previews{display:grid;gap:10px;margin-top:12px}.checker-file-preview{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;gap:10px;padding:10px;border:1px solid #ffffff25;border-radius:14px;background:#0c1730}.checker-file-preview>img,.checker-pdf-icon{width:64px;height:64px;border-radius:10px;object-fit:cover;background:#1a2a4b}.checker-pdf-icon{display:grid;place-items:center;color:#ffb7c2;font-weight:900}.checker-file-info{display:flex;min-width:0;flex-direction:column;gap:5px;font-size:12px;color:#dce5ff;overflow-wrap:anywhere}.checker-file-info span{color:#9fb1d6;font-size:11px}.checker-file-actions{grid-column:1/-1;display:flex;gap:8px}.checker-file-actions button{flex:1;padding:9px;border-radius:10px;border:1px solid #ffffff25;background:#20345e;color:#fff;font-size:12px}
 .checker-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .checker-heading-row h2{margin:0}
 .checker-saved-toggle{flex:0 0 auto;border:1px solid #ffffff24;border-radius:13px;padding:10px 12px;background:linear-gradient(135deg,#315eea,#7954e8);color:#fff;font-size:12px;font-weight:700}
@@ -1949,7 +1950,7 @@ root.innerHTML=`
   <input id="answerCameraInput" type="file" accept="image/*" capture="environment" hidden>
 </div>
 <p class="small" id="answerFileStatus">You can upload files or take a photo directly with your camera.</p>
-<p class="small">Maximum 10 files. Each file up to 5 MB. Total up to 10 MB.</p>
+<p class="small">Maximum 10 files. Each file up to 12 MB. Total up to 14 MB. Preview, replace or remove selected files below.</p><div id="answerFilePreviews" class="checker-file-previews" aria-live="polite"></div>
 
 <div class="hint">
 AI will try to identify visible questions and answers. If the question is not visible, marks may be uncertain. The report is provisional and must be reviewed by the teacher.
@@ -1969,26 +1970,44 @@ $("checkerSavedClose").onclick=()=>toggleCheckerSavedDrawer(false);
 $("checkerSavedBackdrop").onclick=()=>toggleCheckerSavedDrawer(false);
 loadSavedCopyChecks();
 $("answerCameraBtn").onclick=()=>$("answerCameraInput").click();
+function updateAnswerFiles(nextFiles){
+ const transfer=new DataTransfer();Array.from(nextFiles).forEach(file=>transfer.items.add(file));$("answerFiles").files=transfer.files;renderAnswerFilePreviews();
+}
+function renderAnswerFilePreviews(){
+ const files=Array.from($("answerFiles").files||[]),host=$("answerFilePreviews");if(!host)return;host.innerHTML="";
+ files.forEach((file,index)=>{
+  const card=document.createElement("div");card.className="checker-file-preview";
+  if(file.type.startsWith("image/")){const img=document.createElement("img");img.src=URL.createObjectURL(file);img.alt=file.name;card.appendChild(img);}
+  else{const pdf=document.createElement("div");pdf.className="checker-pdf-icon";pdf.textContent="PDF";card.appendChild(pdf);}
+  const info=document.createElement("div");info.className="checker-file-info";const name=document.createElement("strong");name.textContent=file.name;const size=document.createElement("span");size.textContent=(file.size/1048576).toFixed(2)+" MB";info.append(name,size);card.appendChild(info);
+  const actions=document.createElement("div");actions.className="checker-file-actions";
+  const replace=document.createElement("button");replace.type="button";replace.textContent="↻ Replace";replace.onclick=()=>{
+   const picker=document.createElement("input");picker.type="file";picker.accept="image/jpeg,image/png,image/webp,application/pdf";
+   picker.onchange=()=>{const next=picker.files&&picker.files[0];if(!next)return;
+    if(!["image/jpeg","image/png","image/webp","application/pdf"].includes(next.type)){ $("answerFileStatus").textContent="Use JPG, PNG, WEBP or PDF.";return;}
+    if(next.size>12*1048576){$("answerFileStatus").textContent=next.name+" exceeds 12 MB.";return;}
+    const current=Array.from($("answerFiles").files||[]);current[index]=next;
+    if(current.reduce((sum,x)=>sum+x.size,0)>14*1048576){$("answerFileStatus").textContent="Combined file size exceeds 14 MB.";return;}
+    updateAnswerFiles(current);$("answerFileStatus").textContent="File replaced: "+next.name;
+   };picker.click();
+  };
+  const remove=document.createElement("button");remove.type="button";remove.textContent="✕ Remove";remove.onclick=()=>{const current=Array.from($("answerFiles").files||[]);current.splice(index,1);updateAnswerFiles(current);$("answerFileStatus").textContent=current.length?current.length+" file(s) selected.":"No files selected.";};
+  actions.append(replace,remove);card.appendChild(actions);host.appendChild(card);
+ });
+ if(!files.length) $("answerFileStatus").textContent="You can upload files or take a photo directly with your camera.";
+}
 $("answerCameraInput").addEventListener("change",event=>{
- const photo=event.target.files&&event.target.files[0];
- if(!photo)return;
- const current=Array.from($("answerFiles").files||[]);
- if(current.length>=10){$("answerFileStatus").textContent="Maximum 10 files allowed. Remove a file before adding another photo.";event.target.value="";return;}
- try{
-  const transfer=new DataTransfer();
-  current.forEach(file=>transfer.items.add(file));
-  transfer.items.add(photo);
-  $("answerFiles").files=transfer.files;
-  $("answerFileStatus").textContent=transfer.files.length+" file(s) selected, including camera photo: "+photo.name;
- }catch(error){
-  $("answerFileStatus").textContent="Could not add camera photo. Please use Choose Files instead.";
-  console.error("Camera photo attach failed:",error);
- }
- event.target.value="";
+ const photo=event.target.files&&event.target.files[0];if(!photo)return;const current=Array.from($("answerFiles").files||[]);
+ if(current.length>=10){$("answerFileStatus").textContent="Maximum 10 files allowed.";event.target.value="";return;}
+ if(photo.size>12*1048576||current.reduce((sum,x)=>sum+x.size,0)+photo.size>14*1048576){$("answerFileStatus").textContent="Photo exceeds the allowed file size.";event.target.value="";return;}
+ updateAnswerFiles([...current,photo]);$("answerFileStatus").textContent="Camera photo added. You can replace or remove it below.";event.target.value="";
 });
 $("answerFiles").addEventListener("change",()=>{
- const count=$("answerFiles").files.length;
- $("answerFileStatus").textContent=count?count+" file(s) selected. You can add a camera photo too.":"You can upload files or take a photo directly with your camera.";
+ const selected=Array.from($("answerFiles").files||[]);
+ if(selected.length>10){$("answerFileStatus").textContent="Maximum 10 files allowed.";updateAnswerFiles(selected.slice(0,10));return;}
+ const bad=selected.find(x=>!["image/jpeg","image/png","image/webp","application/pdf"].includes(x.type)),large=selected.find(x=>x.size>12*1048576),total=selected.reduce((sum,x)=>sum+x.size,0);
+ if(bad||large||total>14*1048576){$("answerFileStatus").textContent=bad?"Use JPG, PNG, WEBP or PDF.":large?large.name+" exceeds 12 MB.":"Combined file size exceeds 14 MB.";updateAnswerFiles([]);return;}
+ renderAnswerFilePreviews();$("answerFileStatus").textContent=selected.length+" file(s) selected. Tap Replace to change any file.";
 });
 
 $("copyResult").onclick=async()=>{
@@ -2097,16 +2116,16 @@ status.textContent="Use JPG, PNG, WEBP or PDF.";
 return;
 }
 
-if(file.size>5*1024*1024){
-status.textContent=file.name+" exceeds 5 MB.";
+if(file.size>12*1024*1024){
+status.textContent=file.name+" exceeds 12 MB.";
 return;
 }
 
 totalBytes+=file.size;
 }
 
-if(totalBytes>10*1024*1024){
-status.textContent="Combined file size exceeds 10 MB.";
+if(totalBytes>14*1024*1024){
+status.textContent="Combined file size exceeds 14 MB.";
 return;
 }
 
