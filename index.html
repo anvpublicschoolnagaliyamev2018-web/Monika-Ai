@@ -80,6 +80,8 @@ h2{font-size:21px}h3{font-size:17px}
 .sub{color:#b6c3ff;margin-top:9px;font-size:12px;letter-spacing:2px}
 .small{font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px}
 .section{display:none;animation:enter .4s ease}
+/* Keep a usable screen visible if Firebase/module startup is delayed or fails. */
+#login.section{display:block}
 .card{
 background:linear-gradient(145deg,rgba(30,42,85,.92),rgba(15,23,50,.94));
 border:1px solid var(--border);border-radius:23px;
