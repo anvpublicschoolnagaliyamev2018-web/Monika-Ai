@@ -1,4 +1,4 @@
-const CACHE_NAME = "monika-ai-shell-v7";
+const CACHE_NAME = "monika-ai-shell-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
