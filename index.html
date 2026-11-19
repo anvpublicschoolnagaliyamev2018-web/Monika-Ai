@@ -80,8 +80,6 @@ h2{font-size:21px}h3{font-size:17px}
 .sub{color:#b6c3ff;margin-top:9px;font-size:12px;letter-spacing:2px}
 .small{font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px}
 .section{display:none;animation:enter .4s ease}
-/* Keep a usable screen visible if Firebase/module startup is delayed or fails. */
-#login.section{display:block}
 .card{
 background:linear-gradient(145deg,rgba(30,42,85,.92),rgba(15,23,50,.94));
 border:1px solid var(--border);border-radius:23px;
@@ -1061,10 +1059,7 @@ introScreen.style.display="none";
 introScreen.classList.remove("is-leaving");
 show(authResolved
   ? (currentUser && profileData.profileComplete===true ? "dashboard" : "login")
-  : "login");
-if(!authResolved){
-  $("message").textContent="Connecting securely... If this takes time, you can continue once connection is ready.";
-}
+  : "loading");
 updateLoginState();
 const loginScreen=$("login");
 loginScreen.classList.remove("soft-enter");
@@ -1615,41 +1610,6 @@ let askAIVoiceEnabled=false;
 let askAISpeechRecognition=null;
 let askAIVoiceAutoSend=false;
 
-function formatAskAIMarkdown(value){
-const escapeHTML=text=>String(text||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-const inlineMarkdown=line=>{
-let safe=escapeHTML(line);
-safe=safe.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
-safe=safe.replace(/\*([^*\n]+)\*/g,"<em>$1</em>");
-safe=safe.replace(/\`([^\`]+)\`/g,"<code>$1</code>");
-return safe;
-};
-const lines=String(value||"").replace(/\r\n?/g,"\n").split("\n");
-let html="",listType=null;
-const closeList=()=>{if(listType){html+="</"+listType+">";listType=null;}};
-for(const rawLine of lines){
-const line=rawLine.trim();
-if(!line){closeList();continue;}
-const numbered=line.match(/^\d+[.)]\s+(.+)$/);
-const bullet=line.match(/^[-*•]\s+(.+)$/);
-if(numbered||bullet){
-const type=numbered?"ol":"ul";
-if(listType!==type){closeList();html+="<"+type+">";listType=type;}
-html+="<li>"+inlineMarkdown((numbered||bullet)[1])+"</li>";
-continue;
-}
-closeList();
-if(/^#{1,6}\s+/.test(line)){
-const level=line.match(/^#+/)[0].length;
-html+="<h"+level+">"+inlineMarkdown(line.replace(/^#{1,6}\s+/,""))+"</h"+level+">";
-}else{
-html+="<p>"+inlineMarkdown(line)+"</p>";
-}
-}
-closeList();
-return html;
-}
-
 function renderAskAIConversation(){
 const conversation=$("askAIConversation");
 if(!conversation)return;
@@ -1660,8 +1620,7 @@ const bubble=document.createElement("div");
 bubble.className="askai-message "+(message.role==="user"?"askai-user":"askai-assistant");
 const body=document.createElement("div");
 body.className="askai-message-text";
-if(message.role==="assistant")body.innerHTML=formatAskAIMarkdown(message.text||"");
-else body.textContent=message.text||"";
+body.textContent=message.text||"";
 bubble.append(body);
 if(message.imagePreview){
 const image=document.createElement("img");
@@ -1766,23 +1725,6 @@ function initAskAIVoicePicker(){
   $("askAIStatus").textContent=select.value?"Selected voice saved.":"Automatic device voice selected.";
  });
 }
-function cleanAskAIForSpeech(value){
-return String(value||"")
- .replace(/```[\\s\\S]*?```/g,match=>match.replace(/^```[^\\n]*\\n?/,"").replace(/```$/,""))
- .replace(/^\\s{0,3}#{1,6}\\s*/gm,"")
- .replace(/^\\s*>+\\s?/gm,"")
- .replace(/^\\s*(?:[-+*]|\\d+[.)])\\s+/gm,"")
- .replace(/!?\\[([^\\]]+)\\]\\([^)]*\\)/g,"$1")
- .replace(/\\*\\*(.*?)\\*\\*/gs,"$1")
- .replace(/__(.*?)__/gs,"$1")
- .replace(/\\*(.*?)\\*/gs,"$1")
- .replace(/_(.*?)_/gs,"$1")
- .replace(/`([^`]+)`/g,"$1")
- .replace(/[*_~#|]/g,"")
- .replace(/^[-]{3,}$/gm,"")
- .replace(/\\n{3,}/g,"\\n\\n")
- .trim();
-}
 function speakAskAIText(text){
 if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
 $("askAIStatus").textContent="Voice playback is not supported in this browser.";
@@ -1791,9 +1733,7 @@ return;
 const selected=getAskAILanguage();
 const locale=selected.speechLocale;
 window.speechSynthesis.cancel();
-const speechText=cleanAskAIForSpeech(text);
-if(!speechText){$("askAIStatus").textContent="There is no readable text to play.";return;}
-const utterance=new SpeechSynthesisUtterance(speechText);
+const utterance=new SpeechSynthesisUtterance(text);
 utterance.lang=locale;
 utterance.rate=0.96;
 utterance.pitch=1;
@@ -1919,12 +1859,6 @@ The user has selected: ${selectedLanguage.name}.
 ${selectedLanguage.writingRule}
 Always use the selected language even if the user's message is written in another language or script, unless the user explicitly asks to switch languages for that message. Before sending the answer, silently proofread it for spelling, grammar, correct script, and punctuation. Do not use Romanized Hindi when Hindi is selected. Do not transliterate the answer into a different script.
 
-GREETING / INTRODUCTION RULE:
-Do not begin every answer with "Namaste", "Hello", "नमस्ते", or a self-introduction.
-If this conversation already contains any earlier message, continue naturally and answer the latest question directly without greeting or repeating your introduction.
-Only greet briefly when the user's current message is itself a greeting and this is the first exchange of a new chat.
-Never repeat a greeting just because a new question has arrived.
-
 Use simple explanations and examples when useful. If you are unsure, say so. Do not invent facts. For medical, legal, financial or safety-critical questions, give cautious general information and recommend a qualified professional when appropriate.
 
 Conversation so far:
@@ -1950,7 +1884,7 @@ if(!response.ok)throw new Error([result.error,result.details].filter(Boolean).jo
 const answer=result.answer;
 if(!answer)throw new Error("AI returned an empty response.");
 pending.classList.remove("askai-pending");
-pending.innerHTML=formatAskAIMarkdown(answer);
+pending.textContent=answer;
 askAIHistory.push(
 {role:"user",text:userText,...(image?{imageName:image.name,imagePreview:image.previewUrl}:{})},
 {role:"assistant",text:answer}
