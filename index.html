@@ -1059,7 +1059,10 @@ introScreen.style.display="none";
 introScreen.classList.remove("is-leaving");
 show(authResolved
   ? (currentUser && profileData.profileComplete===true ? "dashboard" : "login")
-  : "loading");
+  : "login");
+if(!authResolved){
+  $("message").textContent="Connecting securely... If this takes time, you can continue once connection is ready.";
+}
 updateLoginState();
 const loginScreen=$("login");
 loginScreen.classList.remove("soft-enter");
