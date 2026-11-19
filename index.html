@@ -1407,7 +1407,6 @@ $("askAIDrawerBackdrop").onclick=()=>toggleAskAIDrawer(false);
 $("askAIDrawerNewChat").onclick=()=>{startNewAskAIChat();toggleAskAIDrawer(false);};
 $("askAIDrawerChats").onclick=()=>{toggleAskAIDrawer(false);$("askAILayout").classList.add("history-open");};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")toggleAskAIDrawer(false);});
-$("askAIBackBtn").onclick=()=>show("dashboard");
 $("askAIVoiceClose").onclick=closeAskAILiveVoice;
 $("askAIVoiceEnd").onclick=closeAskAILiveVoice;
 $("askAIVoiceMic").onclick=toggleAskAILiveMic;
@@ -1432,7 +1431,6 @@ if(languageSelect){
   });
 }
 $("askAIClearBtn").onclick=startNewAskAIChat;
-$("askAIHistoryToggle").onclick=()=>$("askAILayout").classList.toggle("history-open");
 $("askAIQuestion").addEventListener("keydown",e=>{
 if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAskAIQuestion();}
 });
