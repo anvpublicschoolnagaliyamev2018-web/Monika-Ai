@@ -1345,15 +1345,9 @@ askAIChatId=null;
 askAIChats=[];
 root.innerHTML=`
 <div class="askai-app">
-  <div class="askai-topbar">
-    <div class="askai-topbar-left">
-      <button class="askai-back" id="askAIBackBtn" type="button" aria-label="Back to dashboard" title="Back to dashboard">← <span>Back</span></button>
-      <div class="askai-brand"><span class="askai-brand-mark">✦</span><div><strong>MONIKA AI</strong><small>Ask anything</small></div></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <button class="askai-history-toggle" id="askAIOpenVoiceMode" type="button" aria-label="Open live voice mode">🎙 Voice</button>
+  <div class="askai-topbar" style="justify-content:flex-end">
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;width:100%">
       <button class="askai-history-toggle" id="askAISettingsToggle" type="button" aria-label="Open AI menu">☰ Menu</button>
-      <button class="askai-history-toggle" id="askAIHistoryToggle" type="button">Chats</button>
       <button class="askai-clear" id="askAIClearBtn" type="button" title="Start a new chat" aria-label="Start a new chat">＋ <span>New chat</span></button>
     </div>
   </div>
@@ -1414,7 +1408,6 @@ $("askAIDrawerNewChat").onclick=()=>{startNewAskAIChat();toggleAskAIDrawer(false
 $("askAIDrawerChats").onclick=()=>{toggleAskAIDrawer(false);$("askAILayout").classList.add("history-open");};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")toggleAskAIDrawer(false);});
 $("askAIBackBtn").onclick=()=>show("dashboard");
-$("askAIOpenVoiceMode").onclick=openAskAILiveVoice;
 $("askAIVoiceClose").onclick=closeAskAILiveVoice;
 $("askAIVoiceEnd").onclick=closeAskAILiveVoice;
 $("askAIVoiceMic").onclick=toggleAskAILiveMic;
