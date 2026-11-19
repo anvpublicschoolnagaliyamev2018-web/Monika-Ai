@@ -761,6 +761,18 @@ body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-history{border
 body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-history .askai-history-open{color:#35415b}
 body.monika-light-dashboard.monika-askai-fullscreen .askai-drawer-history .askai-history-item.active{background:#e9edff;border-color:#dce2ef}
 
+/* Voice picker and saved dictation history */
+.askai-dictation-panel{margin-top:14px;padding-top:12px;border-top:1px solid #ffffff20}
+.askai-dictation-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:11px;letter-spacing:.08em;color:#9ba8bd}
+.askai-dictation-head button{border:0;background:transparent;color:#8db4ff;font-size:12px;padding:5px 8px}
+.askai-dictation-list{display:flex;flex-direction:column;gap:6px;max-height:210px;overflow-y:auto}
+.askai-dictation-item{display:flex;flex-direction:column;align-items:flex-start;gap:5px;width:100%;padding:10px;border:1px solid #ffffff16;border-radius:10px;background:#ffffff08;color:#e8edf7;text-align:left}
+.askai-dictation-item span{font-size:13px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.askai-dictation-item small{font-size:10px;color:#8f9bb0}
+.askai-settings-drawer .askai-drawer-section{overflow-y:auto}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-dictation-panel{border-color:#dce2ef}
+body.monika-light-dashboard.monika-askai-fullscreen .askai-dictation-item{background:#f5f7fb;border-color:#e1e6ef;color:#26334b}
+
 </style>
 </head>
 
@@ -1398,6 +1410,10 @@ root.innerHTML=`
       <select id="askAIVoiceSelect" aria-label="Choose installed speaking voice"><option value="">Automatic device voice</option></select>
       <button class="askai-voice-toggle" id="askAIVoiceToggle" type="button" aria-pressed="false" title="Turn voice replies on or off">🔊 Voice off</button>
       <p class="askai-drawer-note">Voice options depend on the voices installed on your device.</p>
+      <div class="askai-dictation-panel">
+        <div class="askai-dictation-head"><strong>DICTATION HISTORY</strong><button type="button" id="askAIClearDictationHistory">Clear</button></div>
+        <div id="askAIDictationHistory" class="askai-dictation-list"><p class="askai-drawer-note">Your spoken messages will appear here.</p></div>
+      </div>
     </div>
   </aside>
   <div class="askai-layout" id="askAILayout">
@@ -1446,6 +1462,7 @@ $("askAIMicBtn").onclick=startAskAIVoiceInput;
 $("askAIComposerVoiceBtn").onclick=openAskAILiveVoice;
 $("askAIVoiceToggle").onclick=toggleAskAIVoice;
 initAskAIVoicePicker();
+initAskAIDictationHistory();
 const languageSelect=$("askAILanguage");
 if(languageSelect){
   let savedLanguage="hi";
@@ -1455,6 +1472,7 @@ if(languageSelect){
     const selected=getAskAILanguage();
     try{localStorage.setItem("monika_ai_chat_language",languageSelect.value);}catch(e){}
     if(askAISpeechRecognition){try{askAISpeechRecognition.stop();}catch(e){}}
+    initAskAIVoicePicker();
     $("askAIStatus").textContent=selected.name+" selected. Text, microphone and voice replies will use this language.";
   });
 }
@@ -1887,6 +1905,48 @@ if(!askAIVoiceEnabled&&"speechSynthesis" in window)window.speechSynthesis.cancel
 $("askAIStatus").textContent=askAIVoiceEnabled?"Voice replies enabled. Use the microphone to speak.":"Voice replies disabled.";
 }
 
+const ASKAI_DICTATION_KEY="monika_ai_dictation_history_v1";
+function getAskAIDictationHistory(){
+ try{const value=JSON.parse(localStorage.getItem(ASKAI_DICTATION_KEY)||"[]");return Array.isArray(value)?value:[];}catch(e){return [];}
+}
+function saveAskAIDictation(text){
+ const value=String(text||"").trim();
+ if(!value)return;
+ const history=getAskAIDictationHistory();
+ history.unshift({text:value,language:$("askAILanguage")?.value||"hi",createdAt:Date.now()});
+ try{localStorage.setItem(ASKAI_DICTATION_KEY,JSON.stringify(history.slice(0,40)));}catch(e){}
+ renderAskAIDictationHistory();
+}
+function renderAskAIDictationHistory(){
+ const list=$("askAIDictationHistory");
+ if(!list)return;
+ const history=getAskAIDictationHistory();
+ if(!history.length){list.innerHTML='<p class="askai-drawer-note">Your spoken messages will appear here.</p>';return;}
+ list.replaceChildren();
+ history.forEach(item=>{
+  const row=document.createElement("button");
+  row.type="button";row.className="askai-dictation-item";
+  const content=document.createElement("span");content.textContent=item.text;
+  const meta=document.createElement("small");
+  const date=new Date(item.createdAt||Date.now());
+  meta.textContent=date.toLocaleDateString()+" · "+date.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  row.append(content,meta);
+  row.addEventListener("click",()=>{
+   const field=$("askAIQuestion");if(field){field.value=item.text;field.focus();}
+   toggleAskAIDrawer(false);
+   $("askAIStatus").textContent="Dictation restored to the message box.";
+  });
+  list.append(row);
+ });
+}
+function initAskAIDictationHistory(){
+ renderAskAIDictationHistory();
+ const clear=$("askAIClearDictationHistory");
+ if(clear)clear.onclick=()=>{
+  try{localStorage.removeItem(ASKAI_DICTATION_KEY);}catch(e){}
+  renderAskAIDictationHistory();
+ };
+}
 function initAskAIVoicePicker(){
  const select=$("askAIVoiceSelect");
  if(!select||!("speechSynthesis" in window))return;
@@ -2001,6 +2061,7 @@ recognition.onend=()=>{
 askAISpeechRecognition=null;
 $("askAIMicBtn").classList.remove("is-listening");
 if(finalTranscript.trim()){
+saveAskAIDictation(finalTranscript.trim());
 $("askAIQuestion").value=finalTranscript.trim();
 askAIVoiceAutoSend=true;
 sendAskAIQuestion();
