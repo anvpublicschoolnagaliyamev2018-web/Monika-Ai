@@ -1786,7 +1786,9 @@ return;
 const selected=getAskAILanguage();
 const locale=selected.speechLocale;
 window.speechSynthesis.cancel();
-const speechText=cleanAskAIForSpeech(text);\nif(!speechText){$("askAIStatus").textContent="There is no readable text to play.";return;}\nconst utterance=new SpeechSynthesisUtterance(speechText);
+const speechText=cleanAskAIForSpeech(text);
+if(!speechText){$("askAIStatus").textContent="There is no readable text to play.";return;}
+const utterance=new SpeechSynthesisUtterance(speechText);
 utterance.lang=locale;
 utterance.rate=0.96;
 utterance.pitch=1;
