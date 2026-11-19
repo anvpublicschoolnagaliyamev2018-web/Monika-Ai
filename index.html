@@ -1999,6 +1999,7 @@ function renderAnswerFilePreviews(){
 $("answerCameraInput").addEventListener("change",event=>{
  const photo=event.target.files&&event.target.files[0];if(!photo)return;const current=Array.from($("answerFiles").files||[]);
  if(current.length>=10){$("answerFileStatus").textContent="Maximum 10 files allowed.";event.target.value="";return;}
+ if(!["image/jpeg","image/png","image/webp"].includes(photo.type)){$("answerFileStatus").textContent="Camera photo must be JPG, PNG or WEBP.";event.target.value="";return;}
  if(photo.size>12*1048576||current.reduce((sum,x)=>sum+x.size,0)+photo.size>14*1048576){$("answerFileStatus").textContent="Photo exceeds the allowed file size.";event.target.value="";return;}
  updateAnswerFiles([...current,photo]);$("answerFileStatus").textContent="Camera photo added. You can replace or remove it below.";event.target.value="";
 });
@@ -2214,6 +2215,7 @@ const response = await fetch(
       "Authorization": "Bearer " + idToken
     },
     body: JSON.stringify({
+      operation: "copy-check",
       prompt: prompt,
       files: parts.map(part => ({
         data: part.inlineData.data,
